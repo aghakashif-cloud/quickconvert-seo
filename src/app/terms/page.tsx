@@ -101,10 +101,10 @@ export default function TermsPage() {
                 </Link>{" "}
                 page or email us at{" "}
                 <a
-                  href="mailto:support@quickconvert.tools"
+                  href="mailto:support@quickconvertseo.com"
                   className="text-indigo-400 hover:underline"
                 >
-                  support@quickconvert.tools
+                  support@quickconvertseo.com
                 </a>
                 .
               </p>
