@@ -18,7 +18,7 @@ export default function Footer() {
           </Link>
           <span className="hidden sm:inline text-slate-700">•</span>
           <p className="text-xs text-slate-400">
-            © 2024 QuickConvert &amp; SEO Tools. All rights reserved.
+            © {new Date().getFullYear()} QuickConvert &amp; SEO Tools. All rights reserved.
           </p>
         </div>
 
