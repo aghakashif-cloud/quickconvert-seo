@@ -12,7 +12,6 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col">
       <div className="max-w-4xl mx-auto w-full py-12 px-6 space-y-8">
-
         <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-6">
           <div className="space-y-3 border-b border-slate-800 pb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold">
@@ -33,7 +32,7 @@ export default function TermsPage() {
                 1. Acceptance of Terms
               </h2>
               <p>
-                By accessing and using <strong>Funntogo Tools</strong>, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these Terms and Conditions, please discontinue use of this website immediately.
+                By accessing and using <strong>QuickConvert &amp; SEO Tools</strong>, you accept and agree to be bound by the terms and provisions of this agreement. If you do not agree to abide by these Terms and Conditions, please discontinue use of this website immediately.
               </p>
             </section>
 
@@ -42,16 +41,16 @@ export default function TermsPage() {
                 2. Description of Services
               </h2>
               <p>
-                Funntogo Tools provides browser-based file conversion utilities (powered by client-side WebAssembly, HTML5 Canvas, and PDF/document libraries) and AI-assisted YouTube metadata generation powered by the Google Gemini API. All services are provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis.
+                QuickConvert &amp; SEO Tools provides browser-based file conversion utilities (powered by client-side WebAssembly, HTML5 Canvas, and PDF/document libraries) and AI-assisted YouTube metadata generation powered by the Google Gemini API. All services are provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis.
               </p>
             </section>
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                3. User Responsibilities & Copyright Compliance
+                3. User Responsibilities &amp; Copyright Compliance
               </h2>
               <p>
-                You retain full ownership and responsibility for all media files, documents, and text prompts you process using Funntogo Tools. By using our tools, you represent and warrant that:
+                You retain full ownership and responsibility for all media files, documents, and text prompts you process using QuickConvert &amp; SEO Tools. By using our tools, you represent and warrant that:
               </p>
               <ul className="list-disc pl-6 space-y-1 text-slate-400">
                 <li>
@@ -61,7 +60,7 @@ export default function TermsPage() {
                   You will not use our tools for any unlawful, infringing, defamatory, or harmful purposes.
                 </li>
                 <li>
-                  You will not attempt to disrupt, overload, or abuse the API endpoints or web infrastructure of Funntogo Tools.
+                  You will not attempt to disrupt, overload, or abuse the API endpoints or web infrastructure of QuickConvert &amp; SEO Tools.
                 </li>
               </ul>
             </section>
@@ -71,7 +70,7 @@ export default function TermsPage() {
                 4. Intellectual Property Rights
               </h2>
               <p>
-                Unless otherwise stated, Funntogo Tools and/or its licensors own the intellectual property rights for the website design, branding, source code, and original text content on Funntogo Tools. All intellectual property rights are reserved.
+                Unless otherwise stated, QuickConvert &amp; SEO Tools and/or its licensors own the intellectual property rights for the website design, branding, source code, and original text content on QuickConvert &amp; SEO Tools. All intellectual property rights are reserved.
               </p>
             </section>
 
@@ -80,7 +79,7 @@ export default function TermsPage() {
                 5. Limitation of Liability
               </h2>
               <p>
-                In no event shall Funntogo Tools, nor any of its creators, directors, or affiliates, be held liable for anything arising out of or in any way connected with your use of this website, including but not limited to data loss during browser file conversion, inaccuracies in AI-generated metadata, or service interruptions. Always keep backup copies of your original files.
+                In no event shall QuickConvert &amp; SEO Tools, nor any of its creators, directors, or affiliates, be held liable for anything arising out of or in any way connected with your use of this website, including but not limited to data loss during browser file conversion, inaccuracies in AI-generated metadata, or service interruptions. Always keep backup copies of your original files.
               </p>
             </section>
 
@@ -89,7 +88,7 @@ export default function TermsPage() {
                 6. Changes to These Terms
               </h2>
               <p>
-                We reserve the right to revise these Terms and Conditions at any time by updating this page. By continuing to use Funntogo Tools after any revisions become effective, you agree to be bound by the updated terms.
+                We reserve the right to revise these Terms and Conditions at any time by updating this page. By continuing to use QuickConvert &amp; SEO Tools after any revisions become effective, you agree to be bound by the updated terms.
               </p>
             </section>
 
@@ -102,10 +101,10 @@ export default function TermsPage() {
                 </Link>{" "}
                 page or email us at{" "}
                 <a
-                  href="mailto:support@funntogotools.com"
+                  href="mailto:support@quickconvert.tools"
                   className="text-indigo-400 hover:underline"
                 >
-                  support@funntogotools.com
+                  support@quickconvert.tools
                 </a>
                 .
               </p>

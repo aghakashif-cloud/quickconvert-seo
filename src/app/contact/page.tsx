@@ -51,10 +51,10 @@ export default function ContactPage() {
                 For general inquiries, technical support, or advertising questions:
               </p>
               <a
-                href="mailto:support@funntogotools.com"
+                href="mailto:support@quickconvert.tools"
                 className="inline-block text-sm font-semibold text-indigo-400 hover:text-indigo-300 break-all"
               >
-                support@funntogotools.com
+                support@quickconvert.tools
               </a>
             </div>
 

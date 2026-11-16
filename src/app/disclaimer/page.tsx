@@ -12,7 +12,6 @@ export default function DisclaimerPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col">
       <div className="max-w-4xl mx-auto w-full py-12 px-6 space-y-8">
-
         <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-6">
           <div className="space-y-3 border-b border-slate-800 pb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
@@ -30,10 +29,10 @@ export default function DisclaimerPage() {
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                1. General Information & Utility Disclaimer
+                1. General Information &amp; Utility Disclaimer
               </h2>
               <p>
-                All tools, utilities, and information provided on <strong>Funntogo Tools</strong> are published in good faith and for general productivity, educational, and informational purposes only. Funntogo Tools makes no warranties about the completeness, reliability, or accuracy of the tools or information provided on this website. Any action you take upon the files or outputs generated on this website is strictly at your own risk.
+                All tools, utilities, and information provided on <strong>QuickConvert &amp; SEO Tools</strong> are published in good faith and for general productivity, educational, and informational purposes only. QuickConvert &amp; SEO Tools makes no warranties about the completeness, reliability, or accuracy of the tools or information provided on this website. Any action you take upon the files or outputs generated on this website is strictly at your own risk.
               </p>
             </section>
 
@@ -57,7 +56,7 @@ export default function DisclaimerPage() {
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                4. External Links & Third-Party Advertisements
+                4. External Links &amp; Third-Party Advertisements
               </h2>
               <p>
                 From our website, you may visit external websites by following hyperlinks or interacting with third-party advertisements served via Google AdSense. While we strive to provide only quality links to useful and ethical websites, we have no control over the content and nature of these external sites. The inclusion of any links or advertisements does not imply a recommendation or endorsement for the views expressed within them.
@@ -71,7 +70,14 @@ export default function DisclaimerPage() {
                 <Link href="/contact" className="text-indigo-400 hover:underline">
                   Contact Us
                 </Link>{" "}
-                page.
+                page or email us at{" "}
+                <a
+                  href="mailto:support@quickconvert.tools"
+                  className="text-indigo-400 hover:underline"
+                >
+                  support@quickconvert.tools
+                </a>
+                .
               </p>
             </section>
           </div>

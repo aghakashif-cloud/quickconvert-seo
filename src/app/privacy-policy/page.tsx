@@ -12,12 +12,11 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col">
       <div className="max-w-4xl mx-auto w-full py-12 px-6 space-y-8">
-
         <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-6">
           <div className="space-y-3 border-b border-slate-800 pb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">
               <Shield className="w-3.5 h-3.5" />
-              Privacy & Data Protection
+              Privacy &amp; Data Protection
             </div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
               Privacy Policy
@@ -60,7 +59,7 @@ export default function PrivacyPolicyPage() {
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                3. Information Collection and AI Features
+                4. Information Collection and AI Features
               </h2>
               <p>
                 When you use the <strong>AI YouTube Metadata Generator</strong>, the topic, keywords, or transcript text you enter is sent securely to the Google Gemini API solely for the purpose of generating your requested titles, descriptions, and SEO tags. We do not permanently store or sell your submitted prompts. If you contact us via our Contact page, we collect only the name, email address, and message content you voluntarily provide so we can respond to your inquiry.
@@ -69,16 +68,16 @@ export default function PrivacyPolicyPage() {
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                4. Cookies and Web Beacons
+                5. Cookies and Web Beacons
               </h2>
               <p>
-                Like most modern websites, Funntogo Tools uses standard cookies and local storage to store user preferences, optimize site performance, and analyze aggregate traffic trends. You can choose to disable cookies through your individual browser options at any time.
+                Like most modern websites, QuickConvert &amp; SEO Tools uses standard cookies and local storage to store user preferences, optimize site performance, and analyze aggregate traffic trends. You can choose to disable cookies through your individual browser options at any time.
               </p>
             </section>
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                5. Google AdSense & Third-Party Advertising Partners
+                6. Google AdSense &amp; Third-Party Advertising Partners
               </h2>
               <p>
                 We may use <strong>Google AdSense</strong> and other third-party advertising companies to serve advertisements when you visit our website. Please note the following disclosures required by Google AdSense policy:
@@ -88,7 +87,7 @@ export default function PrivacyPolicyPage() {
                   Third-party vendors, including Google, use cookies (such as the Google DoubleClick DART cookie) to serve ads based on a user&apos;s prior visits to our website or other websites on the internet.
                 </li>
                 <li>
-                  Google&apos;s use of advertising cookies enables it and its partners to serve ads to our users based on their visit to Funntogo Tools and/or other sites on the Internet.
+                  Google&apos;s use of advertising cookies enables it and its partners to serve ads to our users based on their visit to QuickConvert &amp; SEO Tools and/or other sites on the Internet.
                 </li>
                 <li>
                   Users may opt out of personalized advertising by visiting{" "}
@@ -115,15 +114,15 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-lg font-bold text-white">6. Log Files</h2>
+              <h2 className="text-lg font-bold text-white">7. Log Files</h2>
               <p>
-                Funntogo Tools follows a standard procedure of using server log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
+                QuickConvert &amp; SEO Tools follows a standard procedure of using server log files. These files log visitors when they visit websites. The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable.
               </p>
             </section>
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                7. CCPA & GDPR Privacy Rights
+                8. CCPA &amp; GDPR Privacy Rights
               </h2>
               <p>
                 Depending on your location, you have the right to request access to, correction of, or deletion of any personal data we may hold, as well as the right to restrict or object to data processing. Because our file conversion tools do not upload or retain user files on any server, we do not store copies of your personal media.
@@ -131,14 +130,14 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-lg font-bold text-white">8. Contact Us</h2>
+              <h2 className="text-lg font-bold text-white">9. Contact Us</h2>
               <p>
                 If you have any questions or require more information about our Privacy Policy, please do not hesitate to contact us at{" "}
                 <a
-                  href="mailto:support@funntogotools.com"
+                  href="mailto:support@quickconvert.tools"
                   className="text-indigo-400 hover:underline"
                 >
-                  support@funntogotools.com
+                  support@quickconvert.tools
                 </a>{" "}
                 or via our{" "}
                 <Link href="/contact" className="text-indigo-400 hover:underline">

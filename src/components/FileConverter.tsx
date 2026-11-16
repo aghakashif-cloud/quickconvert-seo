@@ -390,7 +390,7 @@ export default function FileConverter() {
         ctx.fillStyle = "rgba(255,255,255,0.95)";
         ctx.font = "bold 42px sans-serif";
         ctx.textAlign = "center";
-        ctx.fillText("Funntogo Universal Converter", 400, 225);
+        ctx.fillText("QuickConvert & SEO Tools", 400, 225);
         ctx.font = "22px sans-serif";
         ctx.fillStyle = "rgba(255,255,255,0.85)";
         ctx.fillText("Convert to PNG, JPG, WebP, AVIF, BMP, ICO, or PDF", 400, 280);
@@ -444,7 +444,7 @@ export default function FileConverter() {
         height: 400,
         color: rgb(0.08, 0.1, 0.18),
       });
-      page.drawText("Funntogo Universal PDF Sample", {
+      page.drawText("QuickConvert Universal PDF Sample", {
         x: 50,
         y: 310,
         size: 26,
@@ -466,7 +466,7 @@ export default function FileConverter() {
       });
       onDrop([new File([pdfBlob], "sample-brochure.pdf", { type: "application/pdf" })]);
     } else if (type === "document") {
-      const sampleText = `FUNNTOGO TOOLS — UNIVERSAL DOCUMENT CONVERTER\n\n1. 100% Client-Side Processing\nYour documents, PDFs, videos, audio tracks, and images never leave your device.\n\n2. Supported Document Workflows\n- Convert TXT, Markdown, or DOCX files directly to formatted PDF documents using jsPDF & mammoth.js.\n- Extract clean plain text or HTML from Word documents.\n\nGenerated locally on ${new Date().toLocaleDateString()}.`;
+      const sampleText = `QUICKCONVERT & SEO TOOLS — UNIVERSAL DOCUMENT CONVERTER\n\n1. 100% Client-Side Processing\nYour documents, PDFs, videos, audio tracks, and images never leave your device.\n\n2. Supported Document Workflows\n- Convert TXT, Markdown, or DOCX files directly to formatted PDF documents using jsPDF & mammoth.js.\n- Extract clean plain text or HTML from Word documents.\n\nGenerated locally on ${new Date().toLocaleDateString()}.`;
       const docBlob = new Blob([sampleText], { type: "text/plain" });
       onDrop([new File([docBlob], "sample-notes.txt", { type: "text/plain" })]);
     }
