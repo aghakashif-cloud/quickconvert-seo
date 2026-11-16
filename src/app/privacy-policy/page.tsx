@@ -5,7 +5,7 @@ import { Shield } from "lucide-react";
 export const metadata = {
   title: "Privacy Policy — QuickConvert & SEO Tools",
   description:
-    "Read the QuickConvert & SEO Tools Privacy Policy covering client-side file processing, data collection, cookies, and Google AdSense third-party advertising.",
+    "Read the QuickConvert & SEO Tools Privacy Policy covering client-side file processing, data collection, cookies, COPPA, and Google AdSense third-party advertising.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -13,6 +13,7 @@ export default function PrivacyPolicyPage() {
     <div className="min-h-screen bg-slate-950 text-slate-200 flex flex-col">
       <div className="max-w-4xl mx-auto w-full py-12 px-6 space-y-8">
         <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-6">
+          {/* Page Header */}
           <div className="space-y-3 border-b border-slate-800 pb-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">
               <Shield className="w-3.5 h-3.5" />
@@ -22,10 +23,11 @@ export default function PrivacyPolicyPage() {
               Privacy Policy
             </h1>
             <p className="text-xs text-slate-400">
-              Last Updated: November 15, 2026
+              Last Updated: November 16, 2024
             </p>
           </div>
 
+          {/* Policy Sections */}
           <div className="space-y-6 text-sm text-slate-300 leading-relaxed">
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">1. Introduction</h2>
@@ -48,12 +50,18 @@ export default function PrivacyPolicyPage() {
                 3. 100% Client-Side File Conversion &amp; Local Processing Details
               </h2>
               <p>
-                Our Universal File Converter (including video, audio, image, PDF, and document conversion) operates <strong>100% client-side</strong> inside your web browser using WebAssembly (`@ffmpeg/ffmpeg`), the HTML5 Canvas API, `pdf-lib`, and `mammoth.js`.
+                Our Universal File Converter (including video, audio, image, PDF, and document conversion) operates 100% client-side inside your web browser using WebAssembly (<code>@ffmpeg/ffmpeg</code>), the HTML5 Canvas API, <code>pdf-lib</code>, and <code>mammoth.js</code>.
               </p>
               <ul className="list-disc pl-6 space-y-1 text-slate-400">
-                <li>Your files are never uploaded to, stored on, or transmitted through our servers.</li>
-                <li>All file transcoding and document rendering happen strictly in your local device memory.</li>
-                <li>When you close your browser tab or clear the conversion queue, temporary browser blob URLs are immediately revoked from memory.</li>
+                <li>
+                  Your files are never uploaded to, stored on, or transmitted through our servers.
+                </li>
+                <li>
+                  All file transcoding and document rendering happen strictly in your local device memory.
+                </li>
+                <li>
+                  When you close your browser tab or clear the conversion queue, temporary browser blob URLs are immediately revoked from memory.
+                </li>
               </ul>
             </section>
 
@@ -101,7 +109,7 @@ export default function PrivacyPolicyPage() {
                   </a>{" "}
                   or by visiting{" "}
                   <a
-                    href="https://www.aboutads.info"
+                    href="https://www.aboutads.info/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-indigo-400 hover:underline"
@@ -130,7 +138,27 @@ export default function PrivacyPolicyPage() {
             </section>
 
             <section className="space-y-2">
-              <h2 className="text-lg font-bold text-white">9. Contact Us</h2>
+              <h2 className="text-lg font-bold text-white">
+                9. Children&apos;s Information (COPPA)
+              </h2>
+              <p>
+                Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity. QuickConvert &amp; SEO Tools does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="text-lg font-bold text-white">10. Consent</h2>
+              <p>
+                By using our website, you hereby consent to our Privacy Policy and agree to its{" "}
+                <Link href="/terms" className="text-indigo-400 hover:underline">
+                  Terms and Conditions
+                </Link>
+                .
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h2 className="text-lg font-bold text-white">11. Contact Us</h2>
               <p>
                 If you have any questions or require more information about our Privacy Policy, please do not hesitate to contact us at{" "}
                 <a
