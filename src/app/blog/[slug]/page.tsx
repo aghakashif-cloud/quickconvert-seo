@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import {
   ArrowLeft,
+  ArrowRight,
   Calendar,
   Clock,
   User,
@@ -11,6 +12,8 @@ import {
   Sparkles,
   CheckCircle2,
   BookOpen,
+  HelpCircle,
+  Tag,
 } from "lucide-react";
 import { BLOG_POSTS, getBlogPostBySlug } from "@/lib/blogData";
 
@@ -39,6 +42,7 @@ export async function generateMetadata({
   return {
     title: `${post.title} — QuickConvert & SEO Tools`,
     description: post.excerpt,
+    keywords: post.focusKeywords,
     openGraph: {
       title: post.title,
       description: post.excerpt,
@@ -69,7 +73,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
         </div>
 
-        {/* Article Header */}
+        {/* Article Header (H1) */}
         <header className="bg-slate-900/70 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-5">
           <div className="flex flex-wrap items-center gap-3 text-xs">
             <span className="px-3 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 font-semibold flex items-center gap-1.5">
@@ -94,6 +98,24 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             {post.excerpt}
           </p>
 
+          {/* Focus Keywords Pills */}
+          {post.focusKeywords && post.focusKeywords.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <span className="text-[11px] text-slate-500 flex items-center gap-1">
+                <Tag className="w-3 h-3 text-indigo-400" />
+                Topics:
+              </span>
+              {post.focusKeywords.map((kw, kIdx) => (
+                <span
+                  key={kIdx}
+                  className="text-[11px] px-2.5 py-0.5 rounded-md bg-slate-950 border border-slate-800 text-slate-400"
+                >
+                  {kw}
+                </span>
+              ))}
+            </div>
+          )}
+
           <div className="pt-4 border-t border-slate-800/80 flex items-center gap-2.5 text-xs text-slate-400">
             <div className="w-7 h-7 rounded-full bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
               <User className="w-3.5 h-3.5" />
@@ -104,11 +126,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </header>
 
-        {/* Article Body (Clean Reading Layout) */}
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-8 leading-relaxed">
+        {/* Article Body (H2 & H3 Semantic Structure) */}
+        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-10 leading-relaxed">
           {post.sections.map((section, idx) => (
             <section key={idx} className="space-y-4">
-              <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">
+              <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight border-b border-slate-800/80 pb-2.5">
                 {section.heading}
               </h2>
 
@@ -134,10 +156,87 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   ))}
                 </ul>
               )}
+
+              {/* H3 Subsections */}
+              {section.subSections && section.subSections.length > 0 && (
+                <div className="space-y-6 pt-3 pl-0 sm:pl-4 border-l-0 sm:border-l-2 border-indigo-500/30">
+                  {section.subSections.map((sub, sIdx) => (
+                    <div key={sIdx} className="space-y-2.5">
+                      <h3 className="text-base md:text-lg font-bold text-indigo-300">
+                        {sub.subheading}
+                      </h3>
+                      {sub.paragraphs.map((sp, spIdx) => (
+                        <p
+                          key={spIdx}
+                          className="text-sm md:text-base text-slate-300 leading-7"
+                        >
+                          {sp}
+                        </p>
+                      ))}
+                      {sub.bullets && sub.bullets.length > 0 && (
+                        <ul className="space-y-2 pt-1">
+                          {sub.bullets.map((sb, sbIdx) => (
+                            <li
+                              key={sbIdx}
+                              className="flex items-start gap-2.5 text-sm text-slate-300 bg-slate-950/60 border border-slate-800/70 rounded-xl p-3"
+                            >
+                              <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
+                              <span>{sb}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Contextual Internal Tool Link */}
+              {section.ctaLink && (
+                <div className="pt-3">
+                  <Link
+                    href={section.ctaLink.href}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white border border-indigo-500/40 text-xs md:text-sm font-semibold transition shadow-sm"
+                  >
+                    <span>{section.ctaLink.text}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
             </section>
           ))}
 
-          {/* Embedded Tool Callout inside the Article */}
+          {/* Dedicated FAQ Section (H2 + H3 questions) */}
+          {post.faqs && post.faqs.length > 0 && (
+            <section className="pt-6 border-t border-slate-800 space-y-5">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-lg bg-indigo-500/15 text-indigo-400 border border-indigo-500/30">
+                  <HelpCircle className="w-5 h-5" />
+                </div>
+                <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight">
+                  Frequently Asked Questions (FAQ)
+                </h2>
+              </div>
+
+              <div className="space-y-4">
+                {post.faqs.map((faq, fIdx) => (
+                  <div
+                    key={fIdx}
+                    className="bg-slate-950/80 border border-slate-800/90 rounded-xl p-5 space-y-2"
+                  >
+                    <h3 className="text-base font-bold text-slate-100">
+                      {faq.question}
+                    </h3>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Embedded Bottom Tool Callout */}
           <div className="mt-8 bg-gradient-to-r from-indigo-500/15 via-purple-500/15 to-pink-500/15 border border-indigo-500/30 rounded-2xl p-6 md:p-8 flex flex-col sm:flex-row items-center justify-between gap-5">
             <div className="space-y-1.5 text-center sm:text-left">
               <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400">
@@ -145,26 +244,26 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 100% Free &amp; Client-Side
               </div>
               <h3 className="text-lg font-bold text-white">
-                Try It Now: Convert Your Files Locally in Seconds
+                Ready to Put This Guide Into Action?
               </h3>
               <p className="text-xs md:text-sm text-slate-300">
-                No sign-up, no watermarks, and zero server uploads.
+                Convert files locally or generate high-ranking YouTube metadata in seconds.
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <Link
-                href="/?tab=converter&mode=audio"
+                href="/?tab=converter"
                 className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 transition"
               >
-                Convert MP4 to MP3 Now
+                Try our Free File Converter
               </Link>
               <Link
                 href="/?tab=youtube"
                 className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition"
               >
                 <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-                YouTube AI Tool
+                YouTube AI Studio
               </Link>
             </div>
           </div>

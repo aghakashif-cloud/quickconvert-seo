@@ -1,7 +1,15 @@
 import type { MetadataRoute } from "next";
+import { BLOG_POSTS } from "@/lib/blogData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://quickconvertseo.com";
+
+  const blogEntries: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.85,
+  }));
 
   return [
     {
@@ -16,12 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/blog/how-to-convert-mp4-to-mp3-for-free`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.85,
-    },
+    ...blogEntries,
     {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
