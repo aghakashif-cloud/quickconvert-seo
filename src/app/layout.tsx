@@ -68,6 +68,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-KN697JGF"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+`,
+          }}
+        />
+      </head>
       <body
         className={`${inter.className} bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased`}
       >
