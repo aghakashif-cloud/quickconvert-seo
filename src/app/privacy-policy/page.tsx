@@ -52,20 +52,20 @@ export default function PrivacyPolicyPage() {
 
             <section className="space-y-2">
               <h2 className="text-lg font-bold text-white">
-                3. 100% Client-Side File Conversion &amp; Local Processing Details
+                3. 100% Client-Side File Conversion &amp; Local Processing
               </h2>
               <p>
-                Our Universal File Converter (including video, audio, image, PDF, and document conversion) operates 100% client-side inside your web browser using WebAssembly (<code>@ffmpeg/ffmpeg</code>), the HTML5 Canvas API, <code>pdf-lib</code>, and <code>mammoth.js</code>.
+                Our Universal File Converter (including video, audio, image, PDF, and document conversion) operates entirely inside your web browser. We use advanced browser-based technologies to process your files.
               </p>
-              <ul className="list-disc pl-6 space-y-1 text-slate-400">
+              <ul className="list-disc pl-6 space-y-1.5 text-slate-400">
                 <li>
-                  Your files are never uploaded to, stored on, or transmitted through our servers.
+                  <strong className="text-slate-200">Zero Server Uploads:</strong> Your files are never uploaded to, stored on, or transmitted through our servers.
                 </li>
                 <li>
-                  All file transcoding and document rendering happen strictly in your local device memory.
+                  <strong className="text-slate-200">Local Processing:</strong> All file conversions happen strictly within your device&apos;s memory.
                 </li>
                 <li>
-                  When you close your browser tab or clear the conversion queue, temporary browser blob URLs are immediately revoked from memory.
+                  <strong className="text-slate-200">Data Erasure:</strong> As soon as you close your browser tab or clear the conversion queue, all temporary file data is immediately wiped from your device&apos;s memory.
                 </li>
               </ul>
             </section>
