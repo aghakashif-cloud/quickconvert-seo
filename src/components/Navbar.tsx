@@ -206,6 +206,12 @@ export default function Navbar() {
               </div>
             </div>
           ))}
+          <Link
+            href="/blog"
+            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition"
+          >
+            Blog
+          </Link>
         </nav>
 
         {/* Right: Quick Action CTA Buttons (Desktop) */}
@@ -239,14 +245,14 @@ export default function Navbar() {
       {/* Mobile Full-Screen / Slide-Down Navigation Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 bg-slate-950/98 backdrop-blur-xl border-t border-slate-800 overflow-y-auto z-50 p-5 space-y-4">
-          <div className="grid grid-cols-2 gap-2.5 pb-2 border-b border-slate-800">
+          <div className="grid grid-cols-3 gap-2 pb-2 border-b border-slate-800">
             <Link
               href="/?tab=converter"
               onClick={() => setMobileMenuOpen(false)}
               className="p-3 rounded-xl bg-indigo-600/20 border border-indigo-500/40 text-xs font-bold text-indigo-200 text-center flex items-center justify-center gap-1.5"
             >
               <FileVideo className="w-4 h-4 text-indigo-400" />
-              File Converter
+              Converter
             </Link>
             <Link
               href="/?tab=youtube"
@@ -255,6 +261,14 @@ export default function Navbar() {
             >
               <Youtube className="w-4 h-4 text-rose-400" />
               YouTube AI
+            </Link>
+            <Link
+              href="/blog"
+              onClick={() => setMobileMenuOpen(false)}
+              className="p-3 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-xs font-bold text-emerald-200 text-center flex items-center justify-center gap-1.5"
+            >
+              <FileText className="w-4 h-4 text-emerald-400" />
+              Blog
             </Link>
           </div>
 

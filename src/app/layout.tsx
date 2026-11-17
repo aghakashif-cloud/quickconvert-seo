@@ -6,10 +6,59 @@ import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const siteTitle =
+  "QuickConvert & SEO Tools - Free Online File Converter & AI YouTube Metadata Generator";
+const siteDescription =
+  "Convert videos, audio, images, PDFs, and documents for free online. 100% secure client-side conversion. Also generate high-ranking YouTube titles, descriptions, and tags using AI.";
+const siteUrl = "https://quickconvertseo.com";
+
 export const metadata: Metadata = {
-  title: "QuickConvert & SEO Tools - All-in-One File Converter & AI SEO Suite",
-  description:
-    "Free online tools to convert files, generate YouTube titles, descriptions, and tags using AI. 100% secure and browser-based.",
+  metadataBase: new URL(siteUrl),
+  title: siteTitle,
+  description: siteDescription,
+  keywords: [
+    "free online file converter",
+    "video converter",
+    "audio converter",
+    "image converter",
+    "PDF converter",
+    "DOCX to PDF",
+    "MP4 to MP3",
+    "client-side file converter",
+    "YouTube metadata generator",
+    "AI YouTube title generator",
+    "YouTube SEO tags generator",
+    "QuickConvert & SEO Tools",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: "QuickConvert & SEO Tools",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "QuickConvert & SEO Tools - Free Online File Converter & AI YouTube Metadata Generator",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

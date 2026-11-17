@@ -34,6 +34,12 @@ export default function Footer() {
             Home
           </Link>
           <Link
+            href="/blog"
+            className="text-slate-400 hover:text-indigo-400 transition"
+          >
+            Blog
+          </Link>
+          <Link
             href="/about"
             className="text-slate-400 hover:text-indigo-400 transition"
           >
