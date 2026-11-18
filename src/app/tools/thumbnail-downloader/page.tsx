@@ -248,7 +248,7 @@ export default function ThumbnailDownloaderPage() {
               className="px-6 py-3 rounded-xl bg-gradient-to-r from-rose-600 to-indigo-600 hover:from-rose-500 hover:to-indigo-500 text-white text-sm font-bold shadow-lg shadow-rose-600/20 transition flex items-center justify-center gap-2 shrink-0"
             >
               <ImageIcon className="w-4 h-4" />
-              Get Thumbnail Images
+              Get Thumbnail
             </button>
           </div>
 
@@ -311,7 +311,7 @@ export default function ThumbnailDownloaderPage() {
                     ) : (
                       <>
                         <Download className="w-4 h-4" />
-                        Download HD Thumbnail (.JPG)
+                        Download Image (.JPG)
                       </>
                     )}
                   </button>
