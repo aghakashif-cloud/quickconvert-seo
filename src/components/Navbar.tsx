@@ -20,6 +20,8 @@ import {
   Scale,
   AlertTriangle,
   ArrowRight,
+  Film,
+  ImageDown,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -62,6 +64,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         href: "/?tab=converter&mode=document",
         icon: <FileText className="w-4 h-4 text-cyan-400" />,
       },
+      {
+        label: "Video to GIF Converter",
+        description: "Convert MP4, MOV & WebM clips into animated GIFs",
+        href: "/tools/video-to-gif",
+        icon: <Film className="w-4 h-4 text-purple-400" />,
+      },
     ],
   },
   {
@@ -78,6 +86,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "High-CTR YouTube titles & thumbnail hook ideas",
         href: "/?tab=youtube&mode=titles",
         icon: <Sparkles className="w-4 h-4 text-purple-400" />,
+      },
+      {
+        label: "YouTube Thumbnail Downloader",
+        description: "Download HD & 4K YouTube thumbnails (maxresdefault)",
+        href: "/tools/thumbnail-downloader",
+        icon: <ImageDown className="w-4 h-4 text-emerald-400" />,
       },
     ],
   },

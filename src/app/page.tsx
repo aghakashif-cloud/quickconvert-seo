@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
+import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import {
   Sparkles,
   ShieldCheck,
   Layers,
+  Film,
+  ImageDown,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 
@@ -111,7 +114,7 @@ function WorkspaceContent() {
             </div>
 
             {/* Quick Tool Switcher Pills */}
-            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 p-1 rounded-xl">
+            <div className="flex flex-wrap items-center gap-2 bg-slate-900 border border-slate-800 p-1 rounded-xl">
               <button
                 type="button"
                 onClick={() => handleTabSwitch("converter")}
@@ -136,6 +139,20 @@ function WorkspaceContent() {
                 <Sparkles className="w-3.5 h-3.5" />
                 YouTube AI Studio
               </button>
+              <Link
+                href="/tools/video-to-gif"
+                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
+              >
+                <Film className="w-3.5 h-3.5 text-purple-400" />
+                Video to GIF
+              </Link>
+              <Link
+                href="/tools/thumbnail-downloader"
+                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
+              >
+                <ImageDown className="w-3.5 h-3.5 text-emerald-400" />
+                Thumbnail Downloader
+              </Link>
             </div>
           </div>
         </div>
