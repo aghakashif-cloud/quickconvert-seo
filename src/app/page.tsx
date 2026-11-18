@@ -10,6 +10,7 @@ import {
   Layers,
   Film,
   ImageDown,
+  BarChart3,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 
@@ -152,6 +153,13 @@ function WorkspaceContent() {
               >
                 <ImageDown className="w-3.5 h-3.5 text-emerald-400" />
                 Thumbnail Downloader
+              </Link>
+              <Link
+                href="/tools/youtube-audit"
+                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
+              >
+                <BarChart3 className="w-3.5 h-3.5 text-amber-400" />
+                YouTube SEO Audit
               </Link>
             </div>
           </div>

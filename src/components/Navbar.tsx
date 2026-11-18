@@ -22,6 +22,7 @@ import {
   ArrowRight,
   Film,
   ImageDown,
+  BarChart3,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -92,6 +93,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Download HD & 4K YouTube thumbnails (maxresdefault)",
         href: "/tools/thumbnail-downloader",
         icon: <ImageDown className="w-4 h-4 text-emerald-400" />,
+      },
+      {
+        label: "YouTube SEO Audit & Analyzer",
+        description: "Audit any video URL for a 0-100 SEO score & fixes",
+        href: "/tools/youtube-audit",
+        icon: <BarChart3 className="w-4 h-4 text-amber-400" />,
       },
     ],
   },

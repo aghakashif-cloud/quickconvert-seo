@@ -22,7 +22,8 @@
     "pdfjs-dist": "^3.11.174",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-dropzone": "^14.3.5"
+    "react-dropzone": "^14.3.5",
+    "youtube-sr": "^4.3.12"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
