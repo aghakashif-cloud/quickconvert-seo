@@ -23,6 +23,7 @@ import {
   Film,
   ImageDown,
   BarChart3,
+  Scissors,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -99,6 +100,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Audit any video URL for a 0-100 SEO score & fixes",
         href: "/tools/youtube-audit",
         icon: <BarChart3 className="w-4 h-4 text-amber-400" />,
+      },
+      {
+        label: "AI Video Clipper",
+        description: "Extract audio locally & find 30-60s viral Shorts segments",
+        href: "/tools/ai-video-clipper",
+        icon: <Scissors className="w-4 h-4 text-indigo-400" />,
       },
     ],
   },

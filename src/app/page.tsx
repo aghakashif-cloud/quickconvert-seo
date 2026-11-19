@@ -11,6 +11,7 @@ import {
   Film,
   ImageDown,
   BarChart3,
+  Scissors,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 
@@ -160,6 +161,13 @@ function WorkspaceContent() {
               >
                 <BarChart3 className="w-3.5 h-3.5 text-amber-400" />
                 YouTube SEO Audit
+              </Link>
+              <Link
+                href="/tools/ai-video-clipper"
+                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
+              >
+                <Scissors className="w-3.5 h-3.5 text-indigo-400" />
+                AI Video Clipper
               </Link>
             </div>
           </div>
