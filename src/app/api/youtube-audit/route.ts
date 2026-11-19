@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleGenAI, Type } from "@google/genai";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
 const CANDIDATE_MODELS = [
   "gemini-2.0-flash",
   "gemini-1.5-flash",
@@ -11,6 +14,15 @@ const CANDIDATE_MODELS = [
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function decodeHtmlEntities(str: string): string {
+  return str
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
 }
 
 function extractYouTubeVideoId(input: string): string | null {
@@ -63,7 +75,7 @@ interface ExtractedVideoMetadata {
   thumbnailUrl: string;
 }
 
-// Extract title, full description, and tags from YouTube watch page + youtube-sr + oEmbed fallback
+// Extract title, full description, and tags reliably across serverless & local environments
 async function fetchYouTubeVideoMetadata(
   videoId: string
 ): Promise<ExtractedVideoMetadata> {
@@ -73,111 +85,125 @@ async function fetchYouTubeVideoMetadata(
   let channelName = "";
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-  // 1. Try youtube-sr first if installed
+  // 1. Official YouTube oEmbed API (fast, reliable on all serverless hosts for Title & Channel Name)
   try {
-    const YouTube = (await import("youtube-sr")).default;
-    const video = await YouTube.getVideo(`https://www.youtube.com/watch?v=${videoId}`);
-    if (video) {
-      title = video.title || "";
-      description = video.description || "";
-      tags = Array.isArray(video.tags) ? video.tags : [];
-      channelName = video.channel?.name || "";
-    }
-  } catch {
-    // Continue to direct YouTube watch HTML parser
-  }
-
-  // 2. Fetch YouTube watch page directly to extract full ytInitialPlayerResponse (gives exact description & keywords/tags)
-  if (!title || !description || tags.length === 0) {
-    try {
-      const watchRes = await fetch(
-        `https://www.youtube.com/watch?v=${videoId}&hl=en`,
-        {
-          headers: {
-            "User-Agent":
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Accept-Language": "en-US,en;q=0.9",
-          },
-        }
-      );
-
-      if (watchRes.ok) {
-        const html = await watchRes.text();
-
-        // Parse ytInitialPlayerResponse JSON block
-        const playerMatch = html.match(
-          /ytInitialPlayerResponse\s*=\s*(\{[\s\S]*?\});\s*(?:var\s+meta|<\/script>)/
-        );
-        if (playerMatch && playerMatch[1]) {
-          try {
-            const playerJson = JSON.parse(playerMatch[1]);
-            const details = playerJson?.videoDetails;
-            if (details) {
-              title = title || details.title || "";
-              description = description || details.shortDescription || "";
-              channelName = channelName || details.author || "";
-              if (
-                tags.length === 0 &&
-                Array.isArray(details.keywords)
-              ) {
-                tags = details.keywords;
-              }
-            }
-          } catch {
-            // fallback to meta tag regexes below
-          }
-        }
-
-        // Meta tag fallbacks if player JSON was partial
-        if (!title) {
-          const titleMatch = html.match(
-            /<meta\s+name="title"\s+content="([^"]*)"/i
-          );
-          if (titleMatch) title = titleMatch[1];
-        }
-        if (!description) {
-          const descMatch = html.match(
-            /<meta\s+name="description"\s+content="([^"]*)"/i
-          );
-          if (descMatch) description = descMatch[1];
-        }
-        if (tags.length === 0) {
-          const kwMatch = html.match(
-            /<meta\s+name="keywords"\s+content="([^"]*)"/i
-          );
-          if (kwMatch && kwMatch[1]) {
-            tags = kwMatch[1]
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean);
-          }
-        }
-      }
-    } catch {
-      // Continue to oEmbed fallback
-    }
-  }
-
-  // 3. Final fallback to official YouTube oEmbed endpoint for title & author
-  if (!title) {
-    try {
-      const oembedRes = await fetch(
-        `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`
-      );
-      if (oembedRes.ok) {
+    const oembedRes = await fetch(
+      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`,
+      { cache: "no-store" }
+    );
+    if (oembedRes.ok) {
+      const oembedContentType = oembedRes.headers.get("content-type") || "";
+      if (oembedContentType.includes("application/json")) {
         const oembed = await oembedRes.json();
         title = oembed.title || "";
-        channelName = channelName || oembed.author_name || "";
+        channelName = oembed.author_name || "";
+      }
+    }
+  } catch {
+    // Continue to next extractor
+  }
+
+  // 2. Fetch YouTube watch page HTML to extract full description and keywords/tags
+  try {
+    const watchRes = await fetch(
+      `https://www.youtube.com/watch?v=${videoId}&hl=en`,
+      {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+          "Accept-Language": "en-US,en;q=0.9",
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (watchRes.ok) {
+      const html = await watchRes.text();
+
+      // Extract shortDescription from ytInitialPlayerResponse using targeted regex
+      const shortDescMatch = html.match(/"shortDescription":"((?:[^"\\]|\\.)*)"/);
+      if (shortDescMatch && shortDescMatch[1]) {
+        try {
+          description = JSON.parse(`"${shortDescMatch[1]}"`);
+        } catch {
+          description = shortDescMatch[1].replace(/\\n/g, "\n");
+        }
+      }
+
+      // Extract keywords array from videoDetails
+      const keywordsMatch = html.match(/"keywords":(\[[^\]]*\])/);
+      if (keywordsMatch && keywordsMatch[1]) {
+        try {
+          const parsedKw = JSON.parse(keywordsMatch[1]);
+          if (Array.isArray(parsedKw)) {
+            tags = parsedKw.map((k) => String(k).trim()).filter(Boolean);
+          }
+        } catch {
+          // fallback to meta keywords
+        }
+      }
+
+      // Meta tag fallbacks
+      if (!title) {
+        const titleMatch = html.match(
+          /<meta\s+name="title"\s+content="([^"]*)"/i
+        );
+        if (titleMatch && titleMatch[1]) {
+          title = decodeHtmlEntities(titleMatch[1]);
+        }
+      }
+
+      if (!description) {
+        const descMatch = html.match(
+          /<meta\s+name="description"\s+content="([^"]*)"/i
+        );
+        if (descMatch && descMatch[1]) {
+          description = decodeHtmlEntities(descMatch[1]);
+        }
+      }
+
+      if (tags.length === 0) {
+        const kwMatch = html.match(
+          /<meta\s+name="keywords"\s+content="([^"]*)"/i
+        );
+        if (kwMatch && kwMatch[1]) {
+          tags = decodeHtmlEntities(kwMatch[1])
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean);
+        }
+      }
+    }
+  } catch {
+    // Continue to youtube-sr fallback
+  }
+
+  // 3. Try youtube-sr as an additional fallback if description or title is still empty
+  if (!title || !description) {
+    try {
+      const YouTube = (await import("youtube-sr")).default;
+      const video = await YouTube.getVideo(
+        `https://www.youtube.com/watch?v=${videoId}`
+      );
+      if (video) {
+        title = title || video.title || "";
+        description = description || video.description || "";
+        if (tags.length === 0 && Array.isArray(video.tags)) {
+          tags = video.tags;
+        }
+        channelName = channelName || video.channel?.name || "";
       }
     } catch {
-      // ignore
+      // Ignore youtube-sr failure
     }
   }
 
   return {
     videoId,
     title: title || `YouTube Video (${videoId})`,
-    description: description || "(No description found on this video)",
+    description:
+      description ||
+      "(No full description could be extracted from YouTube for this video.)",
     tags,
     channelName: channelName || "YouTube Creator",
     thumbnailUrl,
@@ -186,10 +212,19 @@ async function fetchYouTubeVideoMetadata(
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    let body: { url?: string } = {};
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid JSON payload in request body." },
+        { status: 400 }
+      );
+    }
+
     const { url } = body;
 
-    if (!url || typeof url !== "string") {
+    if (!url || typeof url !== "string" || !url.trim()) {
       return NextResponse.json(
         { error: "Please provide a valid YouTube video URL." },
         { status: 400 }
@@ -201,7 +236,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Could not extract a valid 11-character YouTube Video ID from that URL.",
+            "Invalid YouTube URL. Please enter a valid watch link (e.g., https://www.youtube.com/watch?v=...) or Shorts link.",
         },
         { status: 400 }
       );
@@ -218,13 +253,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Server configuration error: GEMINI_API_KEY is not configured in the server environment.",
+            "Server configuration error: GEMINI_API_KEY is missing in environment variables.",
         },
         { status: 500 }
       );
     }
 
-    // 1. Extract live video metadata from YouTube
+    // 1. Extract live video metadata from YouTube safely
     const videoData = await fetchYouTubeVideoMetadata(videoId);
 
     // 2. Analyze with Gemini AI
@@ -239,7 +274,7 @@ EXTRACTED YOUTUBE VIDEO DATA:
 - Title (${videoData.title.length} chars): "${videoData.title}"
 - Description (${videoData.description.length} chars):
 """
-${videoData.description.slice(0, 3500)}
+${videoData.description.slice(0, 3000)}
 """
 - Tags (${videoData.tags.length} tags): ${
       videoData.tags.length > 0 ? videoData.tags.join(", ") : "None found"
@@ -394,16 +429,17 @@ AUDIT REQUIREMENTS:
       }
     }
 
-    throw (
-      lastError ||
-      new Error("Gemini AI service is temporarily busy. Please try again.")
-    );
+    const finalErrMessage =
+      lastError instanceof Error
+        ? lastError.message
+        : "Gemini AI service is temporarily busy. Please try again.";
+    return NextResponse.json({ error: finalErrMessage }, { status: 500 });
   } catch (error: unknown) {
-    console.error("YouTube Audit Error:", error);
+    console.error("YouTube Audit API Error:", error);
     const message =
       error instanceof Error
         ? error.message
-        : "Failed to audit YouTube video.";
+        : "Failed to audit YouTube video. Please check the URL and try again.";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

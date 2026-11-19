@@ -68,15 +68,24 @@ export default function YouTubeAuditPage() {
     setError(null);
 
     try {
-      const response = await fetch("/api/youtube-audit", {
+      const res = await fetch("/api/youtube-audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: targetUrl }),
       });
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Failed to analyze YouTube video.");
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error(
+          "Server returned an invalid response. Please try again later."
+        );
+      }
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(
+          data.error || `Request failed with status ${res.status}.`
+        );
       }
 
       setVideoData(data.videoData);
