@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import Link from "next/link";
+import BackButton from "@/components/BackButton";
 import { useDropzone } from "react-dropzone";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -180,6 +181,10 @@ export default function VideoToGifPage() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-6">
       <div className="max-w-5xl mx-auto space-y-8">
+        <div>
+          <BackButton />
+        </div>
+
         {/* Top Header */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
           <div>

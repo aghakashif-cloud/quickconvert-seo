@@ -15,6 +15,7 @@ import {
   Mic,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
+import BackButton from "@/components/BackButton";
 
 // Dynamically import FileConverter with SSR disabled so browser-only WASM/Blob APIs load cleanly
 const FileConverter = dynamic(() => import("@/components/FileConverter"), {
@@ -105,19 +106,23 @@ function WorkspaceContent() {
       <main className="w-full flex-1 flex flex-col min-w-0">
         {/* Centered Workspace Sub-Header Bar */}
         <div className="border-b border-slate-800/80 bg-slate-950/60">
-          <div className="max-w-5xl w-full mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+          <div className="max-w-5xl w-full mx-auto px-6 py-5 space-y-3">
             <div>
-              <div className="flex items-center gap-2 text-xs font-medium text-indigo-400">
-                <Layers className="w-3.5 h-3.5" />
-                <span>{activeHeaderInfo.subtitle}</span>
-              </div>
-              <h1 className="text-xl md:text-2xl font-bold text-white mt-0.5">
-                {activeHeaderInfo.title}
-              </h1>
+              <BackButton />
             </div>
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-medium text-indigo-400">
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>{activeHeaderInfo.subtitle}</span>
+                </div>
+                <h1 className="text-xl md:text-2xl font-bold text-white mt-0.5">
+                  {activeHeaderInfo.title}
+                </h1>
+              </div>
 
-            {/* Quick Tool Switcher Pills */}
-            <div className="flex flex-wrap items-center gap-2 bg-slate-900 border border-slate-800 p-1 rounded-xl">
+              {/* Quick Tool Switcher Pills */}
+              <div className="flex flex-wrap items-center gap-2 bg-slate-900 border border-slate-800 p-1 rounded-xl">
               <button
                 type="button"
                 onClick={() => handleTabSwitch("converter")}
@@ -177,6 +182,7 @@ function WorkspaceContent() {
                 <Mic className="w-3.5 h-3.5 text-cyan-400" />
                 AI Transcriber
               </Link>
+              </div>
             </div>
           </div>
         </div>
