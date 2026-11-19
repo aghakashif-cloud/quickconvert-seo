@@ -23,9 +23,47 @@ import {
   Cpu,
   Clock,
   FileText,
+  Globe,
+  Info,
 } from "lucide-react";
 
-type WhisperModelId = "Xenova/whisper-tiny.en" | "Xenova/whisper-base.en";
+type WhisperModelId =
+  | "Xenova/whisper-tiny"
+  | "Xenova/whisper-base"
+  | "Xenova/whisper-small";
+
+interface LanguageOption {
+  code: string;
+  label: string;
+}
+
+const LANGUAGE_OPTIONS: LanguageOption[] = [
+  { code: "auto", label: "Auto-detect (first 30s)" },
+  { code: "en", label: "English (en)" },
+  { code: "ur", label: "Urdu — اردو (ur)" },
+  { code: "hi", label: "Hindi — हिन्दी (hi)" },
+  { code: "ar", label: "Arabic — العربية (ar)" },
+  { code: "pa", label: "Punjabi (pa)" },
+  { code: "fa", label: "Persian — فارسی (fa)" },
+  { code: "ps", label: "Pashto — پښتو (ps)" },
+  { code: "bn", label: "Bengali (bn)" },
+  { code: "tr", label: "Turkish (tr)" },
+  { code: "es", label: "Spanish (es)" },
+  { code: "fr", label: "French (fr)" },
+  { code: "de", label: "German (de)" },
+  { code: "pt", label: "Portuguese (pt)" },
+  { code: "it", label: "Italian (it)" },
+  { code: "ru", label: "Russian (ru)" },
+  { code: "zh", label: "Chinese (zh)" },
+  { code: "ja", label: "Japanese (ja)" },
+  { code: "ko", label: "Korean (ko)" },
+];
+
+function getLanguageLabel(code: string): string {
+  const match = LANGUAGE_OPTIONS.find((opt) => opt.code === code);
+  if (match) return match.label;
+  return code.toUpperCase();
+}
 
 interface TranscriptChunk {
   timestamp: [number, number | null];
@@ -36,6 +74,8 @@ interface WorkerMessage {
   type:
     | "model-progress"
     | "model-ready"
+    | "detecting-language"
+    | "language-detected"
     | "transcribe-progress"
     | "complete"
     | "error";
@@ -46,6 +86,9 @@ interface WorkerMessage {
   total?: number;
   model?: string;
   fromCache?: boolean;
+  language?: string;
+  autoDetected?: boolean;
+  fallback?: boolean;
   chunksProcessed?: number;
   estimatedChunks?: number;
   text?: string;
@@ -151,8 +194,14 @@ export default function AudioTranscriberPage() {
   const [mediaPreviewUrl, setMediaPreviewUrl] = useState<string | null>(null);
   const [isVideo, setIsVideo] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState<WhisperModelId>(
-    "Xenova/whisper-tiny.en"
+    "Xenova/whisper-base"
   );
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("auto");
+  const [detectedLanguageInfo, setDetectedLanguageInfo] = useState<{
+    code: string;
+    autoDetected: boolean;
+    fallback?: boolean;
+  } | null>(null);
 
   // Overall state
   const [phase, setPhase] = useState<
@@ -285,20 +334,48 @@ export default function AudioTranscriberPage() {
         setPhase("transcribing");
         setFileProgress(55);
         setFileStatusText("Running Whisper AI speech recognition locally...");
+      } else if (msg.type === "detecting-language") {
+        setPhase("transcribing");
+        setFileProgress(54);
+        setFileStatusText(
+          "Auto-detecting audio language from the first 30 seconds..."
+        );
+      } else if (msg.type === "language-detected") {
+        const langCode = msg.language || "en";
+        setDetectedLanguageInfo({
+          code: langCode,
+          autoDetected: Boolean(msg.autoDetected),
+          fallback: Boolean(msg.fallback),
+        });
+        setPhase("transcribing");
+        setFileProgress(56);
+        setFileStatusText(
+          msg.fallback
+            ? `Auto-detect defaulted to ${getLanguageLabel(langCode)} — tip: select a specific language for higher accuracy.`
+            : `Detected language: ${getLanguageLabel(langCode)} — transcribing locally...`
+        );
       } else if (msg.type === "transcribe-progress") {
         setPhase("transcribing");
         // Map transcription 0-100% into the 55-98% band of the file processing progress bar
         const subPct = msg.progress ?? 0;
         const mappedPct = Math.min(98, Math.max(55, Math.round(55 + subPct * 0.43)));
         setFileProgress(mappedPct);
+        const langSuffix = msg.language ? ` [${msg.language.toUpperCase()}]` : "";
         setFileStatusText(
-          `Transcribing speech locally (chunk ${msg.chunksProcessed ?? 0}/${
+          `Transcribing speech locally${langSuffix} (chunk ${msg.chunksProcessed ?? 0}/${
             msg.estimatedChunks ?? 1
           })...`
         );
       } else if (msg.type === "complete") {
         setTranscript(msg.text || "");
         setChunks(msg.chunks || []);
+        if (msg.language) {
+          setDetectedLanguageInfo((prev) => ({
+            code: msg.language as string,
+            autoDetected: Boolean(msg.autoDetected),
+            fallback: prev?.fallback,
+          }));
+        }
         setFileProgress(100);
         setModelProgress(100);
         setFileStatusText("Transcription completed 100% locally in your browser!");
@@ -307,7 +384,7 @@ export default function AudioTranscriberPage() {
         setPhase("error");
         setErrorMessage(
           msg.message ||
-            "Whisper AI failed to transcribe this file. Try a smaller clip or switch to Whisper Tiny."
+            "Whisper AI failed to transcribe this file. Try a smaller clip or switch to Whisper Base / Tiny."
         );
       }
     };
@@ -414,6 +491,7 @@ export default function AudioTranscriberPage() {
     setErrorMessage(null);
     setTranscript("");
     setChunks([]);
+    setDetectedLanguageInfo(null);
     setFileProgress(0);
     setFileStatusText(
       videoFlag
@@ -444,6 +522,7 @@ export default function AudioTranscriberPage() {
     setErrorMessage(null);
     setTranscript("");
     setChunks([]);
+    setDetectedLanguageInfo(null);
     setPhase("processing-file");
     setFileProgress(5);
 
@@ -502,6 +581,7 @@ export default function AudioTranscriberPage() {
           type: "transcribe",
           audio: decodedAudio.pcm,
           model: selectedModel,
+          language: selectedLanguage,
           durationSeconds: decodedAudio.duration,
         },
         [decodedAudio.pcm.buffer]
@@ -524,6 +604,7 @@ export default function AudioTranscriberPage() {
     setErrorMessage(null);
     setTranscript("");
     setChunks([]);
+    setDetectedLanguageInfo(null);
     setFileProgress(0);
     setFileStatusText("Waiting for media file...");
   };
@@ -638,49 +719,72 @@ export default function AudioTranscriberPage() {
         </div>
 
         {/* Model Selector Bar */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 shrink-0">
-              <Cpu className="w-5 h-5" />
+        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3.5">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div className="flex items-start sm:items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 shrink-0">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-white">
+                  Whisper AI Model (Multilingual • 99 Languages)
+                </h2>
+                <p className="text-xs text-slate-400">
+                  Supports English, Urdu, Hindi, Arabic, and 95+ more languages. Models are downloaded once and cached in your browser.
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-sm font-bold text-white">
-                Whisper AI Model (English)
-              </h2>
-              <p className="text-xs text-slate-400">
-                Choose speed vs. accuracy. Models are downloaded once and cached in your browser.
-              </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 shrink-0">
+              <button
+                type="button"
+                disabled={isBusy}
+                onClick={() => setSelectedModel("Xenova/whisper-tiny")}
+                className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
+                  selectedModel === "Xenova/whisper-tiny"
+                    ? "bg-indigo-600/20 border-indigo-500 text-white"
+                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                } disabled:opacity-50`}
+              >
+                <div className="text-xs font-bold">Whisper Tiny</div>
+                <div className="text-[11px] text-slate-400">~40 MB • Fastest</div>
+              </button>
+
+              <button
+                type="button"
+                disabled={isBusy}
+                onClick={() => setSelectedModel("Xenova/whisper-base")}
+                className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
+                  selectedModel === "Xenova/whisper-base"
+                    ? "bg-indigo-600/20 border-indigo-500 text-white"
+                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                } disabled:opacity-50`}
+              >
+                <div className="text-xs font-bold">Whisper Base</div>
+                <div className="text-[11px] text-slate-400">~75 MB • Balanced</div>
+              </button>
+
+              <button
+                type="button"
+                disabled={isBusy}
+                onClick={() => setSelectedModel("Xenova/whisper-small")}
+                className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
+                  selectedModel === "Xenova/whisper-small"
+                    ? "bg-indigo-600/20 border-indigo-500 text-white"
+                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
+                } disabled:opacity-50`}
+              >
+                <div className="text-xs font-bold">Whisper Small</div>
+                <div className="text-[11px] text-slate-400">~240 MB • Best for Urdu</div>
+              </button>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 shrink-0">
-            <button
-              type="button"
-              disabled={isBusy}
-              onClick={() => setSelectedModel("Xenova/whisper-tiny.en")}
-              className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
-                selectedModel === "Xenova/whisper-tiny.en"
-                  ? "bg-indigo-600/20 border-indigo-500 text-white"
-                  : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
-              } disabled:opacity-50`}
-            >
-              <div className="text-xs font-bold">Whisper Tiny</div>
-              <div className="text-[11px] text-slate-400">~40 MB • Fastest</div>
-            </button>
-
-            <button
-              type="button"
-              disabled={isBusy}
-              onClick={() => setSelectedModel("Xenova/whisper-base.en")}
-              className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
-                selectedModel === "Xenova/whisper-base.en"
-                  ? "bg-indigo-600/20 border-indigo-500 text-white"
-                  : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
-              } disabled:opacity-50`}
-            >
-              <div className="text-xs font-bold">Whisper Base</div>
-              <div className="text-[11px] text-slate-400">~75 MB • Higher Accuracy</div>
-            </button>
+          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl px-3.5 py-2.5 flex items-start gap-2">
+            <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+            <p className="text-xs text-slate-300">
+              For better accuracy in Urdu or other non-English languages, using a larger model (like <span className="font-semibold text-white">whisper-small</span>) may take longer to load in the browser.
+            </p>
           </div>
         </div>
 
@@ -749,12 +853,16 @@ export default function AudioTranscriberPage() {
                     Size: {formatBytes(mediaFile.size)} • Model:{" "}
                     <span className="text-slate-200 font-medium">
                       {selectedModel}
+                    </span>{" "}
+                    • Language:{" "}
+                    <span className="text-cyan-300 font-medium">
+                      {getLanguageLabel(selectedLanguage)}
                     </span>
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <button
                   type="button"
                   onClick={resetFile}
@@ -764,6 +872,28 @@ export default function AudioTranscriberPage() {
                   <Trash2 className="w-3.5 h-3.5" />
                   Change File
                 </button>
+
+                {/* Language Selection Dropdown before Transcribe button */}
+                <div className="relative flex items-center">
+                  <Globe className="w-3.5 h-3.5 text-cyan-400 absolute left-3 pointer-events-none" />
+                  <select
+                    aria-label="Audio language"
+                    value={selectedLanguage}
+                    onChange={(e) => setSelectedLanguage(e.target.value)}
+                    disabled={isBusy}
+                    className="pl-8 pr-7 py-2 rounded-xl bg-slate-950 border border-slate-700 hover:border-cyan-500/60 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 text-xs font-semibold text-slate-100 disabled:opacity-50 transition cursor-pointer"
+                  >
+                    {LANGUAGE_OPTIONS.map((lang) => (
+                      <option
+                        key={lang.code}
+                        value={lang.code}
+                        className="bg-slate-900 text-slate-100"
+                      >
+                        {lang.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <button
                   type="button"
@@ -789,6 +919,15 @@ export default function AudioTranscriberPage() {
                 </button>
               </div>
             </div>
+
+            {selectedLanguage === "auto" && (
+              <div className="bg-slate-950/70 border border-slate-800 rounded-xl px-3.5 py-2.5 flex items-start gap-2 text-[11px] text-slate-400">
+                <Globe className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+                <span>
+                  <strong className="text-slate-200">Auto-detect</strong> analyzes the first 30 seconds of audio to identify the spoken language. For best accuracy (especially with Urdu or mixed-language clips), select the exact language directly from the dropdown above.
+                </span>
+              </div>
+            )}
 
             {/* Compact Media Preview Player */}
             {mediaPreviewUrl && (
@@ -897,6 +1036,17 @@ export default function AudioTranscriberPage() {
                   </h3>
                   <p className="text-xs text-slate-400">
                     {wordCount} words • {formattedTranscript.length} characters
+                    {detectedLanguageInfo && (
+                      <>
+                        {" "}
+                        •{" "}
+                        <span className="text-cyan-300 font-medium">
+                          {detectedLanguageInfo.autoDetected
+                            ? `Auto-detected: ${getLanguageLabel(detectedLanguageInfo.code)}`
+                            : `Language: ${getLanguageLabel(detectedLanguageInfo.code)}`}
+                        </span>
+                      </>
+                    )}
                   </p>
                 </div>
               </div>
@@ -948,6 +1098,7 @@ export default function AudioTranscriberPage() {
 
             <textarea
               aria-label="Generated transcript text"
+              dir="auto"
               value={formattedTranscript}
               onChange={(e) => {
                 setIncludeTimestamps(false);

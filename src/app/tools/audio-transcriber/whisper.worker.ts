@@ -16,6 +16,7 @@ interface TranscribeRequest {
   type: "transcribe";
   audio: Float32Array;
   model: string;
+  language?: string;
   durationSeconds: number;
 }
 
@@ -77,14 +78,112 @@ async function getTranscriber(
   return transcriber;
 }
 
+/**
+ * Multilingual Whisper models in Transformers.js default to English when no
+ * `language` is passed because of the model's `forced_decoder_ids`.
+ * This runs a single 1-token decoder step on the first 30 seconds of audio
+ * with `forced_decoder_ids: null` so Whisper predicts the <|lang|> token directly.
+ */
+async function detectLanguageFromFirst30Seconds(
+  transcriber: AutomaticSpeechRecognitionPipeline,
+  audio: Float32Array
+): Promise<string | null> {
+  try {
+    const sampleRate = 16000;
+    const maxSamples = sampleRate * 30;
+    const audioSample =
+      audio.length > maxSamples ? audio.subarray(0, maxSamples) : audio;
+
+    const processorFn = transcriber.processor as unknown as (
+      input: Float32Array
+    ) => Promise<{ input_features: unknown }>;
+    const features = await processorFn(audioSample);
+
+    const whisperModel = transcriber.model as unknown as {
+      generate: (
+        inputs: unknown,
+        config: Record<string, unknown>
+      ) => Promise<number[][] | { sequences?: number[][] }>;
+    };
+
+    const generated = await whisperModel.generate(features.input_features, {
+      forced_decoder_ids: null,
+      max_new_tokens: 1,
+      return_timestamps: false,
+    });
+
+    const seq = Array.isArray(generated)
+      ? generated[0]
+      : generated?.sequences?.[0];
+    if (!seq || seq.length < 2) {
+      return null;
+    }
+
+    const predictedTokenId = seq[1];
+    const tokenText = transcriber.tokenizer
+      .decode([predictedTokenId], { skip_special_tokens: false })
+      .trim();
+
+    const match = tokenText.match(/^<\|([a-z]{2,3})\|>$/);
+    if (!match) {
+      return null;
+    }
+
+    const candidateCode = match[1].toLowerCase();
+
+    // Verify the detected code is accepted by WhisperTokenizer before using it
+    const whisperTokenizer = transcriber.tokenizer as unknown as {
+      get_decoder_prompt_ids?: (opts: {
+        language?: string;
+        task?: string;
+        no_timestamps?: boolean;
+      }) => number[][];
+    };
+    if (typeof whisperTokenizer.get_decoder_prompt_ids === "function") {
+      whisperTokenizer.get_decoder_prompt_ids({
+        language: candidateCode,
+        task: "transcribe",
+        no_timestamps: false,
+      });
+    }
+
+    return candidateCode;
+  } catch {
+    return null;
+  }
+}
+
 self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) => {
   const message = event.data;
   if (!message || message.type !== "transcribe") return;
 
-  const { audio, model, durationSeconds } = message;
+  const { audio, model, language = "auto", durationSeconds } = message;
 
   try {
     const transcriber = await getTranscriber(model);
+
+    let resolvedLanguage = language;
+    let wasAutoDetected = false;
+
+    if (!language || language === "auto") {
+      self.postMessage({
+        type: "detecting-language",
+      });
+
+      const detected = await detectLanguageFromFirst30Seconds(
+        transcriber,
+        audio
+      );
+      resolvedLanguage = detected || "en";
+      wasAutoDetected = Boolean(detected);
+
+      self.postMessage({
+        type: "language-detected",
+        language: resolvedLanguage,
+        autoDetected: wasAutoDetected,
+        fallback: !detected,
+      });
+    }
 
     const chunkLengthS = 30;
     const strideLengthS = 5;
@@ -101,9 +200,12 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
       progress: 5,
       chunksProcessed: 0,
       estimatedChunks,
+      language: resolvedLanguage,
     });
 
     const rawResult = await transcriber(audio, {
+      language: resolvedLanguage,
+      task: "transcribe",
       chunk_length_s: chunkLengthS,
       stride_length_s: strideLengthS,
       return_timestamps: true,
@@ -118,6 +220,7 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
           progress: pct,
           chunksProcessed,
           estimatedChunks,
+          language: resolvedLanguage,
         });
       },
     });
@@ -130,6 +233,8 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
       type: "complete",
       text: (result?.text || "").trim(),
       chunks: Array.isArray(result?.chunks) ? result.chunks : [],
+      language: resolvedLanguage,
+      autoDetected: wasAutoDetected,
     });
   } catch (err: unknown) {
     const errorMessage =
