@@ -24,6 +24,7 @@ import {
   ImageDown,
   BarChart3,
   Scissors,
+  Mic,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -106,6 +107,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Extract audio locally & find 30-60s viral Shorts segments",
         href: "/tools/ai-video-clipper",
         icon: <Scissors className="w-4 h-4 text-indigo-400" />,
+      },
+      {
+        label: "AI Audio/Video Transcriber",
+        description: "Transcribe audio & video locally in-browser with Whisper AI",
+        href: "/tools/audio-transcriber",
+        icon: <Mic className="w-4 h-4 text-cyan-400" />,
       },
     ],
   },

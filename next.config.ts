@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       canvas: false,
+      sharp$: false,
+      "onnxruntime-node$": false,
     };
     return config;
   },

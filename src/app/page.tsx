@@ -12,6 +12,7 @@ import {
   ImageDown,
   BarChart3,
   Scissors,
+  Mic,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 
@@ -168,6 +169,13 @@ function WorkspaceContent() {
               >
                 <Scissors className="w-3.5 h-3.5 text-indigo-400" />
                 AI Video Clipper
+              </Link>
+              <Link
+                href="/tools/audio-transcriber"
+                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
+              >
+                <Mic className="w-3.5 h-3.5 text-cyan-400" />
+                AI Transcriber
               </Link>
             </div>
           </div>
