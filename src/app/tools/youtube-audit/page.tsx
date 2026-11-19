@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Link from "next/link";
 import {
   Youtube,
@@ -44,6 +44,9 @@ interface AuditReport {
   descriptionAnalysis: SectionAnalysis;
   tagsAnalysis: SectionAnalysis;
   actionableTips: string[];
+  optimizedTitle?: string;
+  optimizedDescription?: string;
+  optimizedTags?: string[];
 }
 
 export default function YouTubeAuditPage() {
@@ -55,6 +58,7 @@ export default function YouTubeAuditPage() {
   );
   const [audit, setAudit] = useState<AuditReport | null>(null);
   const [copiedField, setCopiedField] = useState<string | null>(null);
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleAnalyze = async (e?: React.FormEvent, overrideUrl?: string) => {
     if (e) e.preventDefault();
@@ -111,7 +115,10 @@ export default function YouTubeAuditPage() {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
+      if (copyTimeoutRef.current) {
+        clearTimeout(copyTimeoutRef.current);
+      }
+      copyTimeoutRef.current = setTimeout(() => setCopiedField(null), 2000);
     } catch {
       // ignore
     }
@@ -580,7 +587,170 @@ export default function YouTubeAuditPage() {
                 )}
             </div>
 
-            {/* 4. Prioritized Actionable SEO Tips */}
+            {/* 4. AI-Optimized Suggestions (Ready-to-Use Solutions) */}
+            {(audit.optimizedTitle ||
+              audit.optimizedDescription ||
+              (audit.optimizedTags && audit.optimizedTags.length > 0)) && (
+              <div className="bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-6 space-y-5 shadow-xl shadow-indigo-950/20">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2.5">
+                      <Sparkles className="w-5 h-5 text-indigo-400" />
+                      <h3 className="text-lg font-bold text-white">
+                        AI-Optimized Suggestions
+                      </h3>
+                    </div>
+                    <p className="text-xs text-slate-400">
+                      Ready-to-use SEO solutions tailored to this video. Copy and paste directly into YouTube Studio.
+                    </p>
+                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                    Copy &amp; Use on YouTube
+                  </span>
+                </div>
+
+                {/* Optimized Title Box */}
+                {audit.optimizedTitle && (
+                  <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-indigo-400" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-indigo-300">
+                          Optimized Title
+                        </span>
+                        <span
+                          className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
+                            audit.optimizedTitle.length <= 60
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                              : "bg-amber-500/10 text-amber-300 border-amber-500/30"
+                          }`}
+                        >
+                          {audit.optimizedTitle.length} / 60 chars
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          copyToClipboard(
+                            audit.optimizedTitle || "",
+                            "optimizedTitle"
+                          )
+                        }
+                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-100 border border-slate-700 transition flex items-center gap-1.5 shrink-0"
+                      >
+                        {copiedField === "optimizedTitle" ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <p className="text-sm md:text-base font-bold text-white leading-snug">
+                      {audit.optimizedTitle}
+                    </p>
+                  </div>
+                )}
+
+                {/* Optimized Description Box */}
+                {audit.optimizedDescription && (
+                  <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <FileText className="w-4 h-4 text-purple-400" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-purple-300">
+                          Optimized Description
+                        </span>
+                        <span className="text-[11px] font-medium text-slate-400">
+                          ({audit.optimizedDescription.length} chars)
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          copyToClipboard(
+                            audit.optimizedDescription || "",
+                            "optimizedDescription"
+                          )
+                        }
+                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-100 border border-slate-700 transition flex items-center gap-1.5 shrink-0"
+                      >
+                        {copiedField === "optimizedDescription" ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <div className="p-3.5 rounded-lg bg-slate-900/70 border border-slate-800/80 text-xs md:text-sm text-slate-200 whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
+                      {audit.optimizedDescription}
+                    </div>
+                  </div>
+                )}
+
+                {/* Optimized Tags Box */}
+                {audit.optimizedTags && audit.optimizedTags.length > 0 && (
+                  <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Tag className="w-4 h-4 text-emerald-400" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-emerald-300">
+                          Optimized Tags
+                        </span>
+                        <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                          {audit.optimizedTags.length} tags
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          copyToClipboard(
+                            audit.optimizedTags!.join(", "),
+                            "optimizedTags"
+                          )
+                        }
+                        className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-100 border border-slate-700 transition flex items-center gap-1.5 shrink-0"
+                      >
+                        {copiedField === "optimizedTags" ? (
+                          <>
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                            Copied!
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            Copy
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {audit.optimizedTags.map((tag, i) => (
+                        <span
+                          key={i}
+                          className="text-xs px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-200 font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 5. Prioritized Actionable SEO Tips */}
             <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 space-y-4">
               <div className="flex items-center gap-2.5 border-b border-slate-800 pb-3">
                 <Lightbulb className="w-5 h-5 text-amber-400" />

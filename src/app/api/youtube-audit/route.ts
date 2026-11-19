@@ -265,8 +265,8 @@ export async function POST(req: NextRequest) {
     // 2. Analyze with Gemini AI
     const ai = new GoogleGenAI({ apiKey });
 
-    const prompt = `You are a senior YouTube SEO Auditor and Growth Strategist.
-Analyze the following real YouTube video metadata and return a thorough, objective SEO Audit scorecard.
+    const prompt = `You are a world-class YouTube SEO Expert, Auditor, and Growth Strategist.
+Analyze the following real YouTube video metadata to return a thorough, objective SEO Audit scorecard AND generate ready-to-use, high-performing SEO solutions (an optimized title, a fully written description, and 15-20 optimized tags) that the creator can immediately copy and paste into YouTube Studio.
 
 EXTRACTED YOUTUBE VIDEO DATA:
 - Video ID: ${videoData.videoId}
@@ -280,7 +280,7 @@ ${videoData.description.slice(0, 3000)}
       videoData.tags.length > 0 ? videoData.tags.join(", ") : "None found"
     }
 
-AUDIT REQUIREMENTS:
+AUDIT & SOLUTION REQUIREMENTS:
 1. "score": Overall SEO score from 0 to 100 based on title length/CTR hook, keyword placement, description depth, timestamps/links presence, and tag coverage.
 2. "scoreSummary": A 1-2 sentence executive summary of the video's current SEO health.
 3. "titleAnalysis":
@@ -288,7 +288,7 @@ AUDIT REQUIREMENTS:
    - "feedback": Detailed analysis of the title (length, curiosity hook, keyword front-loading).
    - "strengths": Array of 1-3 positive points (green checks).
    - "warnings": Array of 1-3 issues or missing elements (red/amber warnings).
-   - "improvedTitleSuggestion": A stronger, high-CTR suggested rewrite of the title.
+   - "improvedTitleSuggestion": A stronger, high-CTR suggested rewrite of the title (under 60 characters).
 4. "descriptionAnalysis":
    - "status": "good" | "warning" | "critical"
    - "feedback": Detailed analysis of the description (above-the-fold hook, word count, links, chapters/timestamps, hashtags).
@@ -300,7 +300,14 @@ AUDIT REQUIREMENTS:
    - "strengths": Array of 1-3 positive points.
    - "warnings": Array of 1-3 issues or missing elements.
    - "recommendedTags": Array of 8-12 high-value SEO tags the creator should add.
-6. "actionableTips": Array of 4 to 6 concrete, prioritized action items the creator can implement immediately to rank higher.`;
+6. "actionableTips": Array of 4 to 6 concrete, prioritized action items the creator can implement immediately to rank higher.
+7. "optimizedTitle": A single high-CTR, SEO-friendly YouTube video title strictly under 60 characters, front-loaded with the primary keyword and engineered to maximize clicks.
+8. "optimizedDescription": A complete, ready-to-paste YouTube video description tailored to this video's topic. Structure it cleanly with line breaks:
+   - A compelling 2-sentence above-the-fold hook containing the primary keyword.
+   - A concise, keyword-rich summary of what viewers will learn/see (using short paragraphs or bullet points).
+   - A brief call-to-action (like, subscribe, comment).
+   - 3 to 5 relevant YouTube hashtags at the very end (e.g., #YouTubeSEO #Tutorial).
+9. "optimizedTags": An array of 15 to 20 highly relevant, high-search-volume SEO tags (mixing broad head terms, exact-match phrases, and long-tail keywords) tailored specifically to this video. Do not prefix tags with "#".`;
 
     let lastError: unknown = null;
 
@@ -387,6 +394,12 @@ AUDIT REQUIREMENTS:
                     type: Type.ARRAY,
                     items: { type: Type.STRING },
                   },
+                  optimizedTitle: { type: Type.STRING },
+                  optimizedDescription: { type: Type.STRING },
+                  optimizedTags: {
+                    type: Type.ARRAY,
+                    items: { type: Type.STRING },
+                  },
                 },
                 required: [
                   "score",
@@ -395,6 +408,9 @@ AUDIT REQUIREMENTS:
                   "descriptionAnalysis",
                   "tagsAnalysis",
                   "actionableTips",
+                  "optimizedTitle",
+                  "optimizedDescription",
+                  "optimizedTags",
                 ],
               },
             },
