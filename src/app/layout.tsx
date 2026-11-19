@@ -82,6 +82,11 @@ export default function RootLayout({
 `,
           }}
         />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4888055672968030"
+          crossOrigin="anonymous"
+        />
       </head>
       <body
         className={`${inter.className} bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased`}
