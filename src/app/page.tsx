@@ -89,6 +89,8 @@ function WorkspaceContent() {
     router.push(query, { scroll: false });
   };
 
+  const isHomeView = !modeParam && activeTab === "converter";
+
   const activeHeaderInfo = MODE_LABELS[modeParam] || {
     title:
       activeTab === "converter"
@@ -107,9 +109,11 @@ function WorkspaceContent() {
         {/* Centered Workspace Sub-Header Bar */}
         <div className="border-b border-slate-800/80 bg-slate-950/60">
           <div className="max-w-5xl w-full mx-auto px-6 py-5 space-y-3">
-            <div>
-              <BackButton />
-            </div>
+            {!isHomeView && (
+              <div>
+                <BackButton />
+              </div>
+            )}
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 text-xs font-medium text-indigo-400">
