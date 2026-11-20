@@ -91,7 +91,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased`}
       >
-        <div className="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+        <div className="bg-slate-950 text-slate-100 min-h-screen flex flex-col overflow-x-clip">
           <Navbar />
           <div className="flex-1 flex flex-col bg-slate-950 text-slate-100">
             {children}

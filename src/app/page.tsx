@@ -109,98 +109,103 @@ function WorkspaceContent() {
       <main className="w-full flex-1 flex flex-col min-w-0">
         {/* Centered Workspace Sub-Header Bar */}
         <div className="border-b border-slate-800/80 bg-slate-950/60">
-          <div className="max-w-5xl w-full mx-auto px-6 py-5 space-y-3">
+          <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 flex flex-col gap-4">
             {!isHomeView && (
               <div>
                 <BackButton />
               </div>
             )}
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <div className="flex items-center gap-2 text-xs font-medium text-indigo-400">
-                  <Layers className="w-3.5 h-3.5" />
-                  <span>{activeHeaderInfo.subtitle}</span>
+
+            {/* Vertical stack on mobile with clear spacing between badge, H1, and tabs */}
+            <div className="flex flex-col gap-4 w-full min-w-0">
+              <div className="flex flex-col gap-2 min-w-0 w-full">
+                <div className="inline-flex items-start sm:items-center gap-2 text-xs font-medium text-indigo-400 leading-snug">
+                  <Layers className="w-3.5 h-3.5 shrink-0 mt-0.5 sm:mt-0" />
+                  <span className="break-words">{activeHeaderInfo.subtitle}</span>
                 </div>
-                <h1 className="text-xl md:text-2xl font-bold text-white mt-0.5">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight break-words">
                   {activeHeaderInfo.title}
                 </h1>
               </div>
 
-              {/* Quick Tool Switcher Pills */}
-              <div className="flex flex-wrap items-center gap-2 bg-slate-900 border border-slate-800 p-1 rounded-xl">
-              <button
-                type="button"
-                onClick={() => handleTabSwitch("converter")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-                  activeTab === "converter"
-                    ? "bg-indigo-600 text-white shadow"
-                    : "text-slate-400 hover:text-slate-200"
-                }`}
+              {/* Quick Tool Switcher Pills — wraps cleanly across lines on narrow screens */}
+              <nav
+                aria-label="Quick Tool Switcher"
+                className="w-full mt-1 mb-1 flex flex-wrap items-center gap-2 bg-slate-900 border border-slate-800 p-2 rounded-xl"
               >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                File Converter
-              </button>
-              <button
-                type="button"
-                onClick={() => handleTabSwitch("youtube")}
-                className={`px-3.5 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 ${
-                  activeTab === "youtube"
-                    ? "bg-rose-600 text-white shadow"
-                    : "text-slate-400 hover:text-slate-200"
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                YouTube AI Studio
-              </button>
-              <Link
-                href="/tools/video-to-gif"
-                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
-              >
-                <Film className="w-3.5 h-3.5 text-purple-400" />
-                Video to GIF
-              </Link>
-              <Link
-                href="/tools/thumbnail-downloader"
-                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
-              >
-                <ImageDown className="w-3.5 h-3.5 text-emerald-400" />
-                Thumbnail Downloader
-              </Link>
-              <Link
-                href="/tools/youtube-audit"
-                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
-              >
-                <BarChart3 className="w-3.5 h-3.5 text-amber-400" />
-                YouTube SEO Audit
-              </Link>
-              <Link
-                href="/tools/ai-video-clipper"
-                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
-              >
-                <Scissors className="w-3.5 h-3.5 text-indigo-400" />
-                AI Video Clipper
-              </Link>
-              <Link
-                href="/tools/audio-transcriber"
-                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
-              >
-                <Mic className="w-3.5 h-3.5 text-cyan-400" />
-                AI Transcriber
-              </Link>
-              <Link
-                href="/tools/pdf-to-audiobook"
-                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
-              >
-                <Headphones className="w-3.5 h-3.5 text-indigo-400" />
-                PDF to Audiobook
-              </Link>
-              </div>
+                <button
+                  type="button"
+                  onClick={() => handleTabSwitch("converter")}
+                  className={`px-3 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 whitespace-nowrap ${
+                    activeTab === "converter"
+                      ? "bg-indigo-600 text-white shadow"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/70"
+                  }`}
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 shrink-0" />
+                  <span>File Converter</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleTabSwitch("youtube")}
+                  className={`px-3 py-2 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 whitespace-nowrap ${
+                    activeTab === "youtube"
+                      ? "bg-rose-600 text-white shadow"
+                      : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/70"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                  <span>YouTube AI Studio</span>
+                </button>
+                <Link
+                  href="/tools/video-to-gif"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <Film className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                  <span>Video to GIF</span>
+                </Link>
+                <Link
+                  href="/tools/thumbnail-downloader"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <ImageDown className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span>Thumbnail Downloader</span>
+                </Link>
+                <Link
+                  href="/tools/youtube-audit"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <BarChart3 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span>YouTube SEO Audit</span>
+                </Link>
+                <Link
+                  href="/tools/ai-video-clipper"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <Scissors className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                  <span>AI Video Clipper</span>
+                </Link>
+                <Link
+                  href="/tools/audio-transcriber"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <Mic className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                  <span>AI Transcriber</span>
+                </Link>
+                <Link
+                  href="/tools/pdf-to-audiobook"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <Headphones className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                  <span>PDF to Audiobook</span>
+                </Link>
+              </nav>
             </div>
           </div>
         </div>
 
         {/* Centered Active Tool Workspace */}
-        <div className="p-6 md:p-8 max-w-5xl w-full mx-auto flex-1">
+        <div className="px-4 py-6 sm:px-6 md:p-8 max-w-5xl w-full mx-auto flex-1">
           {activeTab === "converter" ? <FileConverter /> : <YouTubeGenerator />}
         </div>
       </main>

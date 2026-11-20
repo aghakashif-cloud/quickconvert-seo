@@ -192,16 +192,16 @@ export default function Navbar() {
         <Link
           href="/"
           onClick={() => setMobileMenuOpen(false)}
-          className="flex items-center gap-3 group shrink-0"
+          className="flex items-center gap-2.5 sm:gap-3 group min-w-0"
         >
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-lg shadow-indigo-500/25 group-hover:scale-105 transition-transform shrink-0">
             <Zap className="w-5 h-5 text-white" />
           </div>
-          <div>
-            <span className="text-sm sm:text-base font-extrabold tracking-tight text-white group-hover:text-indigo-300 transition block leading-snug">
+          <div className="min-w-0">
+            <span className="text-sm sm:text-base font-extrabold tracking-tight text-white group-hover:text-indigo-300 transition block leading-snug truncate">
               QuickConvert <span className="text-indigo-400">&amp; SEO Tools</span>
             </span>
-            <span className="text-[10px] sm:text-[11px] text-slate-400 block leading-tight">
+            <span className="text-[10px] sm:text-[11px] text-slate-400 block leading-tight truncate">
               All-in-One File Converter &amp; AI SEO Suite
             </span>
           </div>
