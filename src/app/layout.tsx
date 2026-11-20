@@ -1,8 +1,9 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,10 +13,32 @@ const siteDescription =
   "Convert videos, audio, images, PDFs, and documents for free online. 100% secure client-side conversion. Also generate high-ranking YouTube titles, descriptions, and tags using AI.";
 const siteUrl = "https://quickconvertseo.com";
 
+export const viewport: Viewport = {
+  themeColor: "#0f172a",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: siteTitle,
   description: siteDescription,
+  applicationName: "QuickConvert & SEO Tools",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "QuickConvert",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
   keywords: [
     "free online file converter",
     "video converter",
@@ -92,6 +115,7 @@ export default function RootLayout({
         className={`${inter.className} bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased`}
       >
         <div className="bg-slate-950 text-slate-100 min-h-screen flex flex-col overflow-x-clip">
+          <ServiceWorkerRegister />
           <Navbar />
           <div className="flex-1 flex flex-col bg-slate-950 text-slate-100">
             {children}
