@@ -39,16 +39,78 @@ export async function generateMetadata({
     };
   }
 
+  const metaTitle = post.metaTitle || `${post.title} — QuickConvert & SEO Tools`;
+  const metaDescription = post.metaDescription || post.excerpt;
+
   return {
-    title: `${post.title} — QuickConvert & SEO Tools`,
-    description: post.excerpt,
+    title: metaTitle,
+    description: metaDescription,
     keywords: post.focusKeywords,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
     openGraph: {
-      title: post.title,
-      description: post.excerpt,
+      title: metaTitle,
+      description: metaDescription,
       type: "article",
     },
+    twitter: {
+      card: "summary_large_image",
+      title: metaTitle,
+      description: metaDescription,
+    },
   };
+}
+
+/**
+ * Renders inline markdown-style internal links like `[Free File Converter](/?tab=converter)`
+ * as styled Next.js `<Link>` elements while preserving all surrounding text.
+ */
+function renderRichText(text: string): React.ReactNode {
+  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const parts: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+
+  while ((match = linkRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    const label = match[1];
+    const href = match[2];
+    const isInternal = href.startsWith("/");
+
+    if (isInternal) {
+      parts.push(
+        <Link
+          key={`${match.index}-${href}`}
+          href={href}
+          className="text-indigo-400 hover:text-indigo-300 underline decoration-indigo-500/40 underline-offset-4 font-semibold transition"
+        >
+          {label}
+        </Link>
+      );
+    } else {
+      parts.push(
+        <a
+          key={`${match.index}-${href}`}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-indigo-400 hover:text-indigo-300 underline decoration-indigo-500/40 underline-offset-4 font-semibold transition"
+        >
+          {label}
+        </a>
+      );
+    }
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : text;
 }
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
@@ -139,7 +201,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   key={pIdx}
                   className="text-sm md:text-base text-slate-300 leading-7"
                 >
-                  {paragraph}
+                  {renderRichText(paragraph)}
                 </p>
               ))}
 
@@ -151,7 +213,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       className="flex items-start gap-3 text-sm md:text-base text-slate-300 bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5"
                     >
                       <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-1" />
-                      <span>{bullet}</span>
+                      <span>{renderRichText(bullet)}</span>
                     </li>
                   ))}
                 </ul>
@@ -170,7 +232,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                           key={spIdx}
                           className="text-sm md:text-base text-slate-300 leading-7"
                         >
-                          {sp}
+                          {renderRichText(sp)}
                         </p>
                       ))}
                       {sub.bullets && sub.bullets.length > 0 && (
@@ -181,7 +243,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                               className="flex items-start gap-2.5 text-sm text-slate-300 bg-slate-950/60 border border-slate-800/70 rounded-xl p-3"
                             >
                               <CheckCircle2 className="w-4 h-4 text-indigo-400 shrink-0 mt-0.5" />
-                              <span>{sb}</span>
+                              <span>{renderRichText(sb)}</span>
                             </li>
                           ))}
                         </ul>
@@ -228,7 +290,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                       {faq.question}
                     </h3>
                     <p className="text-sm text-slate-300 leading-relaxed">
-                      {faq.answer}
+                      {renderRichText(faq.answer)}
                     </p>
                   </div>
                 ))}

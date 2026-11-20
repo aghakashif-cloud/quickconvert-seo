@@ -13,6 +13,7 @@ import {
   BarChart3,
   Scissors,
   Mic,
+  Headphones,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 import BackButton from "@/components/BackButton";
@@ -185,6 +186,13 @@ function WorkspaceContent() {
               >
                 <Mic className="w-3.5 h-3.5 text-cyan-400" />
                 AI Transcriber
+              </Link>
+              <Link
+                href="/tools/pdf-to-audiobook"
+                className="px-3.5 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5"
+              >
+                <Headphones className="w-3.5 h-3.5 text-indigo-400" />
+                PDF to Audiobook
               </Link>
               </div>
             </div>

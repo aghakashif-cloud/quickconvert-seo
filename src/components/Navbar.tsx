@@ -25,6 +25,7 @@ import {
   BarChart3,
   Scissors,
   Mic,
+  Headphones,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -72,6 +73,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Convert MP4, MOV & WebM clips into animated GIFs",
         href: "/tools/video-to-gif",
         icon: <Film className="w-4 h-4 text-purple-400" />,
+      },
+      {
+        label: "PDF to Audiobook (TTS)",
+        description: "Listen to any PDF aloud locally with browser Text-to-Speech",
+        href: "/tools/pdf-to-audiobook",
+        icon: <Headphones className="w-4 h-4 text-cyan-400" />,
       },
     ],
   },
