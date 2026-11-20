@@ -72,17 +72,26 @@ export default function YouTubeAuditPage() {
     setLoading(true);
     setError(null);
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 55000);
+
     try {
       const res = await fetch("/api/youtube-audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url: targetUrl }),
+        signal: controller.signal,
       });
 
-      const contentType = res.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
+      const contentType = res.headers.get("content-type") || "";
+      if (!contentType.includes("application/json")) {
+        if (res.status === 504 || res.status === 502) {
+          throw new Error(
+            `The audit request timed out on the server (HTTP ${res.status}). Please try again in a moment.`
+          );
+        }
         throw new Error(
-          "Server returned an invalid response. Please try again later."
+          `Server returned an unexpected response (HTTP ${res.status}). Please try again later.`
         );
       }
 
@@ -96,12 +105,26 @@ export default function YouTubeAuditPage() {
       setVideoData(data.videoData);
       setAudit(data.audit);
     } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "An unexpected error occurred while auditing the video."
-      );
+      if (err instanceof DOMException && err.name === "AbortError") {
+        setError(
+          "The audit request timed out while waiting for YouTube and Gemini AI. Please try again."
+        );
+      } else if (
+        err instanceof TypeError &&
+        err.message.toLowerCase().includes("failed to fetch")
+      ) {
+        setError(
+          "Could not reach the audit server (network error or server timeout). Please check your connection and try again."
+        );
+      } else {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "An unexpected error occurred while auditing the video."
+        );
+      }
     } finally {
+      clearTimeout(timeoutId);
       setLoading(false);
     }
   };
@@ -114,7 +137,18 @@ export default function YouTubeAuditPage() {
 
   const copyToClipboard = async (text: string, field: string) => {
     try {
-      await navigator.clipboard.writeText(text);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        const textarea = document.createElement("textarea");
+        textarea.value = text;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+      }
       setCopiedField(field);
       if (copyTimeoutRef.current) {
         clearTimeout(copyTimeoutRef.current);
@@ -177,6 +211,13 @@ export default function YouTubeAuditPage() {
   };
 
   const scoreStyle = audit ? getScoreColor(audit.score) : null;
+  const resolvedOptimizedTitle =
+    audit?.optimizedTitle || audit?.titleAnalysis?.improvedTitleSuggestion || "";
+  const resolvedOptimizedDescription = audit?.optimizedDescription || "";
+  const resolvedOptimizedTags =
+    audit?.optimizedTags && audit.optimizedTags.length > 0
+      ? audit.optimizedTags
+      : audit?.tagsAnalysis?.recommendedTags || [];
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-10 px-6">
@@ -593,9 +634,9 @@ export default function YouTubeAuditPage() {
             </div>
 
             {/* 4. AI-Optimized Suggestions (Ready-to-Use Solutions) */}
-            {(audit.optimizedTitle ||
-              audit.optimizedDescription ||
-              (audit.optimizedTags && audit.optimizedTags.length > 0)) && (
+            {(resolvedOptimizedTitle ||
+              resolvedOptimizedDescription ||
+              resolvedOptimizedTags.length > 0) && (
               <div className="bg-gradient-to-br from-slate-900/95 via-slate-900/90 to-indigo-950/40 border border-indigo-500/30 rounded-2xl p-6 space-y-5 shadow-xl shadow-indigo-950/20">
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
                   <div className="space-y-1">
@@ -615,7 +656,7 @@ export default function YouTubeAuditPage() {
                 </div>
 
                 {/* Optimized Title Box */}
-                {audit.optimizedTitle && (
+                {resolvedOptimizedTitle && (
                   <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2.5">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
@@ -625,19 +666,19 @@ export default function YouTubeAuditPage() {
                         </span>
                         <span
                           className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
-                            audit.optimizedTitle.length <= 60
+                            resolvedOptimizedTitle.length <= 60
                               ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
                               : "bg-amber-500/10 text-amber-300 border-amber-500/30"
                           }`}
                         >
-                          {audit.optimizedTitle.length} / 60 chars
+                          {resolvedOptimizedTitle.length} / 60 chars
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() =>
                           copyToClipboard(
-                            audit.optimizedTitle || "",
+                            resolvedOptimizedTitle,
                             "optimizedTitle"
                           )
                         }
@@ -657,13 +698,13 @@ export default function YouTubeAuditPage() {
                       </button>
                     </div>
                     <p className="text-sm md:text-base font-bold text-white leading-snug">
-                      {audit.optimizedTitle}
+                      {resolvedOptimizedTitle}
                     </p>
                   </div>
                 )}
 
                 {/* Optimized Description Box */}
-                {audit.optimizedDescription && (
+                {resolvedOptimizedDescription && (
                   <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2.5">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
@@ -672,14 +713,14 @@ export default function YouTubeAuditPage() {
                           Optimized Description
                         </span>
                         <span className="text-[11px] font-medium text-slate-400">
-                          ({audit.optimizedDescription.length} chars)
+                          ({resolvedOptimizedDescription.length} chars)
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() =>
                           copyToClipboard(
-                            audit.optimizedDescription || "",
+                            resolvedOptimizedDescription,
                             "optimizedDescription"
                           )
                         }
@@ -699,13 +740,13 @@ export default function YouTubeAuditPage() {
                       </button>
                     </div>
                     <div className="p-3.5 rounded-lg bg-slate-900/70 border border-slate-800/80 text-xs md:text-sm text-slate-200 whitespace-pre-wrap leading-relaxed max-h-80 overflow-y-auto">
-                      {audit.optimizedDescription}
+                      {resolvedOptimizedDescription}
                     </div>
                   </div>
                 )}
 
                 {/* Optimized Tags Box */}
-                {audit.optimizedTags && audit.optimizedTags.length > 0 && (
+                {resolvedOptimizedTags.length > 0 && (
                   <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
@@ -714,14 +755,14 @@ export default function YouTubeAuditPage() {
                           Optimized Tags
                         </span>
                         <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                          {audit.optimizedTags.length} tags
+                          {resolvedOptimizedTags.length} tags
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() =>
                           copyToClipboard(
-                            audit.optimizedTags!.join(", "),
+                            resolvedOptimizedTags.join(", "),
                             "optimizedTags"
                           )
                         }
@@ -741,7 +782,7 @@ export default function YouTubeAuditPage() {
                       </button>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {audit.optimizedTags.map((tag, i) => (
+                      {resolvedOptimizedTags.map((tag, i) => (
                         <span
                           key={i}
                           className="text-xs px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/25 text-indigo-200 font-medium"
