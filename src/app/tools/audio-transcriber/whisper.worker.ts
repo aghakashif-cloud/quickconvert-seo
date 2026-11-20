@@ -29,6 +29,10 @@ interface ProgressCallbackPayload {
   total?: number;
 }
 
+type ExtendedASRConfig = Parameters<AutomaticSpeechRecognitionPipeline>[1] & {
+  condition_on_previous_text?: boolean;
+};
+
 async function getTranscriber(
   modelId: string
 ): Promise<AutomaticSpeechRecognitionPipeline> {
@@ -79,87 +83,8 @@ async function getTranscriber(
 }
 
 /**
- * Multilingual Whisper models in Transformers.js default to English when no
- * `language` is passed because of the model's `forced_decoder_ids`.
- * This runs a single 1-token decoder step on the first 30 seconds of audio
- * with `forced_decoder_ids: null` so Whisper predicts the <|lang|> token directly.
- */
-async function detectLanguageFromFirst30Seconds(
-  transcriber: AutomaticSpeechRecognitionPipeline,
-  audio: Float32Array
-): Promise<string | null> {
-  try {
-    const sampleRate = 16000;
-    const maxSamples = sampleRate * 30;
-    const audioSample =
-      audio.length > maxSamples ? audio.subarray(0, maxSamples) : audio;
-
-    const processorFn = transcriber.processor as unknown as (
-      input: Float32Array
-    ) => Promise<{ input_features: unknown }>;
-    const features = await processorFn(audioSample);
-
-    const whisperModel = transcriber.model as unknown as {
-      generate: (
-        inputs: unknown,
-        config: Record<string, unknown>
-      ) => Promise<number[][] | { sequences?: number[][] }>;
-    };
-
-    const generated = await whisperModel.generate(features.input_features, {
-      forced_decoder_ids: null,
-      max_new_tokens: 1,
-      return_timestamps: false,
-    });
-
-    const seq = Array.isArray(generated)
-      ? generated[0]
-      : generated?.sequences?.[0];
-    if (!seq || seq.length < 2) {
-      return null;
-    }
-
-    const predictedTokenId = seq[1];
-    const tokenText = transcriber.tokenizer
-      .decode([predictedTokenId], { skip_special_tokens: false })
-      .trim();
-
-    const match = tokenText.match(/^<\|([a-z]{2,3})\|>$/);
-    if (!match) {
-      return null;
-    }
-
-    const candidateCode = match[1].toLowerCase();
-
-    // Verify the detected code is accepted by WhisperTokenizer before using it
-    const whisperTokenizer = transcriber.tokenizer as unknown as {
-      get_decoder_prompt_ids?: (opts: {
-        language?: string;
-        task?: string;
-        no_timestamps?: boolean;
-      }) => number[][];
-    };
-    if (typeof whisperTokenizer.get_decoder_prompt_ids === "function") {
-      whisperTokenizer.get_decoder_prompt_ids({
-        language: candidateCode,
-        task: "transcribe",
-        no_timestamps: false,
-      });
-    }
-
-    return candidateCode;
-  } catch {
-    return null;
-  }
-}
-
-type ExtendedASRConfig = Parameters<AutomaticSpeechRecognitionPipeline>[1] & {
-  condition_on_previous_text?: boolean;
-};
-
-/**
  * Collapses consecutive hallucinated duplicate chunks (e.g., identical sentences
- * repeated 3+ times across silence boundaries) while preserving natural speech.
+ * repeated across silence boundaries) while preserving natural speech.
  */
 function deduplicateRepeatedChunks(
   chunks: Array<{ timestamp: [number, number | null]; text: string }>
@@ -169,7 +94,6 @@ function deduplicateRepeatedChunks(
 } {
   const cleaned: Array<{ timestamp: [number, number | null]; text: string }> = [];
   let lastNormalized = "";
-  let repeatCount = 0;
 
   for (const chunk of chunks) {
     const trimmed = (chunk.text || "").trim();
@@ -177,13 +101,9 @@ function deduplicateRepeatedChunks(
 
     const normalized = trimmed.toLowerCase().replace(/\s+/g, " ");
     if (normalized === lastNormalized) {
-      repeatCount += 1;
-      // Drop consecutive duplicate hallucinations
-      if (repeatCount >= 1) continue;
-    } else {
-      lastNormalized = normalized;
-      repeatCount = 0;
+      continue;
     }
+    lastNormalized = normalized;
     cleaned.push({ ...chunk, text: trimmed });
   }
 
@@ -197,40 +117,19 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
   const message = event.data;
   if (!message || message.type !== "transcribe") return;
 
-  const { audio, model, language = "auto", durationSeconds } = message;
+  const { audio, model, language, durationSeconds } = message;
 
   try {
     const transcriber = await getTranscriber(model);
 
-    let resolvedLanguage: string;
-    let wasAutoDetected = false;
-
-    // Strictly force 'ur' when Urdu is selected (never run auto-detect for explicit languages)
-    if (language === "ur") {
-      resolvedLanguage = "ur";
-      wasAutoDetected = false;
-    } else if (!language || language === "auto") {
-      self.postMessage({
-        type: "detecting-language",
-      });
-
-      const detected = await detectLanguageFromFirst30Seconds(
-        transcriber,
-        audio
-      );
-      resolvedLanguage = detected || "en";
-      wasAutoDetected = Boolean(detected);
-
-      self.postMessage({
-        type: "language-detected",
-        language: resolvedLanguage,
-        autoDetected: wasAutoDetected,
-        fallback: !detected,
-      });
-    } else {
-      resolvedLanguage = language;
-      wasAutoDetected = false;
-    }
+    // Strictly enforce explicit language; default to 'en' if unset (no unreliable auto-detect)
+    const normalizedLang = (language || "").trim().toLowerCase();
+    const resolvedLanguage =
+      normalizedLang === "ur" || normalizedLang === "urdu"
+        ? "ur"
+        : normalizedLang && normalizedLang !== "auto"
+        ? normalizedLang
+        : "en";
 
     const chunkLengthS = 30;
     const strideLengthS = 5;
@@ -292,7 +191,6 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
       text: cleaned.text || (result?.text || "").trim(),
       chunks: cleaned.chunks,
       language: resolvedLanguage,
-      autoDetected: wasAutoDetected,
     });
   } catch (err: unknown) {
     const errorMessage =

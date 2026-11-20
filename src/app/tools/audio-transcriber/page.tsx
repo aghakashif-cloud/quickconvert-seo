@@ -15,7 +15,6 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
-  AlertTriangle,
   ShieldCheck,
   Copy,
   Check,
@@ -25,13 +24,21 @@ import {
   Clock,
   FileText,
   Globe,
-  Info,
 } from "lucide-react";
 
-type WhisperModelId =
-  | "Xenova/whisper-tiny"
-  | "Xenova/whisper-base"
-  | "Xenova/whisper-small";
+type WhisperModelId = "Xenova/whisper-base" | "Xenova/whisper-small";
+
+/**
+ * Automatically selects the optimal Whisper model based on the chosen language:
+ * - English ('en') or Auto ('auto') -> Xenova/whisper-base (faster processing)
+ * - Urdu ('ur'), Hindi ('hi'), or any non-English language -> Xenova/whisper-small (highest accuracy)
+ */
+function getAutoSelectedModel(languageCode: string): WhisperModelId {
+  if (languageCode === "en" || languageCode === "auto") {
+    return "Xenova/whisper-base";
+  }
+  return "Xenova/whisper-small";
+}
 
 interface LanguageOption {
   code: string;
@@ -39,10 +46,10 @@ interface LanguageOption {
 }
 
 const LANGUAGE_OPTIONS: LanguageOption[] = [
-  { code: "auto", label: "Auto-detect (first 30s)" },
   { code: "en", label: "English (en)" },
   { code: "ur", label: "Urdu — اردو (ur)" },
   { code: "hi", label: "Hindi — हिन्दी (hi)" },
+  { code: "auto", label: "Auto" },
   { code: "ar", label: "Arabic — العربية (ar)" },
   { code: "pa", label: "Punjabi (pa)" },
   { code: "fa", label: "Persian — فارسی (fa)" },
@@ -136,8 +143,80 @@ function isVideoFile(file: File): boolean {
 }
 
 /**
- * Decodes an ArrayBuffer of audio into a 16kHz mono Float32Array PCM waveform
- * matching OpenAI Whisper's expected sample rate.
+ * Directly parses a 16kHz, Mono, 16-bit signed PCM WAV (pcm_s16le) produced by FFmpeg
+ * into normalized Float32Array samples in [-1.0, 1.0] without browser AudioContext resampling.
+ */
+function parsePcm16MonoWav(
+  arrayBuffer: ArrayBuffer
+): { pcm: Float32Array; duration: number } | null {
+  if (arrayBuffer.byteLength < 44) return null;
+  const view = new DataView(arrayBuffer);
+
+  const readFourCC = (offset: number) =>
+    String.fromCharCode(
+      view.getUint8(offset),
+      view.getUint8(offset + 1),
+      view.getUint8(offset + 2),
+      view.getUint8(offset + 3)
+    );
+
+  if (readFourCC(0) !== "RIFF" || readFourCC(8) !== "WAVE") {
+    return null;
+  }
+
+  let audioFormat = 0;
+  let numChannels = 0;
+  let sampleRate = 0;
+  let bitsPerSample = 0;
+  let dataOffset = -1;
+  let dataSize = 0;
+
+  let offset = 12;
+  while (offset + 8 <= arrayBuffer.byteLength) {
+    const chunkId = readFourCC(offset);
+    const chunkSize = view.getUint32(offset + 4, true);
+    const chunkDataStart = offset + 8;
+
+    if (chunkId === "fmt " && chunkDataStart + 16 <= arrayBuffer.byteLength) {
+      audioFormat = view.getUint16(chunkDataStart, true);
+      numChannels = view.getUint16(chunkDataStart + 2, true);
+      sampleRate = view.getUint32(chunkDataStart + 4, true);
+      bitsPerSample = view.getUint16(chunkDataStart + 14, true);
+    } else if (chunkId === "data") {
+      dataOffset = chunkDataStart;
+      dataSize = Math.min(chunkSize, arrayBuffer.byteLength - chunkDataStart);
+      break;
+    }
+
+    // Chunks are word-aligned (padded to even byte boundary)
+    offset = chunkDataStart + chunkSize + (chunkSize % 2);
+  }
+
+  if (
+    audioFormat !== 1 ||
+    numChannels !== 1 ||
+    sampleRate !== 16000 ||
+    bitsPerSample !== 16 ||
+    dataOffset < 0 ||
+    dataSize <= 0
+  ) {
+    return null;
+  }
+
+  const sampleCount = Math.floor(dataSize / 2);
+  const pcm = new Float32Array(sampleCount);
+  for (let i = 0; i < sampleCount; i++) {
+    pcm[i] = view.getInt16(dataOffset + i * 2, true) / 32768.0;
+  }
+
+  return {
+    pcm,
+    duration: sampleCount / sampleRate,
+  };
+}
+
+/**
+ * Fallback decoder: decodes an ArrayBuffer of audio into a 16kHz mono Float32Array PCM waveform.
  */
 async function decodeAudioTo16kHzMono(
   arrayBuffer: ArrayBuffer
@@ -196,10 +275,7 @@ export default function AudioTranscriberPage() {
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreviewUrl, setMediaPreviewUrl] = useState<string | null>(null);
   const [isVideo, setIsVideo] = useState<boolean>(false);
-  const [selectedModel, setSelectedModel] = useState<WhisperModelId>(
-    "Xenova/whisper-small"
-  );
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("auto");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const [detectedLanguageInfo, setDetectedLanguageInfo] = useState<{
     code: string;
     autoDetected: boolean;
@@ -329,19 +405,16 @@ export default function AudioTranscriberPage() {
             : Math.min(99, Math.round(msg.progress ?? 0));
 
         setModelProgress(overallPct);
-        const shortFileName = msg.file
-          ? msg.file.split("/").pop() || msg.file
-          : "Whisper weights";
         setModelStatusText(
-          `Loading ${shortFileName} (${overallPct}%) — cached locally after first run`
+          `Loading AI Model... (This may take a minute on first use)`
         );
       } else if (msg.type === "model-ready") {
         setModelProgress(100);
         setLoadedModelId(msg.model || null);
         setModelStatusText(
           msg.fromCache
-            ? `Whisper model ready from memory (${msg.model})`
-            : `Whisper model loaded & cached locally (${msg.model})`
+            ? "AI Model ready from browser memory"
+            : "AI Model loaded & cached locally for future runs"
         );
         setPhase("transcribing");
         setFileProgress(55);
@@ -396,7 +469,7 @@ export default function AudioTranscriberPage() {
         setPhase("error");
         setErrorMessage(
           msg.message ||
-            "Whisper AI failed to transcribe this file. Try a smaller clip or switch to Whisper Base / Tiny."
+            "AI transcription failed for this file. Please try a shorter clip or check your audio track."
         );
       }
     };
@@ -495,17 +568,19 @@ export default function AudioTranscriberPage() {
         inputPath = fallbackInputName;
       }
 
-      setFileStatusText("Extracting 16kHz mono audio track via FFmpeg WASM...");
+      setFileStatusText(
+        "Extracting 16kHz Mono 16-bit PCM WAV via FFmpeg WASM..."
+      );
       const exitCode = await ffmpeg.exec([
         "-i",
         inputPath,
         "-vn",
-        "-ac",
-        "1",
+        "-acodec",
+        "pcm_s16le",
         "-ar",
         "16000",
-        "-f",
-        "wav",
+        "-ac",
+        "1",
         outputName,
       ]);
 
@@ -582,6 +657,8 @@ export default function AudioTranscriberPage() {
       return;
     }
 
+    const targetModel = getAutoSelectedModel(selectedLanguage);
+
     setErrorMessage(null);
     setTranscript("");
     setChunks([]);
@@ -589,66 +666,57 @@ export default function AudioTranscriberPage() {
     setPhase("processing-file");
     setFileProgress(5);
 
-    if (loadedModelId !== selectedModel) {
+    if (loadedModelId !== targetModel) {
       modelFilesProgressRef.current = {};
       setModelProgress(0);
-      setModelStatusText(`Preparing to load ${selectedModel}...`);
+      setModelStatusText(
+        "Loading AI Model... (This may take a minute on first use)"
+      );
     } else {
       setModelProgress(100);
-      setModelStatusText(`Whisper model already loaded in memory (${selectedModel})`);
+      setModelStatusText("AI Model ready from browser memory");
     }
 
     try {
-      let audioBufferBytes: ArrayBuffer;
+      // Always normalize both audio and video files via FFmpeg into Whisper's exact required format:
+      // 16kHz, Mono, 16-bit PCM WAV (pcm_s16le) to eliminate browser resampling/codec hallucinations
+      let wavBuffer: ArrayBuffer = await extractWavViaFFmpeg(mediaFile);
 
-      // Use FFmpeg WORKERFS streaming for all videos AND for large audio files (> 200MB)
-      if (isVideo || mediaFile.size > MAX_RECOMMENDED_FILE_SIZE) {
-        audioBufferBytes = await extractWavViaFFmpeg(mediaFile);
-      } else {
-        setFileStatusText("Reading audio file locally...");
-        setFileProgress(25);
-        audioBufferBytes = await mediaFile.arrayBuffer();
-      }
-
-      setFileStatusText("Decoding audio waveform to 16kHz mono PCM...");
+      setFileStatusText("Preparing 16kHz Mono 16-bit PCM waveform for Whisper...");
       setFileProgress(48);
 
-      let decodedAudio: { pcm: Float32Array; duration: number };
-      try {
-        decodedAudio = await decodeAudioTo16kHzMono(audioBufferBytes);
-      } catch {
-        // Fallback: if browser Web Audio API cannot decode an audio format (e.g., certain MKV/FLAC/M4A), transcode via FFmpeg first
-        setFileStatusText(
-          "Converting audio format via FFmpeg WASM for browser compatibility..."
-        );
-        const wavBytes = await extractWavViaFFmpeg(mediaFile);
-        decodedAudio = await decodeAudioTo16kHzMono(wavBytes);
+      let decodedAudio = parsePcm16MonoWav(wavBuffer);
+      if (!decodedAudio) {
+        decodedAudio = await decodeAudioTo16kHzMono(wavBuffer);
       }
 
-      // Drop reference to raw audio bytes so GC can reclaim RAM immediately
-      audioBufferBytes = new ArrayBuffer(0);
+      // Drop reference to raw WAV bytes so GC can reclaim RAM immediately
+      wavBuffer = new ArrayBuffer(0);
 
       setFileProgress(52);
       setFileStatusText(
-        `Audio prepared (${formatTimestamp(decodedAudio.duration)} duration). Handing off to Whisper AI...`
+        `Audio prepared (${formatTimestamp(decodedAudio.duration)} duration, 16kHz Mono PCM). Handing off to Whisper AI...`
       );
 
-      if (loadedModelId !== selectedModel) {
+      if (loadedModelId !== targetModel) {
         setPhase("loading-model");
         setModelProgress(5);
-        setModelStatusText(`Downloading / initializing ${selectedModel}...`);
+        setModelStatusText(
+          "Loading AI Model... (This may take a minute on first use)"
+        );
       } else {
         setPhase("transcribing");
       }
 
-      const strictLanguage = selectedLanguage === "ur" ? "ur" : selectedLanguage;
+      const strictLanguage =
+        selectedLanguage === "ur" ? "ur" : selectedLanguage || "en";
       const worker = ensureWorker();
       // Transfer the underlying ArrayBuffer to the Web Worker with zero copy overhead
       worker.postMessage(
         {
           type: "transcribe",
           audio: decodedAudio.pcm,
-          model: selectedModel,
+          model: targetModel,
           language: strictLanguage,
           durationSeconds: decodedAudio.duration,
         },
@@ -784,94 +852,12 @@ export default function AudioTranscriberPage() {
           </div>
         </div>
 
-        {/* Privacy Badge + Required Local Processing Warning */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="bg-emerald-500/10 border border-emerald-500/25 rounded-xl px-4 py-3 flex items-center gap-2.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-            <p className="text-xs font-medium text-emerald-300">
-              100% Private: Zero server uploads. Whisper AI &amp; FFmpeg run strictly inside your browser.
-            </p>
-          </div>
-
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3 flex items-center gap-2.5">
-            <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-            <p className="text-xs font-medium text-amber-200">
-              Processing happens locally in your browser. Large files may take longer and use more RAM.
-            </p>
-          </div>
-        </div>
-
-        {/* Model Selector Bar */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3.5">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            <div className="flex items-start sm:items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/25 text-cyan-400 shrink-0">
-                <Cpu className="w-5 h-5" />
-              </div>
-              <div>
-                <h2 className="text-sm font-bold text-white">
-                  Whisper AI Model (Multilingual • 99 Languages)
-                </h2>
-                <p className="text-xs text-slate-400">
-                  Supports English, Urdu, Hindi, Arabic, and 95+ more languages. Models are downloaded once and cached in your browser.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 shrink-0">
-              <button
-                type="button"
-                disabled={isBusy}
-                onClick={() => setSelectedModel("Xenova/whisper-tiny")}
-                className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
-                  selectedModel === "Xenova/whisper-tiny"
-                    ? "bg-indigo-600/20 border-indigo-500 text-white"
-                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
-                } disabled:opacity-50`}
-              >
-                <div className="text-xs font-bold">Whisper Tiny</div>
-                <div className="text-[11px] text-slate-400">~40 MB • Fastest</div>
-              </button>
-
-              <button
-                type="button"
-                disabled={isBusy}
-                onClick={() => setSelectedModel("Xenova/whisper-base")}
-                className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
-                  selectedModel === "Xenova/whisper-base"
-                    ? "bg-indigo-600/20 border-indigo-500 text-white"
-                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
-                } disabled:opacity-50`}
-              >
-                <div className="text-xs font-bold">Whisper Base</div>
-                <div className="text-[11px] text-slate-400">~75 MB • Balanced</div>
-              </button>
-
-              <button
-                type="button"
-                disabled={isBusy}
-                onClick={() => setSelectedModel("Xenova/whisper-small")}
-                className={`px-3.5 py-2.5 rounded-xl border text-left transition ${
-                  selectedModel === "Xenova/whisper-small"
-                    ? "bg-indigo-600/20 border-indigo-500 text-white"
-                    : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200"
-                } disabled:opacity-50`}
-              >
-                <div className="text-xs font-bold">Whisper Small</div>
-                <div className="text-[11px] text-slate-400">~240 MB • Best for Urdu</div>
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl px-3.5 py-2.5 flex items-start gap-2">
-            <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-            <p className="text-xs text-slate-300">
-              <strong className="text-white">
-                For Urdu, please select Urdu from the dropdown. Auto-detect may hallucinate on small models.
-              </strong>{" "}
-              Using <span className="font-semibold text-white">whisper-small</span> (default) is slightly slower to load, but delivers much higher accuracy for Urdu and non-English languages.
-            </p>
-          </div>
+        {/* Privacy Badge */}
+        <div className="bg-emerald-500/10 border border-emerald-500/25 rounded-xl px-4 py-3 flex items-center justify-center gap-2.5 text-center">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+          <p className="text-xs md:text-sm font-medium text-emerald-300">
+            100% Private: Zero server uploads. Audio extraction &amp; AI transcription run strictly inside your browser.
+          </p>
         </div>
 
         {/* Upload Dropzone OR Selected Media Card */}
@@ -936,11 +922,7 @@ export default function AudioTranscriberPage() {
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-0.5">
-                    Size: {formatBytes(mediaFile.size)} • Model:{" "}
-                    <span className="text-slate-200 font-medium">
-                      {selectedModel}
-                    </span>{" "}
-                    • Language:{" "}
+                    Size: {formatBytes(mediaFile.size)} • Language:{" "}
                     <span className="text-cyan-300 font-medium">
                       {getLanguageLabel(selectedLanguage)}
                     </span>
@@ -1016,18 +998,6 @@ export default function AudioTranscriberPage() {
               </div>
             )}
 
-            {selectedLanguage === "auto" && (
-              <div className="bg-slate-950/70 border border-slate-800 rounded-xl px-3.5 py-2.5 flex items-start gap-2 text-[11px] text-slate-400">
-                <Globe className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
-                <span>
-                  <strong className="text-slate-200">
-                    For Urdu, please select Urdu from the dropdown. Auto-detect may hallucinate on small models.
-                  </strong>{" "}
-                  Auto-detect only inspects the first 30 seconds of audio.
-                </span>
-              </div>
-            )}
-
             {/* Compact Media Preview Player */}
             {mediaPreviewUrl && (
               <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-3">
@@ -1090,7 +1060,7 @@ export default function AudioTranscriberPage() {
                       ) : (
                         <Cpu className="w-4 h-4 text-slate-400 shrink-0" />
                       )}
-                      AI Model Loading ({selectedModel.replace("Xenova/", "")})
+                      AI Model Loading
                     </span>
                     <span className="font-mono font-bold text-purple-300">
                       {modelProgress}%
@@ -1106,7 +1076,7 @@ export default function AudioTranscriberPage() {
                       style={{ width: `${modelProgress}%` }}
                     />
                   </div>
-                  <p className="text-[11px] text-slate-400 truncate">
+                  <p className="text-[11px] text-slate-400">
                     {modelStatusText}
                   </p>
                 </div>
