@@ -153,6 +153,46 @@ async function detectLanguageFromFirst30Seconds(
   }
 }
 
+type ExtendedASRConfig = Parameters<AutomaticSpeechRecognitionPipeline>[1] & {
+  condition_on_previous_text?: boolean;
+};
+
+/**
+ * Collapses consecutive hallucinated duplicate chunks (e.g., identical sentences
+ * repeated 3+ times across silence boundaries) while preserving natural speech.
+ */
+function deduplicateRepeatedChunks(
+  chunks: Array<{ timestamp: [number, number | null]; text: string }>
+): {
+  chunks: Array<{ timestamp: [number, number | null]; text: string }>;
+  text: string;
+} {
+  const cleaned: Array<{ timestamp: [number, number | null]; text: string }> = [];
+  let lastNormalized = "";
+  let repeatCount = 0;
+
+  for (const chunk of chunks) {
+    const trimmed = (chunk.text || "").trim();
+    if (!trimmed) continue;
+
+    const normalized = trimmed.toLowerCase().replace(/\s+/g, " ");
+    if (normalized === lastNormalized) {
+      repeatCount += 1;
+      // Drop consecutive duplicate hallucinations
+      if (repeatCount >= 1) continue;
+    } else {
+      lastNormalized = normalized;
+      repeatCount = 0;
+    }
+    cleaned.push({ ...chunk, text: trimmed });
+  }
+
+  return {
+    chunks: cleaned,
+    text: cleaned.map((c) => c.text).join(" ").trim(),
+  };
+}
+
 self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) => {
   const message = event.data;
   if (!message || message.type !== "transcribe") return;
@@ -162,10 +202,14 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
   try {
     const transcriber = await getTranscriber(model);
 
-    let resolvedLanguage = language;
+    let resolvedLanguage: string;
     let wasAutoDetected = false;
 
-    if (!language || language === "auto") {
+    // Strictly force 'ur' when Urdu is selected (never run auto-detect for explicit languages)
+    if (language === "ur") {
+      resolvedLanguage = "ur";
+      wasAutoDetected = false;
+    } else if (!language || language === "auto") {
       self.postMessage({
         type: "detecting-language",
       });
@@ -183,6 +227,9 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
         autoDetected: wasAutoDetected,
         fallback: !detected,
       });
+    } else {
+      resolvedLanguage = language;
+      wasAutoDetected = false;
     }
 
     const chunkLengthS = 30;
@@ -203,11 +250,14 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
       language: resolvedLanguage,
     });
 
-    const rawResult = await transcriber(audio, {
+    const inferenceOptions: ExtendedASRConfig = {
       language: resolvedLanguage,
       task: "transcribe",
       chunk_length_s: chunkLengthS,
       stride_length_s: strideLengthS,
+      condition_on_previous_text: false,
+      no_repeat_ngram_size: 3,
+      repetition_penalty: 1.15,
       return_timestamps: true,
       chunk_callback: () => {
         chunksProcessed += 1;
@@ -223,16 +273,24 @@ self.addEventListener("message", async (event: MessageEvent<TranscribeRequest>) 
           language: resolvedLanguage,
         });
       },
-    });
+    };
+
+    const rawResult = await transcriber(audio, inferenceOptions);
 
     const result: AutomaticSpeechRecognitionOutput = Array.isArray(rawResult)
       ? rawResult[0]
       : rawResult;
 
+    const rawChunks = Array.isArray(result?.chunks) ? result.chunks : [];
+    const cleaned =
+      rawChunks.length > 0
+        ? deduplicateRepeatedChunks(rawChunks)
+        : { chunks: [], text: (result?.text || "").trim() };
+
     self.postMessage({
       type: "complete",
-      text: (result?.text || "").trim(),
-      chunks: Array.isArray(result?.chunks) ? result.chunks : [],
+      text: cleaned.text || (result?.text || "").trim(),
+      chunks: cleaned.chunks,
       language: resolvedLanguage,
       autoDetected: wasAutoDetected,
     });

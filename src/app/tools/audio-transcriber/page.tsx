@@ -4,7 +4,7 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
 import { useDropzone } from "react-dropzone";
-import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { FFmpeg, type FFFSType } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import {
   Mic,
@@ -96,6 +96,8 @@ interface WorkerMessage {
   chunks?: TranscriptChunk[];
   message?: string;
 }
+
+const MAX_RECOMMENDED_FILE_SIZE = 200 * 1024 * 1024; // 200 MB
 
 const VIDEO_EXTENSIONS = new Set([
   "mp4",
@@ -195,7 +197,7 @@ export default function AudioTranscriberPage() {
   const [mediaPreviewUrl, setMediaPreviewUrl] = useState<string | null>(null);
   const [isVideo, setIsVideo] = useState<boolean>(false);
   const [selectedModel, setSelectedModel] = useState<WhisperModelId>(
-    "Xenova/whisper-base"
+    "Xenova/whisper-small"
   );
   const [selectedLanguage, setSelectedLanguage] = useState<string>("auto");
   const [detectedLanguageInfo, setDetectedLanguageInfo] = useState<{
@@ -243,12 +245,21 @@ export default function AudioTranscriberPage() {
   >({});
   const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Cleanup worker & object URLs on unmount
+  // Cleanup worker, FFmpeg WASM, & timers on unmount
   useEffect(() => {
     return () => {
       if (workerRef.current) {
         workerRef.current.terminate();
         workerRef.current = null;
+      }
+      if (ffmpegRef.current) {
+        try {
+          ffmpegRef.current.terminate();
+        } catch {
+          // ignore
+        }
+        ffmpegRef.current = null;
+        ffmpegLoadedRef.current = false;
       }
       if (copyTimeoutRef.current) {
         clearTimeout(copyTimeoutRef.current);
@@ -429,55 +440,106 @@ export default function AudioTranscriberPage() {
     return ffmpeg;
   };
 
+  const releaseFFmpegMemory = () => {
+    if (ffmpegRef.current) {
+      try {
+        ffmpegRef.current.terminate();
+      } catch {
+        // ignore termination error
+      }
+      ffmpegRef.current = null;
+      ffmpegLoadedRef.current = false;
+    }
+  };
+
+  /**
+   * Streams/mounts the media file via WORKERFS so FFmpeg reads chunks on demand
+   * without copying a multi-GB file into browser RAM, then immediately releases
+   * all virtual filesystem files and terminates the FFmpeg WASM heap before Whisper runs.
+   */
   const extractWavViaFFmpeg = async (file: File): Promise<ArrayBuffer> => {
     const ffmpeg = await ensureFFmpegLoaded();
+    const mountDir = "/input";
     const ext = file.name.split(".").pop()?.toLowerCase() || "mp4";
-    const inputName = `input_media.${ext}`;
+    const fallbackInputName = `input_media.${ext}`;
     const outputName = "extracted_16k.wav";
 
-    setFileStatusText("Reading media file into local WebAssembly memory...");
-    setFileProgress(14);
-    await ffmpeg.writeFile(inputName, await fetchFile(file));
-
-    setFileStatusText("Extracting 16kHz mono audio track via FFmpeg WASM...");
-    const exitCode = await ffmpeg.exec([
-      "-i",
-      inputName,
-      "-vn",
-      "-ac",
-      "1",
-      "-ar",
-      "16000",
-      "-f",
-      "wav",
-      outputName,
-    ]);
-
-    if (exitCode !== 0) {
-      try {
-        await ffmpeg.deleteFile(inputName);
-      } catch {
-        // ignore
-      }
-      throw new Error(
-        `FFmpeg failed to extract audio from this file (exit code ${exitCode}). Ensure the video contains an audio track.`
-      );
-    }
-
-    const data = await ffmpeg.readFile(outputName);
+    let usedWorkerFS = false;
+    let inputPath = "";
 
     try {
-      await ffmpeg.deleteFile(inputName);
-      await ffmpeg.deleteFile(outputName);
-    } catch {
-      // ignore cleanup error
-    }
+      setFileStatusText(
+        "Mounting media stream via FFmpeg WORKERFS (low-memory mode)..."
+      );
+      setFileProgress(14);
 
-    const uint8 =
-      data instanceof Uint8Array
-        ? data
-        : new TextEncoder().encode(String(data));
-    return uint8.slice().buffer;
+      try {
+        await ffmpeg.createDir(mountDir);
+      } catch {
+        // directory may already exist
+      }
+
+      try {
+        await ffmpeg.mount("WORKERFS" as FFFSType, { files: [file] }, mountDir);
+        usedWorkerFS = true;
+        inputPath = `${mountDir}/${file.name}`;
+      } catch {
+        // WORKERFS not available; only fall back to writeFile for files <= 200MB
+        if (file.size > MAX_RECOMMENDED_FILE_SIZE) {
+          throw new Error(
+            "This file exceeds 200MB and could not be streamed into browser memory. Please compress or split it into a smaller file (under 200MB) and try again."
+          );
+        }
+        setFileStatusText("Reading media file into local WebAssembly memory...");
+        await ffmpeg.writeFile(fallbackInputName, await fetchFile(file));
+        inputPath = fallbackInputName;
+      }
+
+      setFileStatusText("Extracting 16kHz mono audio track via FFmpeg WASM...");
+      const exitCode = await ffmpeg.exec([
+        "-i",
+        inputPath,
+        "-vn",
+        "-ac",
+        "1",
+        "-ar",
+        "16000",
+        "-f",
+        "wav",
+        outputName,
+      ]);
+
+      if (exitCode !== 0) {
+        throw new Error(
+          `FFmpeg failed to extract audio from this file (exit code ${exitCode}). Ensure the video contains an audio track and is under 200MB for best stability.`
+        );
+      }
+
+      const data = await ffmpeg.readFile(outputName);
+      const uint8 =
+        data instanceof Uint8Array
+          ? data
+          : new TextEncoder().encode(String(data));
+      return uint8.slice().buffer;
+    } finally {
+      // Immediately free virtual FS buffers and terminate FFmpeg WASM heap before Whisper loads
+      try {
+        if (usedWorkerFS) {
+          await ffmpeg.unmount(mountDir);
+          await ffmpeg.deleteDir(mountDir);
+        } else if (inputPath) {
+          await ffmpeg.deleteFile(inputPath);
+        }
+      } catch {
+        // ignore cleanup error
+      }
+      try {
+        await ffmpeg.deleteFile(outputName);
+      } catch {
+        // ignore cleanup error
+      }
+      releaseFFmpegMemory();
+    }
   };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -539,7 +601,8 @@ export default function AudioTranscriberPage() {
     try {
       let audioBufferBytes: ArrayBuffer;
 
-      if (isVideo) {
+      // Use FFmpeg WORKERFS streaming for all videos AND for large audio files (> 200MB)
+      if (isVideo || mediaFile.size > MAX_RECOMMENDED_FILE_SIZE) {
         audioBufferBytes = await extractWavViaFFmpeg(mediaFile);
       } else {
         setFileStatusText("Reading audio file locally...");
@@ -562,6 +625,9 @@ export default function AudioTranscriberPage() {
         decodedAudio = await decodeAudioTo16kHzMono(wavBytes);
       }
 
+      // Drop reference to raw audio bytes so GC can reclaim RAM immediately
+      audioBufferBytes = new ArrayBuffer(0);
+
       setFileProgress(52);
       setFileStatusText(
         `Audio prepared (${formatTimestamp(decodedAudio.duration)} duration). Handing off to Whisper AI...`
@@ -575,6 +641,7 @@ export default function AudioTranscriberPage() {
         setPhase("transcribing");
       }
 
+      const strictLanguage = selectedLanguage === "ur" ? "ur" : selectedLanguage;
       const worker = ensureWorker();
       // Transfer the underlying ArrayBuffer to the Web Worker with zero copy overhead
       worker.postMessage(
@@ -582,17 +649,24 @@ export default function AudioTranscriberPage() {
           type: "transcribe",
           audio: decodedAudio.pcm,
           model: selectedModel,
-          language: selectedLanguage,
+          language: strictLanguage,
           durationSeconds: decodedAudio.duration,
         },
         [decodedAudio.pcm.buffer]
       );
     } catch (err: unknown) {
       setPhase("error");
+      const rawMsg = err instanceof Error ? err.message : "";
+      const isMemoryOrReadErr =
+        rawMsg.includes("Code=-1") ||
+        rawMsg.toLowerCase().includes("could not be read") ||
+        rawMsg.toLowerCase().includes("out of memory") ||
+        rawMsg.toLowerCase().includes("allocation failed");
+
       setErrorMessage(
-        err instanceof Error
-          ? err.message
-          : "Failed to process the uploaded media file."
+        isMemoryOrReadErr
+          ? "Browser memory limit reached while reading this file. For best performance, please use files smaller than 200MB (or convert your video to an MP3 first using our File Converter)."
+          : rawMsg || "Failed to process the uploaded media file."
       );
     }
   };
@@ -656,6 +730,10 @@ export default function AudioTranscriberPage() {
     phase === "processing-file" ||
     phase === "loading-model" ||
     phase === "transcribing";
+
+  const isLargeFile = Boolean(
+    mediaFile && mediaFile.size > MAX_RECOMMENDED_FILE_SIZE
+  );
 
   const wordCount = formattedTranscript.trim()
     ? formattedTranscript.trim().split(/\s+/).length
@@ -788,7 +866,10 @@ export default function AudioTranscriberPage() {
           <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-xl px-3.5 py-2.5 flex items-start gap-2">
             <Info className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
             <p className="text-xs text-slate-300">
-              For better accuracy in Urdu or other non-English languages, using a larger model (like <span className="font-semibold text-white">whisper-small</span>) may take longer to load in the browser.
+              <strong className="text-white">
+                For Urdu, please select Urdu from the dropdown. Auto-detect may hallucinate on small models.
+              </strong>{" "}
+              Using <span className="font-semibold text-white">whisper-small</span> (default) is slightly slower to load, but delivers much higher accuracy for Urdu and non-English languages.
             </p>
           </div>
         </div>
@@ -925,11 +1006,24 @@ export default function AudioTranscriberPage() {
               </div>
             </div>
 
+            {/* Red Warning Banner for Files > 200MB */}
+            {isLargeFile && (
+              <div className="bg-rose-500/15 border border-rose-500/40 rounded-xl px-4 py-3 flex items-start gap-2.5 text-xs md:text-sm text-rose-300 font-medium">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                <span>
+                  For best performance, please use files smaller than 200MB. Large files may crash your browser.
+                </span>
+              </div>
+            )}
+
             {selectedLanguage === "auto" && (
               <div className="bg-slate-950/70 border border-slate-800 rounded-xl px-3.5 py-2.5 flex items-start gap-2 text-[11px] text-slate-400">
                 <Globe className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
                 <span>
-                  <strong className="text-slate-200">Auto-detect</strong> analyzes the first 30 seconds of audio to identify the spoken language. For best accuracy (especially with Urdu or mixed-language clips), select the exact language directly from the dropdown above.
+                  <strong className="text-slate-200">
+                    For Urdu, please select Urdu from the dropdown. Auto-detect may hallucinate on small models.
+                  </strong>{" "}
+                  Auto-detect only inspects the first 30 seconds of audio.
                 </span>
               </div>
             )}
