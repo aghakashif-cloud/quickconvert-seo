@@ -86,14 +86,14 @@ export default function BlogIndexPage() {
           </div>
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <Link
-              href="/?tab=converter"
+              href="/tools/file-converter"
               className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-indigo-600/25 transition"
             >
               <ShieldCheck className="w-4 h-4" />
               Open File Converter
             </Link>
             <Link
-              href="/?tab=youtube"
+              href="/tools/youtube-ai-studio"
               className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition"
             >
               <Sparkles className="w-4 h-4 text-rose-400" />

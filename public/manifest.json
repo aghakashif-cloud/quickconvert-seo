@@ -40,14 +40,14 @@
       "name": "File Converter",
       "short_name": "Converter",
       "description": "Convert video, audio, images, and PDFs locally",
-      "url": "/?tab=converter",
+      "url": "/tools/file-converter",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "AI Audio Transcriber",
       "short_name": "Transcriber",
       "description": "Transcribe audio & video locally in your browser",
-      "url": "/tools/audio-transcriber",
+      "url": "/tools/ai-transcriber",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     },
     {
@@ -61,7 +61,7 @@
       "name": "YouTube SEO Audit",
       "short_name": "YT Audit",
       "description": "Audit YouTube videos and get AI-optimized metadata",
-      "url": "/tools/youtube-audit",
+      "url": "/tools/youtube-seo-audit",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
   ]

@@ -19,13 +19,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/tools/file-converter`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/tools/youtube-ai-studio`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/tools/thumbnail-downloader`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/tools/youtube-audit`,
+      url: `${baseUrl}/tools/youtube-seo-audit`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
@@ -37,7 +49,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/tools/audio-transcriber`,
+      url: `${baseUrl}/tools/ai-transcriber`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,

@@ -328,13 +328,13 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <Link
-                href="/?tab=converter"
+                href="/tools/file-converter"
                 className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-lg shadow-indigo-600/25 transition"
               >
                 Try our Free File Converter
               </Link>
               <Link
-                href="/?tab=youtube"
+                href="/tools/youtube-ai-studio"
                 className="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition"
               >
                 <Sparkles className="w-3.5 h-3.5 text-rose-400" />

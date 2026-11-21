@@ -244,7 +244,7 @@ export default function YouTubeAuditPage() {
 
           <div className="flex flex-wrap items-center gap-2">
             <Link
-              href="/?tab=youtube"
+              href="/tools/youtube-ai-studio"
               className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-rose-600/20 hover:bg-rose-600/30 text-rose-300 border border-rose-500/30 transition flex items-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5" />
@@ -257,7 +257,7 @@ export default function YouTubeAuditPage() {
               Thumbnail Downloader
             </Link>
             <Link
-              href="/?tab=converter"
+              href="/tools/file-converter"
               className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition"
             >
               File Converter

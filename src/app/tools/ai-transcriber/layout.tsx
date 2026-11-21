@@ -4,7 +4,7 @@ export const metadata: Metadata = {
   title: "AI Audio & Video Transcriber | QuickConvert",
   description:
     "Transcribe audio, video, YouTube, and Facebook links into text locally in your browser using Whisper AI. Supports English, Urdu, and 95+ languages.",
-  alternates: { canonical: "/tools/audio-transcriber" },
+  alternates: { canonical: "/tools/ai-transcriber" },
 };
 
 export default function AudioTranscriberLayout({

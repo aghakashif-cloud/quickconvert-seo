@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Zap,
   ChevronDown,
@@ -46,27 +47,27 @@ const NAV_CATEGORIES: NavCategory[] = [
     title: "Convert",
     items: [
       {
-        label: "Video Converter",
-        description: "MP4, WebM, MOV, AVI, MKV & GIF via FFmpeg WASM",
-        href: "/?tab=converter&mode=video",
+        label: "Universal File Converter",
+        description: "MP4, WebM, MOV, MP3, PNG, JPG, WebP, PDF & DOCX locally",
+        href: "/tools/file-converter",
         icon: <FileVideo className="w-4 h-4 text-indigo-400" />,
       },
       {
         label: "Audio Converter",
         description: "MP3, WAV, OGG, M4A & FLAC audio transcoding",
-        href: "/?tab=converter&mode=audio",
+        href: "/tools/file-converter",
         icon: <FileAudio className="w-4 h-4 text-amber-400" />,
       },
       {
         label: "Image Converter",
         description: "PNG, JPG, WebP, AVIF, BMP, ICO & Image to PDF",
-        href: "/?tab=converter&mode=image",
+        href: "/tools/file-converter",
         icon: <FileImage className="w-4 h-4 text-emerald-400" />,
       },
       {
         label: "Document Converter",
         description: "PDF to PNG/JPG/TXT & DOCX/Text to PDF",
-        href: "/?tab=converter&mode=document",
+        href: "/tools/file-converter",
         icon: <FileText className="w-4 h-4 text-cyan-400" />,
       },
       {
@@ -87,16 +88,10 @@ const NAV_CATEGORIES: NavCategory[] = [
     title: "AI Tools",
     items: [
       {
-        label: "YouTube Metadata Generator",
-        description: "Complete SEO descriptions, chapters, and viral tags",
-        href: "/?tab=youtube&mode=metadata",
+        label: "YouTube AI Studio",
+        description: "Complete SEO descriptions, high-CTR titles & viral tags",
+        href: "/tools/youtube-ai-studio",
         icon: <Youtube className="w-4 h-4 text-rose-400" />,
-      },
-      {
-        label: "AI Title Generator",
-        description: "High-CTR YouTube titles & thumbnail hook ideas",
-        href: "/?tab=youtube&mode=titles",
-        icon: <Sparkles className="w-4 h-4 text-purple-400" />,
       },
       {
         label: "YouTube Thumbnail Downloader",
@@ -107,7 +102,7 @@ const NAV_CATEGORIES: NavCategory[] = [
       {
         label: "YouTube SEO Audit & Analyzer",
         description: "Audit any video URL for a 0-100 SEO score & fixes",
-        href: "/tools/youtube-audit",
+        href: "/tools/youtube-seo-audit",
         icon: <BarChart3 className="w-4 h-4 text-amber-400" />,
       },
       {
@@ -119,7 +114,7 @@ const NAV_CATEGORIES: NavCategory[] = [
       {
         label: "AI Audio/Video Transcriber",
         description: "Transcribe audio & video locally in-browser with Whisper AI",
-        href: "/tools/audio-transcriber",
+        href: "/tools/ai-transcriber",
         icon: <Mic className="w-4 h-4 text-cyan-400" />,
       },
       {
@@ -136,13 +131,13 @@ const NAV_CATEGORIES: NavCategory[] = [
       {
         label: "Compress Video",
         description: "Reduce video size with custom bitrate & resolution",
-        href: "/?tab=converter&mode=compress-video",
+        href: "/tools/file-converter",
         icon: <Minimize2 className="w-4 h-4 text-indigo-400" />,
       },
       {
         label: "Compress Image",
         description: "Optimize PNG, JPG, and WebP with quality slider",
-        href: "/?tab=converter&mode=compress-image",
+        href: "/tools/file-converter",
         icon: <FileImage className="w-4 h-4 text-emerald-400" />,
       },
     ],
@@ -185,8 +180,14 @@ const NAV_CATEGORIES: NavCategory[] = [
 ];
 
 export default function Navbar() {
+  const pathname = usePathname() || "/";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openMobileCategory, setOpenMobileCategory] = useState<string | null>("Convert");
+
+  const isConverterActive =
+    pathname === "/" || pathname === "/tools/file-converter";
+  const isYouTubeActive = pathname === "/tools/youtube-ai-studio";
+  const isBlogActive = pathname === "/blog" || pathname.startsWith("/blog/");
 
   const toggleMobileCategory = (title: string) => {
     setOpenMobileCategory((prev) => (prev === title ? null : title));
@@ -257,7 +258,11 @@ export default function Navbar() {
           ))}
           <Link
             href="/blog"
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition"
+            className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition ${
+              isBlogActive
+                ? "text-white bg-slate-800/90 border border-slate-700"
+                : "text-slate-300 hover:text-white hover:bg-slate-800/80"
+            }`}
           >
             Blog
           </Link>
@@ -266,14 +271,20 @@ export default function Navbar() {
         {/* Right: Quick Action CTA Buttons (Desktop) */}
         <div className="hidden lg:flex items-center gap-2.5">
           <Link
-            href="/?tab=converter"
-            className="px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-200 bg-slate-800/90 hover:bg-slate-800 border border-slate-700/80 transition"
+            href="/tools/file-converter"
+            className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition ${
+              isConverterActive
+                ? "text-white bg-indigo-600 border-indigo-500 shadow-lg shadow-indigo-600/25"
+                : "text-slate-200 bg-slate-800/90 hover:bg-slate-800 border-slate-700/80"
+            }`}
           >
             File Converter
           </Link>
           <Link
-            href="/?tab=youtube"
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-600/25 transition flex items-center gap-1.5"
+            href="/tools/youtube-ai-studio"
+            className={`px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-lg shadow-indigo-600/25 transition flex items-center gap-1.5 ${
+              isYouTubeActive ? "ring-2 ring-rose-400/70" : ""
+            }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
             YouTube AI Studio
@@ -296,17 +307,25 @@ export default function Navbar() {
         <div className="lg:hidden fixed inset-x-0 top-16 bottom-0 bg-slate-950/98 backdrop-blur-xl border-t border-slate-800 overflow-y-auto z-50 p-5 space-y-4">
           <div className="grid grid-cols-3 gap-2 pb-2 border-b border-slate-800">
             <Link
-              href="/?tab=converter"
+              href="/tools/file-converter"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-xl bg-indigo-600/20 border border-indigo-500/40 text-xs font-bold text-indigo-200 text-center flex items-center justify-center gap-1.5"
+              className={`p-3 rounded-xl border text-xs font-bold text-center flex items-center justify-center gap-1.5 ${
+                isConverterActive
+                  ? "bg-indigo-600 border-indigo-400 text-white"
+                  : "bg-indigo-600/20 border-indigo-500/40 text-indigo-200"
+              }`}
             >
               <FileVideo className="w-4 h-4 text-indigo-400" />
               Converter
             </Link>
             <Link
-              href="/?tab=youtube"
+              href="/tools/youtube-ai-studio"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-xl bg-rose-600/20 border border-rose-500/40 text-xs font-bold text-rose-200 text-center flex items-center justify-center gap-1.5"
+              className={`p-3 rounded-xl border text-xs font-bold text-center flex items-center justify-center gap-1.5 ${
+                isYouTubeActive
+                  ? "bg-rose-600 border-rose-400 text-white"
+                  : "bg-rose-600/20 border-rose-500/40 text-rose-200"
+              }`}
             >
               <Youtube className="w-4 h-4 text-rose-400" />
               YouTube AI
@@ -314,7 +333,11 @@ export default function Navbar() {
             <Link
               href="/blog"
               onClick={() => setMobileMenuOpen(false)}
-              className="p-3 rounded-xl bg-emerald-600/20 border border-emerald-500/40 text-xs font-bold text-emerald-200 text-center flex items-center justify-center gap-1.5"
+              className={`p-3 rounded-xl border text-xs font-bold text-center flex items-center justify-center gap-1.5 ${
+                isBlogActive
+                  ? "bg-emerald-600 border-emerald-400 text-white"
+                  : "bg-emerald-600/20 border-emerald-500/40 text-emerald-200"
+              }`}
             >
               <FileText className="w-4 h-4 text-emerald-400" />
               Blog

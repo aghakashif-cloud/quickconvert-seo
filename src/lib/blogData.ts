@@ -107,7 +107,7 @@ export const BLOG_POSTS: BlogPost[] = [
           {
             subheading: "Step 3: Review or Edit the Extracted Text (Optional)",
             paragraphs: [
-              "Once extraction finishes, the complete text appears inside a clean, scrollable text box along with the total page count, word count, and estimated listening duration. Because the text box is fully editable, you can easily delete page numbers, repetitive headers, tables of contents, or footnotes so the narrator reads only the sections you care about. Need to save the raw text or convert your PDF to images too? Check out our [Free Document Converter](/?tab=converter&mode=document).",
+              "Once extraction finishes, the complete text appears inside a clean, scrollable text box along with the total page count, word count, and estimated listening duration. Because the text box is fully editable, you can easily delete page numbers, repetitive headers, tables of contents, or footnotes so the narrator reads only the sections you care about. Need to save the raw text or convert your PDF to images too? Check out our [Free Document Converter](/tools/file-converter).",
             ],
           },
           {
@@ -131,11 +131,11 @@ export const BLOG_POSTS: BlogPost[] = [
           "Try Natural Voices in Microsoft Edge or Google Chrome: Modern versions of Edge and Chrome include surprisingly lifelike neural and natural voices across English, Urdu, Hindi, and other languages—scroll through the Voice dropdown to test which narrator sounds clearest to you.",
           "Sweet Spot Speed for Retention (1.2x – 1.4x): Listening slightly faster than normal conversation keeps your brain actively engaged and cuts a 30-minute PDF down to roughly 20 minutes without sacrificing comprehension.",
           "Trim Citations & Page Footers Before Playing: Academic PDFs often contain long reference lists or URLs. Highlight and remove those blocks in the editable text area before pressing Play for an uninterrupted audiobook flow.",
-          "Want to Go the Other Direction (Audio to Text)? If you have a recorded lecture, podcast, or voice memo you want turned into written notes instead, try our 100% private [AI Audio/Video Transcriber](/tools/audio-transcriber).",
+          "Want to Go the Other Direction (Audio to Text)? If you have a recorded lecture, podcast, or voice memo you want turned into written notes instead, try our 100% private [AI Audio/Video Transcriber](/tools/ai-transcriber).",
         ],
         ctaLink: {
           text: "Try Our Free Document & PDF Converter",
-          href: "/?tab=converter&mode=document",
+          href: "/tools/file-converter",
         },
       },
     ],
@@ -223,7 +223,7 @@ export const BLOG_POSTS: BlogPost[] = [
             bullets: [
               "Windows File Explorer & Legacy Apps: Thumbnails fail to render in Windows folders, and older document or presentation tools cannot embed `.heic` images.",
               "Online Application & Government Portals: Visa applications, tax uploads, banking KYC forms, and HR portals almost always enforce strict `.jpg`, `.jpeg`, or `.png` file filters.",
-              "Websites, Blogs & Social Sharing: Converting to JPG (or modern WebP using our [Free Image Converter](/?tab=converter&mode=image)) guarantees every visitor sees your photos properly on any browser.",
+              "Websites, Blogs & Social Sharing: Converting to JPG (or modern WebP using our [Free Image Converter](/tools/file-converter)) guarantees every visitor sees your photos properly on any browser.",
             ],
           },
         ],
@@ -232,13 +232,13 @@ export const BLOG_POSTS: BlogPost[] = [
         heading:
           "Step-by-Step Guide: How to Convert HEIC to JPG Free Using QuickConvert",
         paragraphs: [
-          "With QuickConvert & SEO Tools, you can convert images into universal JPG, PNG, WebP, or even PDF files right inside your web browser—no account creation, no software downloads, and zero watermarks. Follow these four quick steps using our [Free File Converter](/?tab=converter):",
+          "With QuickConvert & SEO Tools, you can convert images into universal JPG, PNG, WebP, or even PDF files right inside your web browser—no account creation, no software downloads, and zero watermarks. Follow these four quick steps using our [Free File Converter](/tools/file-converter):",
         ],
         subSections: [
           {
             subheading: "Step 1: Open the QuickConvert Image Converter",
             paragraphs: [
-              "Head to our [Free Image Converter](/?tab=converter&mode=image) workspace (also accessible anytime from the top navigation menu under Convert → Image Converter). Because everything runs natively in your browser tab, it works smoothly on Windows, macOS, Chromebook, and mobile devices.",
+              "Head to our [Free Image Converter](/tools/file-converter) workspace (also accessible anytime from the top navigation menu under Convert → Image Converter). Because everything runs natively in your browser tab, it works smoothly on Windows, macOS, Chromebook, and mobile devices.",
             ],
           },
           {
@@ -262,7 +262,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Convert Images to JPG Free Now",
-          href: "/?tab=converter&mode=image",
+          href: "/tools/file-converter",
         },
       },
       {
@@ -271,7 +271,7 @@ export const BLOG_POSTS: BlogPost[] = [
         paragraphs: [
           "Search online for a way to convert HEIC to JPG free and you will find dozens of traditional cloud converter sites. Every time you use one of those server-based converters, your raw iPhone photos travel across the internet to an unknown remote machine—often sitting in temporary storage buckets for hours while waiting for automated cleanup jobs.",
           "Most people forget just how much private information is embedded inside a single smartphone photo. Beyond the image itself—which could be family pictures, scanned passports, medical documents, bank receipts, or unreleased business prototypes—smartphone photos often contain hidden EXIF metadata including exact GPS latitude and longitude coordinates, camera serial details, and timestamps.",
-          "QuickConvert & SEO Tools eliminates that privacy risk completely by using a 100% client-side architecture. Whether you are using our [Image Converter](/?tab=converter&mode=image), our [Image Compressor](/?tab=converter&mode=compress-image), or our [Free File Converter](/?tab=converter) for PDFs and videos, every single byte stays strictly inside your own device's local browser memory.",
+          "QuickConvert & SEO Tools eliminates that privacy risk completely by using a 100% client-side architecture. Whether you are using our [Image Converter](/tools/file-converter), our [Image Compressor](/tools/file-converter), or our [Free File Converter](/tools/file-converter) for PDFs and videos, every single byte stays strictly inside your own device's local browser memory.",
         ],
         bullets: [
           "Zero Server Uploads: Your personal iPhone photos never leave your computer or touch a remote cloud server.",
@@ -288,11 +288,11 @@ export const BLOG_POSTS: BlogPost[] = [
         bullets: [
           "Save New Photos as JPG Automatically: Open iPhone Settings → Camera → Formats, then switch from 'High Efficiency' to 'Most Compatible'. Future photos will be captured directly as standard JPEG files.",
           "Auto-Convert During USB Transfer to Windows: Open iPhone Settings → Photos, scroll to 'Transfer to Mac or PC', and select 'Automatic'. When you plug your iPhone into a Windows PC via cable, iOS will automatically export compatible JPG copies.",
-          "Optimize Existing JPGs for the Web: Once converted, you can also shrink oversized JPGs for faster websites or email attachments using our [Free Image Compressor](/?tab=converter&mode=compress-image).",
+          "Optimize Existing JPGs for the Web: Once converted, you can also shrink oversized JPGs for faster websites or email attachments using our [Free Image Compressor](/tools/file-converter).",
         ],
         ctaLink: {
           text: "Open the Free Universal File Converter",
-          href: "/?tab=converter",
+          href: "/tools/file-converter",
         },
       },
     ],
@@ -300,7 +300,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "How can I convert HEIC to JPG free without installing software?",
         answer:
-          "You can convert photos directly inside your web browser using the QuickConvert [Free Image Converter](/?tab=converter&mode=image). Simply drop your images into the tool, select 'JPG / JPEG' as the output format, and click Convert—no desktop apps, Microsoft Store codecs, or sign-ups are required.",
+          "You can convert photos directly inside your web browser using the QuickConvert [Free Image Converter](/tools/file-converter). Simply drop your images into the tool, select 'JPG / JPEG' as the output format, and click Convert—no desktop apps, Microsoft Store codecs, or sign-ups are required.",
       },
       {
         question: "Will converting HEIC to JPG reduce my photo quality?",
@@ -320,7 +320,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "Can I also convert multiple photos to PDF or WebP at once?",
         answer:
-          "Yes! Inside our [Image Converter](/?tab=converter&mode=image), you can batch-convert photos not only to JPG, but also to lossless PNG, lightweight WebP, AVIF, BMP, ICO, or combine images cleanly into a PDF document.",
+          "Yes! Inside our [Image Converter](/tools/file-converter), you can batch-convert photos not only to JPG, but also to lossless PNG, lightweight WebP, AVIF, BMP, ICO, or combine images cleanly into a PDF document.",
       },
     ],
   },
@@ -391,13 +391,13 @@ export const BLOG_POSTS: BlogPost[] = [
         heading:
           "Step-by-Step Guide: How to Compress Video for WhatsApp Free Using QuickConvert",
         paragraphs: [
-          "You do not need to pay for Discord Nitro, install heavy editing suites, or wait in cloud converter upload queues. Our [Free Video Compressor](/?tab=converter&mode=compress-video) runs studio-grade FFmpeg WebAssembly 100% locally inside your web browser—meaning your private videos never leave your device. Follow these four steps:",
+          "You do not need to pay for Discord Nitro, install heavy editing suites, or wait in cloud converter upload queues. Our [Free Video Compressor](/tools/file-converter) runs studio-grade FFmpeg WebAssembly 100% locally inside your web browser—meaning your private videos never leave your device. Follow these four steps:",
         ],
         subSections: [
           {
             subheading: "Step 1: Open the QuickConvert Video Compressor",
             paragraphs: [
-              "Launch our [Free Video Compressor](/?tab=converter&mode=compress-video) (or open the main [Free File Converter](/?tab=converter) and select Compress → Compress Video from the top bar). You will immediately see our drag-and-drop workspace with zero sign-up barriers.",
+              "Launch our [Free Video Compressor](/tools/file-converter) (or open the main [Free File Converter](/tools/file-converter) and select Compress → Compress Video from the top bar). You will immediately see our drag-and-drop workspace with zero sign-up barriers.",
             ],
           },
           {
@@ -426,7 +426,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Compress Video for WhatsApp & Discord Free",
-          href: "/?tab=converter&mode=compress-video",
+          href: "/tools/file-converter",
         },
       },
       {
@@ -439,8 +439,8 @@ export const BLOG_POSTS: BlogPost[] = [
           "Match Resolution to Where People Watch: Nobody watches a Discord gaming clip or WhatsApp family video in full 4K. Exporting at 720p keeps faces, gameplay HUDs, and text crisp while typically reducing file size by 60% to 75%.",
           "Trim Before You Compress: Removing just 10 seconds of silence or loading screen at the beginning of a 40-second clip instantly saves 25% of your file budget—leaving more bitrate for the actual highlight.",
           "Turn Short 3–6 Second Reactions Into Animated GIFs: If you only need to share a quick silent reaction, meme, or UI bug in Discord or Slack, use our dedicated [Free Video to GIF Converter](/tools/video-to-gif) to create a lightweight auto-looping GIF in seconds.",
-          "Keep Private Footage Off Cloud Servers: Unlike server-based compressors that upload your private family chats or unreleased gameplay to third-party servers, our client-side [File Converter](/?tab=converter) processes everything locally inside your browser for 100% privacy.",
-          "Need Captions or Text From Your Clip? You can also extract a full private transcript locally in your browser using our [AI Audio/Video Transcriber](/tools/audio-transcriber).",
+          "Keep Private Footage Off Cloud Servers: Unlike server-based compressors that upload your private family chats or unreleased gameplay to third-party servers, our client-side [File Converter](/tools/file-converter) processes everything locally inside your browser for 100% privacy.",
+          "Need Captions or Text From Your Clip? You can also extract a full private transcript locally in your browser using our [AI Audio/Video Transcriber](/tools/ai-transcriber).",
         ],
         ctaLink: {
           text: "Try Our Free Video to GIF Converter",
@@ -452,12 +452,12 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "How do I compress a video for WhatsApp under 16MB for free?",
         answer:
-          "Open our [Free Video Compressor](/?tab=converter&mode=compress-video), drop your MP4 or MOV file into the browser, select 'MP4 (H.264 Universal)', click 'Advanced' to set the resolution to 720p (or 480p for longer clips) with a 2 Mbps bitrate, and click Convert. Your compressed video downloads locally with zero watermarks.",
+          "Open our [Free Video Compressor](/tools/file-converter), drop your MP4 or MOV file into the browser, select 'MP4 (H.264 Universal)', click 'Advanced' to set the resolution to 720p (or 480p for longer clips) with a 2 Mbps bitrate, and click Convert. Your compressed video downloads locally with zero watermarks.",
       },
       {
         question: "How can I shrink a video for Discord without buying Nitro?",
         answer:
-          "To fit safely under Discord's 10 MB free upload limit, trim your highlight to the best 15–30 seconds using our Trim Start/End fields and downscale to 720p or 480p H.264 MP4 inside the [QuickConvert Video Compressor](/?tab=converter&mode=compress-video).",
+          "To fit safely under Discord's 10 MB free upload limit, trim your highlight to the best 15–30 seconds using our Trim Start/End fields and downscale to 720p or 480p H.264 MP4 inside the [QuickConvert Video Compressor](/tools/file-converter).",
       },
       {
         question: "Does compressing a video for WhatsApp or Discord add a watermark?",
@@ -547,7 +547,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free AI Audio/Video Transcriber Now",
-          href: "/tools/audio-transcriber",
+          href: "/tools/ai-transcriber",
         },
       },
       {
@@ -563,7 +563,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Turn Your Transcript into YouTube SEO Metadata",
-          href: "/?tab=youtube&mode=metadata",
+          href: "/tools/youtube-ai-studio",
         },
       },
     ],
@@ -669,7 +669,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free AI YouTube Title & Metadata Studio",
-          href: "/?tab=youtube&mode=titles",
+          href: "/tools/youtube-ai-studio",
         },
       },
     ],
@@ -780,7 +780,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Open the Universal File Converter",
-          href: "/?tab=converter",
+          href: "/tools/file-converter",
         },
       },
     ],
@@ -844,7 +844,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free Video Compressor Tool",
-          href: "/?tab=converter&mode=compress-video",
+          href: "/tools/file-converter",
         },
       },
       {
@@ -896,7 +896,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free File Converter Now",
-          href: "/?tab=converter",
+          href: "/tools/file-converter",
         },
       },
     ],
@@ -997,7 +997,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free AI YouTube Tags & Metadata Generator",
-          href: "/?tab=youtube&mode=metadata",
+          href: "/tools/youtube-ai-studio",
         },
       },
       {
@@ -1090,7 +1090,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Open the Free PDF & Document Converter",
-          href: "/?tab=converter&mode=document",
+          href: "/tools/file-converter",
         },
       },
       {
@@ -1126,7 +1126,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free File Converter",
-          href: "/?tab=converter",
+          href: "/tools/file-converter",
         },
       },
     ],
@@ -1185,7 +1185,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free MP4 to MP3 Converter",
-          href: "/?tab=converter&mode=audio",
+          href: "/tools/file-converter",
         },
       },
       {
@@ -1262,7 +1262,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Try our Free AI YouTube Title & Metadata Generator",
-          href: "/?tab=youtube&mode=titles",
+          href: "/tools/youtube-ai-studio",
         },
       },
       {
@@ -1354,7 +1354,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Convert PNG, JPG, WebP & AVIF Locally Now",
-          href: "/?tab=converter&mode=image",
+          href: "/tools/file-converter",
         },
       },
       {
