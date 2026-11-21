@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 const siteTitle = "QuickConvert & SEO Tools — Free Converter & AI Suite";
 const siteDescription =
   "Convert video, audio, images, and PDFs 100% locally in your browser, plus generate high-CTR YouTube SEO titles, descriptions, and tags free.";
-const siteUrl = "https://quickconvertseo.com";
+const siteUrl = "https://www.quickconvertseo.com";
 
 export const viewport: Viewport = {
   themeColor: "#0f172a",
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     "QuickConvert & SEO Tools",
   ],
   alternates: {
-    canonical: "/",
+    canonical: "https://www.quickconvertseo.com",
   },
   openGraph: {
     title: siteTitle,

@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 import { BLOG_POSTS } from "@/lib/blogData";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://quickconvertseo.com";
+  const baseUrl = "https://www.quickconvertseo.com";
 
   const blogEntries: MetadataRoute.Sitemap = BLOG_POSTS.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
+    url: `${baseUrl}/blog/${post.slug.split("?")[0]}`,
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.85,
@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     {
-      url: `${baseUrl}/`,
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "daily",
       priority: 1.0,
