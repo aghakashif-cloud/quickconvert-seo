@@ -15,6 +15,7 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   ShieldCheck,
   Copy,
   Check,
@@ -24,6 +25,7 @@ import {
   Clock,
   FileText,
   Globe,
+  Link2,
 } from "lucide-react";
 
 type WhisperModelId = "Xenova/whisper-base" | "Xenova/whisper-small";
@@ -272,6 +274,10 @@ async function decodeAudioTo16kHzMono(
 }
 
 export default function AudioTranscriberPage() {
+  const [inputMode, setInputMode] = useState<"upload" | "link">("upload");
+  const [linkUrl, setLinkUrl] = useState<string>("");
+  const [fetchedTitle, setFetchedTitle] = useState<string | null>(null);
+
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [mediaPreviewUrl, setMediaPreviewUrl] = useState<string | null>(null);
   const [isVideo, setIsVideo] = useState<boolean>(false);
@@ -285,6 +291,7 @@ export default function AudioTranscriberPage() {
   // Overall state
   const [phase, setPhase] = useState<
     | "idle"
+    | "fetching-link"
     | "processing-file"
     | "loading-model"
     | "transcribing"
@@ -292,6 +299,12 @@ export default function AudioTranscriberPage() {
     | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Progress bar 0 (Link mode): Fetching audio from server
+  const [fetchProgress, setFetchProgress] = useState<number>(0);
+  const [fetchStatusText, setFetchStatusText] = useState<string>(
+    "Paste a YouTube or Facebook link to fetch its audio track"
+  );
 
   // Progress bar 1: File Processing & Audio Extraction / Transcription progress
   const [fileProgress, setFileProgress] = useState<number>(0);
@@ -647,16 +660,7 @@ export default function AudioTranscriberPage() {
     },
   });
 
-  const handleTranscribe = async () => {
-    if (
-      !mediaFile ||
-      phase === "processing-file" ||
-      phase === "loading-model" ||
-      phase === "transcribing"
-    ) {
-      return;
-    }
-
+  const runTranscriptionForFile = async (targetFile: File) => {
     const targetModel = getAutoSelectedModel(selectedLanguage);
 
     setErrorMessage(null);
@@ -680,7 +684,7 @@ export default function AudioTranscriberPage() {
     try {
       // Always normalize both audio and video files via FFmpeg into Whisper's exact required format:
       // 16kHz, Mono, 16-bit PCM WAV (pcm_s16le) to eliminate browser resampling/codec hallucinations
-      let wavBuffer: ArrayBuffer = await extractWavViaFFmpeg(mediaFile);
+      let wavBuffer: ArrayBuffer = await extractWavViaFFmpeg(targetFile);
 
       setFileStatusText("Preparing 16kHz Mono 16-bit PCM waveform for Whisper...");
       setFileProgress(48);
@@ -734,7 +738,150 @@ export default function AudioTranscriberPage() {
       setErrorMessage(
         isMemoryOrReadErr
           ? "Browser memory limit reached while reading this file. For best performance, please use files smaller than 200MB (or convert your video to an MP3 first using our File Converter)."
-          : rawMsg || "Failed to process the uploaded media file."
+          : rawMsg || "Failed to process the media file."
+      );
+    }
+  };
+
+  const handleTranscribe = async () => {
+    if (!mediaFile || isBusy) {
+      return;
+    }
+    await runTranscriptionForFile(mediaFile);
+  };
+
+  const handleFetchAndTranscribe = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const trimmedUrl = linkUrl.trim();
+    if (!trimmedUrl) {
+      setPhase("error");
+      setErrorMessage("Please paste a valid YouTube or Facebook video URL first.");
+      return;
+    }
+    if (isBusy) return;
+
+    setErrorMessage(null);
+    setTranscript("");
+    setChunks([]);
+    setDetectedLanguageInfo(null);
+    setFetchedTitle(null);
+    setPhase("fetching-link");
+    setFetchProgress(12);
+    setFetchStatusText("Connecting to server & resolving audio stream...");
+    setFileProgress(0);
+    setFileStatusText("Waiting for server audio download to finish...");
+
+    try {
+      const response = await fetch("/api/extract-audio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: trimmedUrl }),
+      });
+
+      if (!response.ok) {
+        let serverError = "Failed to extract audio from that link.";
+        try {
+          const data = (await response.json()) as { error?: string };
+          if (data?.error) serverError = data.error;
+        } catch {
+          // fallback to generic message
+        }
+        throw new Error(serverError);
+      }
+
+      const rawTitleHeader = response.headers.get("X-Media-Title");
+      const decodedTitle = rawTitleHeader
+        ? decodeURIComponent(rawTitleHeader)
+        : "link-audio";
+      const extHeader = response.headers.get("X-Media-Extension") || "webm";
+      const contentType =
+        response.headers.get("Content-Type") || "audio/webm";
+      const totalBytes = Number(response.headers.get("Content-Length") || 0);
+
+      setFetchedTitle(decodedTitle);
+      setFetchProgress(25);
+      setFetchStatusText(
+        totalBytes > 0
+          ? `Downloading audio (${formatBytes(totalBytes)}) from server...`
+          : "Downloading audio stream from server..."
+      );
+
+      let audioBlob: Blob;
+
+      if (response.body) {
+        const reader = response.body.getReader();
+        const parts: Uint8Array[] = [];
+        let receivedBytes = 0;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value) {
+            parts.push(value);
+            receivedBytes += value.byteLength;
+
+            if (totalBytes > 0) {
+              const pct = Math.min(
+                98,
+                Math.max(25, Math.round(25 + (receivedBytes / totalBytes) * 73))
+              );
+              setFetchProgress(pct);
+              setFetchStatusText(
+                `Downloading audio (${formatBytes(receivedBytes)} / ${formatBytes(totalBytes)})...`
+              );
+            } else {
+              // Smooth progress curve when Content-Length isn't provided
+              const estimatedPct = Math.min(
+                95,
+                Math.round(25 + (1 - Math.exp(-receivedBytes / (2.5 * 1024 * 1024))) * 70)
+              );
+              setFetchProgress(estimatedPct);
+              setFetchStatusText(
+                `Downloading audio (${formatBytes(receivedBytes)} received)...`
+              );
+            }
+          }
+        }
+
+        audioBlob = new Blob(
+          parts.map((part) => new Uint8Array(part)),
+          { type: contentType }
+        );
+      } else {
+        audioBlob = await response.blob();
+      }
+
+      if (audioBlob.size === 0) {
+        throw new Error(
+          "No audio data was received from this link. Please check that the video is public and try again."
+        );
+      }
+
+      setFetchProgress(100);
+      setFetchStatusText(
+        `Audio fetched (${formatBytes(audioBlob.size)}) — starting local Whisper AI transcription...`
+      );
+
+      const safeFileName = `${decodedTitle
+        .replace(/[^a-zA-Z0-9\u0600-\u06FF\u0900-\u097F _-]/g, "")
+        .trim()
+        .slice(0, 80) || "link-audio"}.${extHeader}`;
+
+      const fetchedFile = new File([audioBlob], safeFileName, {
+        type: contentType,
+      });
+
+      setMediaFile(fetchedFile);
+      setMediaPreviewUrl(URL.createObjectURL(fetchedFile));
+      setIsVideo(false);
+
+      await runTranscriptionForFile(fetchedFile);
+    } catch (err: unknown) {
+      setPhase("error");
+      setErrorMessage(
+        err instanceof Error
+          ? err.message
+          : "Failed to fetch audio from the provided link."
       );
     }
   };
@@ -743,13 +890,27 @@ export default function AudioTranscriberPage() {
     setMediaFile(null);
     setMediaPreviewUrl(null);
     setIsVideo(false);
+    setFetchedTitle(null);
     setPhase("idle");
     setErrorMessage(null);
     setTranscript("");
     setChunks([]);
     setDetectedLanguageInfo(null);
+    setFetchProgress(0);
+    setFetchStatusText(
+      "Paste a YouTube or Facebook link to fetch its audio track"
+    );
     setFileProgress(0);
     setFileStatusText("Waiting for media file...");
+  };
+
+  const handleModeSwitch = (mode: "upload" | "link") => {
+    if (isBusy || mode === inputMode) return;
+    setInputMode(mode);
+    setErrorMessage(null);
+    if (phase === "error") {
+      setPhase("idle");
+    }
   };
 
   const formattedTranscript =
@@ -795,6 +956,7 @@ export default function AudioTranscriberPage() {
   };
 
   const isBusy =
+    phase === "fetching-link" ||
     phase === "processing-file" ||
     phase === "loading-model" ||
     phase === "transcribing";
@@ -825,7 +987,7 @@ export default function AudioTranscriberPage() {
               AI Audio/Video Transcriber
             </h1>
             <p className="text-xs md:text-sm text-slate-400 mt-1">
-              Upload any audio or video file to generate an accurate text transcript 100% locally in your browser—completely free and private.
+              Upload any audio or video file—or paste a YouTube / Facebook link—to generate an accurate text transcript locally in your browser with Whisper AI.
             </p>
           </div>
 
@@ -860,8 +1022,258 @@ export default function AudioTranscriberPage() {
           </p>
         </div>
 
-        {/* Upload Dropzone OR Selected Media Card */}
-        {!mediaFile ? (
+        {/* Input Mode Toggle: Upload File vs Paste Link */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="inline-flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800 w-fit">
+            <button
+              type="button"
+              disabled={isBusy}
+              onClick={() => handleModeSwitch("upload")}
+              className={`px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition flex items-center gap-2 ${
+                inputMode === "upload"
+                  ? "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white shadow"
+                  : "text-slate-400 hover:text-slate-200"
+              } disabled:opacity-50`}
+            >
+              <Upload className="w-4 h-4" />
+              Upload File
+            </button>
+            <button
+              type="button"
+              disabled={isBusy}
+              onClick={() => handleModeSwitch("link")}
+              className={`px-4 py-2 rounded-lg text-xs md:text-sm font-semibold transition flex items-center gap-2 ${
+                inputMode === "link"
+                  ? "bg-gradient-to-r from-cyan-600 to-indigo-600 text-white shadow"
+                  : "text-slate-400 hover:text-slate-200"
+              } disabled:opacity-50`}
+            >
+              <Link2 className="w-4 h-4" />
+              Paste Link
+            </button>
+          </div>
+
+          <p className="text-xs text-slate-400">
+            {inputMode === "upload"
+              ? "100% client-side processing — files never leave your device."
+              : "Supports public YouTube & Facebook videos (under 10 minutes)."}
+          </p>
+        </div>
+
+        {/* Paste Link Card OR Upload Dropzone / Selected Media Card */}
+        {inputMode === "link" ? (
+          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-7 space-y-5 shadow-xl">
+            {/* Required Server Limit Warning Banner */}
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl px-4 py-3 flex items-start gap-2.5 text-xs md:text-sm text-amber-200">
+              <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+              <span>
+                Transcribing from links is limited to shorter videos (under 10 minutes) due to server limits. For longer files, please download and upload them directly.
+              </span>
+            </div>
+
+            <form
+              onSubmit={handleFetchAndTranscribe}
+              className="space-y-4"
+            >
+              <div className="space-y-2">
+                <label
+                  htmlFor="media-link-input"
+                  className="block text-xs font-semibold text-slate-300 uppercase tracking-wider"
+                >
+                  YouTube or Facebook Video URL
+                </label>
+                <div className="flex flex-col md:flex-row gap-3">
+                  <div className="relative flex-1">
+                    <Link2 className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      id="media-link-input"
+                      type="url"
+                      value={linkUrl}
+                      onChange={(e) => setLinkUrl(e.target.value)}
+                      disabled={isBusy}
+                      placeholder="https://www.youtube.com/watch?v=... or https://www.facebook.com/..."
+                      className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-950 border border-slate-700 hover:border-cyan-500/60 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 text-sm text-slate-100 placeholder:text-slate-500 disabled:opacity-50 transition"
+                    />
+                  </div>
+
+                  {/* Language Dropdown */}
+                  <div className="relative flex items-center shrink-0">
+                    <Globe className="w-3.5 h-3.5 text-cyan-400 absolute left-3 pointer-events-none" />
+                    <select
+                      aria-label="Audio language for link transcription"
+                      value={selectedLanguage}
+                      onChange={(e) => setSelectedLanguage(e.target.value)}
+                      disabled={isBusy}
+                      className="w-full md:w-auto pl-8 pr-7 py-3 rounded-xl bg-slate-950 border border-slate-700 hover:border-cyan-500/60 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/30 text-xs font-semibold text-slate-100 disabled:opacity-50 transition cursor-pointer"
+                    >
+                      {LANGUAGE_OPTIONS.map((lang) => (
+                        <option
+                          key={lang.code}
+                          value={lang.code}
+                          className="bg-slate-900 text-slate-100"
+                        >
+                          {lang.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isBusy || !linkUrl.trim()}
+                    className="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 disabled:opacity-50 text-white text-xs md:text-sm font-bold shadow-lg shadow-indigo-600/25 transition flex items-center justify-center gap-2 shrink-0"
+                  >
+                    {isBusy ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        {phase === "fetching-link"
+                          ? "Fetching Audio..."
+                          : phase === "processing-file"
+                          ? "Processing Audio..."
+                          : phase === "loading-model"
+                          ? "Loading AI Model..."
+                          : "Transcribing..."}
+                      </>
+                    ) : (
+                      <>
+                        <Mic className="w-4 h-4" />
+                        Fetch &amp; Transcribe
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            {/* Fetched Audio Preview */}
+            {fetchedTitle && mediaPreviewUrl && (
+              <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-3.5 space-y-2.5">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-semibold text-slate-200 truncate flex items-center gap-2">
+                    <FileAudio className="w-4 h-4 text-cyan-400 shrink-0" />
+                    {fetchedTitle}
+                  </span>
+                  {mediaFile && (
+                    <span className="text-[11px] text-slate-400 shrink-0">
+                      {formatBytes(mediaFile.size)}
+                    </span>
+                  )}
+                </div>
+                <audio src={mediaPreviewUrl} controls className="w-full" />
+              </div>
+            )}
+
+            {/* Link Mode Progress Bars: Server Fetching + Browser Transcription + AI Model */}
+            {(isBusy || phase === "done") && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+                {/* 1. Fetching Audio from Server */}
+                <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="font-bold text-slate-200 flex items-center gap-1.5">
+                      {fetchProgress >= 100 ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      ) : phase === "fetching-link" ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-amber-400 shrink-0" />
+                      ) : (
+                        <Download className="w-4 h-4 text-slate-400 shrink-0" />
+                      )}
+                      Fetching Audio (Server)
+                    </span>
+                    <span className="font-mono font-bold text-amber-300">
+                      {fetchProgress}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        fetchProgress >= 100
+                          ? "bg-emerald-500"
+                          : "bg-gradient-to-r from-amber-500 to-orange-500"
+                      }`}
+                      style={{ width: `${fetchProgress}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 truncate">
+                    {fetchStatusText}
+                  </p>
+                </div>
+
+                {/* 2. Browser Transcription Progress */}
+                <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="font-bold text-slate-200 flex items-center gap-1.5">
+                      {phase === "done" ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      ) : phase === "processing-file" ||
+                        phase === "transcribing" ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-cyan-400 shrink-0" />
+                      ) : (
+                        <FileAudio className="w-4 h-4 text-slate-400 shrink-0" />
+                      )}
+                      Transcribing (Browser)
+                    </span>
+                    <span className="font-mono font-bold text-cyan-300">
+                      {fileProgress}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        phase === "done"
+                          ? "bg-emerald-500"
+                          : "bg-gradient-to-r from-cyan-500 to-indigo-500"
+                      }`}
+                      style={{ width: `${fileProgress}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 truncate">
+                    {fileStatusText}
+                  </p>
+                </div>
+
+                {/* 3. AI Model Loading Progress */}
+                <div className="bg-slate-950/90 border border-slate-800 rounded-xl p-4 space-y-2">
+                  <div className="flex items-center justify-between gap-2 text-xs">
+                    <span className="font-bold text-slate-200 flex items-center gap-1.5">
+                      {modelProgress >= 100 ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      ) : phase === "loading-model" ? (
+                        <Loader2 className="w-4 h-4 animate-spin text-purple-400 shrink-0" />
+                      ) : (
+                        <Cpu className="w-4 h-4 text-slate-400 shrink-0" />
+                      )}
+                      AI Model Loading
+                    </span>
+                    <span className="font-mono font-bold text-purple-300">
+                      {modelProgress}%
+                    </span>
+                  </div>
+                  <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-300 ${
+                        modelProgress >= 100
+                          ? "bg-emerald-500"
+                          : "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
+                      }`}
+                      style={{ width: `${modelProgress}%` }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-slate-400 truncate">
+                    {modelStatusText}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Error Alert */}
+            {phase === "error" && errorMessage && (
+              <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-4 flex items-start gap-2.5 text-xs md:text-sm text-rose-300">
+                <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+          </div>
+        ) : !mediaFile ? (
           <div
             {...getRootProps()}
             className={`cursor-pointer rounded-2xl border-2 border-dashed transition-all duration-200 p-10 md:p-14 text-center ${
