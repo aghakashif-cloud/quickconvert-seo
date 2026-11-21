@@ -34,6 +34,24 @@ export default function Footer() {
             />
           </a>
 
+          {/* LaunchBuff Featured Badge */}
+          <a
+            href="https://launchbuff.com/products/quickconvert-seo-tools-a0061l"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Featured on LaunchBuff"
+            className="inline-flex items-center transition-transform hover:scale-[1.02]"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://launchbuff.com/badge-featured-dark.svg"
+              alt="Featured on LaunchBuff"
+              width={256}
+              height={80}
+              className="h-10 w-auto"
+            />
+          </a>
+
           <span className="hidden sm:inline text-slate-700">•</span>
           <p className="text-xs text-slate-400">
             © {new Date().getFullYear()} QuickConvert &amp; SEO Tools. All rights reserved.
