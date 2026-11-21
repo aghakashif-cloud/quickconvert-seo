@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import { useDropzone } from "react-dropzone";
 import {
   Headphones,
@@ -853,6 +854,37 @@ export default function PdfToAudiobookPage() {
             />
           </div>
         </div>
+
+        <ToolSeoContent
+          toolName="PDF to Audiobook Converter (Free TTS)"
+          aboutParagraphs={[
+            "The PDF to Audiobook Converter lets students, researchers, commuters, and busy professionals listen to any PDF ebook, textbook, lecture note, or business report aloud directly inside the web browser. Powered by PDF.js for local text extraction and your browser's native Web Speech Synthesis engine, it reads long documents seamlessly without ever uploading sensitive files to external servers.",
+            "To prevent browser speech cutoffs common on long documents, our reader automatically splits extracted text into natural sentence-level chunks across English, Urdu, Hindi, Arabic, and other languages. You can freely edit or remove footnotes before listening, switch between installed system voices, adjust reading speed from 0.5x to 2.0x, and pause or resume playback at any time.",
+          ]}
+          howToSteps={[
+            {
+              title: "Upload a PDF or Paste Text",
+              detail:
+                "Drop any selectable-text PDF file into the upload zone to extract its pages locally, or paste text directly into the editor below.",
+            },
+            {
+              title: "Choose Your Voice & Playback Speed",
+              detail:
+                "Select a natural voice from your device's installed speech voices and fine-tune playback speed for studying or casual listening.",
+            },
+            {
+              title: "Press Play & Listen Hands-Free",
+              detail:
+                "Click Play to start continuous chunked speech playback with live progress tracking, pause/resume controls, and estimated listening time.",
+            },
+          ]}
+          highlights={[
+            "100% private client-side PDF parsing and Text-to-Speech—confidential reports and ebooks never leave your device.",
+            "Smart sentence chunking prevents the 15-second Chrome/Edge Web Speech cutoff on long multi-page documents.",
+            "Editable extracted text area lets you strip headers, page numbers, or citations before listening.",
+            "Free with unlimited pages, adjustable reading speed, and multi-language voice support.",
+          ]}
+        />
       </div>
     </div>
   );

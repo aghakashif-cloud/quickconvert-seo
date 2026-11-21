@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import { useDropzone } from "react-dropzone";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -461,6 +462,37 @@ export default function VideoToGifPage() {
             )}
           </div>
         )}
+
+        <ToolSeoContent
+          toolName="Video to Animated GIF Converter"
+          aboutParagraphs={[
+            "Our Video to Animated GIF Converter turns MP4, MOV, WebM, and MKV video clips into smooth, lightweight animated GIFs directly inside your browser using FFmpeg WebAssembly. Because every frame is processed locally on your own device, you never have to wait for slow cloud uploads or expose private screen recordings, product demos, or personal clips to external servers.",
+            "Using FFmpeg palette generation and Lanczos scaling, the converter produces sharp colors and clean motion while keeping file sizes small enough for Discord, Slack, GitHub READMEs, newsletters, and social media posts. You can customize output width, frame rate (FPS), and start/end trim timestamps to capture the exact loop you want.",
+          ]}
+          howToSteps={[
+            {
+              title: "Drop Your Video Clip",
+              detail:
+                "Upload any MP4, MOV, WebM, AVI, or MKV clip into the dropzone above to preview it immediately.",
+            },
+            {
+              title: "Adjust FPS, Width & Trim Range",
+              detail:
+                "Choose your ideal frame rate (10-15 FPS works best for smooth yet compact GIFs), resize width, and optionally trim start and end seconds.",
+            },
+            {
+              title: "Convert & Download Locally",
+              detail:
+                "Click Convert to GIF, watch the live FFmpeg progress bar, preview your animation, and download the finished .GIF file with zero watermarks.",
+            },
+          ]}
+          highlights={[
+            "100% client-side FFmpeg WebAssembly rendering—your video clips never leave your computer or phone.",
+            "Adaptive 256-color palette optimization produces crisp, banding-free animated GIFs.",
+            "Customizable resolution width, frame rate, and clip start/end trimming to keep file sizes lightweight.",
+            "Free unlimited conversions with no sign-up, no upload queues, and no watermarks.",
+          ]}
+        />
       </div>
     </div>
   );

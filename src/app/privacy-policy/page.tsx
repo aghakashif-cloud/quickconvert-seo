@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Shield } from "lucide-react";
 
 export const metadata = {
-  title: "Privacy Policy — QuickConvert & SEO Tools",
+  title: "Privacy Policy | QuickConvert & SEO Tools",
   description:
-    "Read the QuickConvert & SEO Tools Privacy Policy covering client-side file processing, data collection, cookies, COPPA, and Google AdSense third-party advertising.",
+    "Read the QuickConvert & SEO Tools Privacy Policy covering local file processing, cookies, data protection, COPPA, and Google AdSense ads.",
+  alternates: { canonical: "/privacy-policy" },
 };
 
 export default function PrivacyPolicyPage() {

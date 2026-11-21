@@ -27,6 +27,15 @@ export async function generateStaticParams() {
   }));
 }
 
+function clampMetaText(text: string, maxChars: number): string {
+  const cleaned = text.replace(/\s+/g, " ").trim();
+  if (cleaned.length <= maxChars) return cleaned;
+  const sliced = cleaned.slice(0, maxChars - 1);
+  const lastSpace = sliced.lastIndexOf(" ");
+  const cut = lastSpace > Math.floor(maxChars * 0.6) ? sliced.slice(0, lastSpace) : sliced;
+  return `${cut.replace(/[,:;|\-—–\s]+$/, "")}…`;
+}
+
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
@@ -35,12 +44,16 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "Article Not Found — QuickConvert & SEO Tools",
+      title: "Article Not Found | QuickConvert & SEO Tools",
     };
   }
 
-  const metaTitle = post.metaTitle || `${post.title} — QuickConvert & SEO Tools`;
-  const metaDescription = post.metaDescription || post.excerpt;
+  const rawTitle = post.metaTitle || post.title;
+  const metaTitle = clampMetaText(rawTitle, 58);
+  const metaDescription = clampMetaText(
+    post.metaDescription || post.excerpt,
+    155
+  );
 
   return {
     title: metaTitle,

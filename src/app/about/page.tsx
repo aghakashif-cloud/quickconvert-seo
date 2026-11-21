@@ -3,9 +3,10 @@ import Link from "next/link";
 import { Zap, ShieldCheck, Cpu, Sparkles, Globe, Lock } from "lucide-react";
 
 export const metadata = {
-  title: "About Us — QuickConvert & SEO Tools",
+  title: "About Us | QuickConvert & SEO Tools",
   description:
-    "Learn about QuickConvert & SEO Tools, our mission to provide fast, privacy-first client-side file conversion and AI-powered creator utilities.",
+    "Learn about QuickConvert & SEO Tools and our mission to deliver fast, privacy-first browser file conversion and AI creator SEO utilities.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {

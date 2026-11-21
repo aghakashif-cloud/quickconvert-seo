@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import {
   Youtube,
   Search,
@@ -823,6 +824,37 @@ export default function YouTubeAuditPage() {
             </div>
           </div>
         )}
+
+        <ToolSeoContent
+          toolName="YouTube SEO Audit & Video Analyzer"
+          aboutParagraphs={[
+            "The YouTube SEO Audit & Video Analyzer inspects any public YouTube video URL to evaluate how well its metadata is optimized for YouTube Search and Suggested Video discovery. It extracts the live video title, full description, and hidden keyword tags, then runs an AI-powered scorecard analysis from 0 to 100 that pinpoints weak hooks, missing keywords, and description gaps.",
+            "Beyond scoring what is currently live, the analyzer generates ready-to-paste optimized metadata—including a stronger high-CTR title, a rewritten search-friendly description, and targeted keyword tags—plus a prioritized action plan you can apply immediately inside YouTube Studio to boost impressions and click-through rate.",
+          ]}
+          howToSteps={[
+            {
+              title: "Paste a YouTube Video URL",
+              detail:
+                "Copy any standard YouTube watch link, Shorts URL, or youtu.be link and paste it into the analyzer bar above.",
+            },
+            {
+              title: "Run the AI SEO Audit",
+              detail:
+                "Click Audit Video SEO to fetch live metadata and compute an instant 0-100 SEO score across title, description, and tag quality.",
+            },
+            {
+              title: "Apply the Optimized Fixes",
+              detail:
+                "Review the prioritized recommendations and copy the AI-rewritten title, description, and keyword tags directly into YouTube Studio.",
+            },
+          ]}
+          highlights={[
+            "Instant 0-100 YouTube SEO scorecard breaking down title length, click appeal, description structure, and tag coverage.",
+            "Extracts live metadata from public YouTube videos and Shorts without requiring channel OAuth login.",
+            "Generates copy-ready optimized titles, SEO descriptions, and high-intent keyword tags powered by Gemini AI.",
+            "Actionable, prioritized improvement tips tailored specifically to the audited video's topic and niche.",
+          ]}
+        />
       </div>
     </div>
   );

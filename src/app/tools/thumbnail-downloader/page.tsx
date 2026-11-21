@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import {
   Youtube,
   Download,
@@ -507,15 +508,36 @@ export default function ThumbnailDownloaderPage() {
           </div>
         )}
 
-        {/* SEO Guide Section for Thumbnail Downloader */}
-        <section className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-6 md:p-8 space-y-4 text-sm text-slate-300 leading-relaxed">
-          <h2 className="text-lg font-bold text-white">
-            How to Download Any YouTube Thumbnail in Full HD
-          </h2>
-          <p className="text-slate-400">
-            Whether you need to recover a backup copy of your own channel&apos;s artwork, study high-CTR thumbnail designs in your niche for inspiration, or embed a video preview image in a blog post, our free <strong>YouTube Thumbnail Downloader</strong> retrieves every resolution stored on YouTube&apos;s image servers (`maxresdefault.jpg`, `sddefault.jpg`, `hqdefault.jpg`, and `mqdefault.jpg`) in one click—and automatically falls back to the highest available resolution if a video was uploaded without a 1280×720 thumbnail.
-          </p>
-        </section>
+        <ToolSeoContent
+          toolName="YouTube Thumbnail Downloader (HD & 4K)"
+          aboutParagraphs={[
+            "Our free YouTube Thumbnail Downloader lets creators, designers, bloggers, and marketers inspect and save the original thumbnail artwork of any public YouTube video or YouTube Shorts link in seconds. Whether you are recovering a backup copy of your own channel artwork, researching high-CTR thumbnail styles in your niche, or embedding a crisp video preview in an article, this tool fetches every available resolution directly from YouTube's official image CDN.",
+            "You can preview and download Maximum HD (1280x720 maxresdefault.jpg), Standard Definition (640x480 sddefault.jpg), High Quality (480x360 hqdefault.jpg), and Medium Quality (320x180 mqdefault.jpg) versions in one click. If a video was uploaded without a 1280x720 thumbnail, the tool automatically detects the placeholder and falls back to the highest real resolution available.",
+          ]}
+          howToSteps={[
+            {
+              title: "Copy a YouTube Video or Shorts URL",
+              detail:
+                "Copy any standard youtube.com/watch, youtu.be, or youtube.com/shorts link from your browser or the YouTube app.",
+            },
+            {
+              title: "Paste & Fetch All Resolutions",
+              detail:
+                "Paste the URL into the input box above and click Get Thumbnails to load the live HD preview and all four resolution cards.",
+            },
+            {
+              title: "Download or Copy Image URL",
+              detail:
+                "Click Download JPG on your preferred resolution (such as 1280x720 Maximum HD) or copy the direct image URL to your clipboard.",
+            },
+          ]}
+          highlights={[
+            "Supports regular YouTube videos, YouTube Shorts, live replays, and shortened youtu.be links.",
+            "Smart placeholder detection automatically checks whether maxresdefault.jpg exists and selects the crispest available image.",
+            "One-click JPG download and direct URL copy across 4 resolutions (1280x720, 640x480, 480x360, and 320x180).",
+            "Completely free, instant, and requires no YouTube account login or browser extension.",
+          ]}
+        />
       </div>
     </div>
   );

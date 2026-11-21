@@ -7,10 +7,9 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const siteTitle =
-  "QuickConvert & SEO Tools - Free Online File Converter & AI YouTube Metadata Generator";
+const siteTitle = "QuickConvert & SEO Tools — Free Converter & AI Suite";
 const siteDescription =
-  "Convert videos, audio, images, PDFs, and documents for free online. 100% secure client-side conversion. Also generate high-ranking YouTube titles, descriptions, and tags using AI.";
+  "Convert video, audio, images, and PDFs 100% locally in your browser, plus generate high-CTR YouTube SEO titles, descriptions, and tags free.";
 const siteUrl = "https://quickconvertseo.com";
 
 export const viewport: Viewport = {
@@ -65,10 +64,10 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "QuickConvert & SEO Tools - Free Online File Converter & AI YouTube Metadata Generator",
+        url: "/icons/icon-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "QuickConvert & SEO Tools — Free Converter & AI Suite",
       },
     ],
   },
@@ -76,7 +75,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/og-image.png"],
+    images: ["/icons/icon-512x512.png"],
   },
   robots: {
     index: true,

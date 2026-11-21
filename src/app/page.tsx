@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 
 // Dynamically import FileConverter with SSR disabled so browser-only WASM/Blob APIs load cleanly
 const FileConverter = dynamic(() => import("@/components/FileConverter"), {
@@ -66,27 +67,35 @@ const MODE_LABELS: Record<string, { title: string; subtitle: string }> = {
   },
 };
 
-function WorkspaceContent() {
+function SearchParamsSync({
+  onSync,
+}: {
+  onSync: (tab: ActiveTab, mode: string) => void;
+}) {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const tabParam = searchParams.get("tab");
   const modeParam = searchParams.get("mode") || "";
 
-  const [activeTab, setActiveTab] = useState<ActiveTab>(
-    tabParam === "youtube" ? "youtube" : "converter"
-  );
-
-  // Sync activeTab whenever URL query parameter changes (e.g., clicking Top Navbar buttons or dropdown links)
   useEffect(() => {
-    if (tabParam === "youtube") {
-      setActiveTab("youtube");
-    } else if (tabParam === "converter" || !tabParam) {
-      setActiveTab("converter");
-    }
-  }, [tabParam, modeParam]);
+    onSync(tabParam === "youtube" ? "youtube" : "converter", modeParam);
+  }, [tabParam, modeParam, onSync]);
+
+  return null;
+}
+
+export default function HomePage() {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<ActiveTab>("converter");
+  const [modeParam, setModeParam] = useState<string>("");
+
+  const handleUrlSync = useCallback((tab: ActiveTab, mode: string) => {
+    setActiveTab(tab);
+    setModeParam(mode);
+  }, []);
 
   const handleTabSwitch = (tab: ActiveTab, mode?: string) => {
     setActiveTab(tab);
+    setModeParam(mode || "");
     const query = mode ? `/?tab=${tab}&mode=${mode}` : `/?tab=${tab}`;
     router.push(query, { scroll: false });
   };
@@ -106,6 +115,9 @@ function WorkspaceContent() {
 
   return (
     <div className="flex-1 flex flex-col w-full bg-slate-950 text-slate-100">
+      <Suspense fallback={null}>
+        <SearchParamsSync onSync={handleUrlSync} />
+      </Suspense>
       {/* Main Full-Width Content Area */}
       <main className="w-full flex-1 flex flex-col min-w-0">
         {/* Centered Workspace Sub-Header Bar */}
@@ -215,22 +227,70 @@ function WorkspaceContent() {
         {/* Centered Active Tool Workspace */}
         <div className="px-4 py-6 sm:px-6 md:p-8 max-w-5xl w-full mx-auto flex-1">
           {activeTab === "converter" ? <FileConverter /> : <YouTubeGenerator />}
+
+          <ToolSeoContent
+            toolName={
+              activeTab === "converter"
+                ? "QuickConvert Universal File Converter"
+                : "AI YouTube Metadata & SEO Studio"
+            }
+            aboutParagraphs={
+              activeTab === "converter"
+                ? [
+                    "QuickConvert Universal Client-Side File Converter lets you transform videos, audio tracks, images, PDFs, and Word documents directly inside your web browser without uploading a single byte to external cloud servers. Powered by FFmpeg WebAssembly, HTML5 Canvas, pdf-lib, and mammoth.js, every conversion runs locally on your own device for complete privacy and instant downloads.",
+                    "Whether you need to convert MP4 to MP3, compress large videos for WhatsApp or Discord, turn iPhone HEIC and WebP photos into standard JPG or PNG files, or convert PDF and DOCX documents, QuickConvert automatically detects your file type and displays every compatible output format along with optional resolution, quality, bitrate, and trim controls.",
+                  ]
+                : [
+                    "The AI YouTube Metadata & SEO Studio helps content creators, marketers, and educators generate high-CTR video titles, structured SEO descriptions, chapter outlines, thumbnail hook ideas, and relevant search tags in seconds using Google Gemini AI.",
+                    "Instead of guessing keywords or staring at a blank upload screen, simply paste your video topic, script summary, or rough outline to receive fresh, search-optimized metadata tailored to your audience and tone—ready to copy straight into YouTube Studio.",
+                  ]
+            }
+            howToSteps={
+              activeTab === "converter"
+                ? [
+                    {
+                      title: "Add Your Files",
+                      detail:
+                        "Drag and drop one or multiple video, audio, image, PDF, or document files into the dropzone above.",
+                    },
+                    {
+                      title: "Choose an Output Format",
+                      detail:
+                        "Select your target format (such as MP4, MP3, WebP, JPG, PNG, or PDF) and optionally adjust resolution, bitrate, quality, or trim times.",
+                    },
+                    {
+                      title: "Convert & Download Locally",
+                      detail:
+                        "Click Convert to process files directly in your browser memory, then save the finished output immediately with zero upload wait time.",
+                    },
+                  ]
+                : [
+                    {
+                      title: "Describe Your Video",
+                      detail:
+                        "Enter your video topic, rough script, or key takeaways into the input field.",
+                    },
+                    {
+                      title: "Customize Tone & Format",
+                      detail:
+                        "Pick your preferred tone, target audience, and video format (Long-form or YouTube Shorts).",
+                    },
+                    {
+                      title: "Generate & Copy Metadata",
+                      detail:
+                        "Click Generate to receive a primary high-CTR title, alternative hooks, an SEO description, and copy-ready tags.",
+                    },
+                  ]
+            }
+            highlights={[
+              "100% private client-side file conversion—your personal videos, photos, and PDFs never leave your device.",
+              "Supports batch file conversion across video (MP4, WebM, MOV, MKV), audio (MP3, WAV, FLAC), images (PNG, JPG, WebP, AVIF, ICO), and documents (PDF, DOCX).",
+              "Built-in YouTube Creator Suite including AI Transcriber, Video-to-SEO Generator, SEO Audit, Video Clipper, and Thumbnail Downloader.",
+              "Completely free with no account registration, no watermarks, and instant browser downloads.",
+            ]}
+          />
         </div>
       </main>
     </div>
-  );
-}
-
-export default function HomePage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex-1 bg-slate-950 p-12 text-center text-sm text-slate-400">
-          Loading workspace...
-        </div>
-      }
-    >
-      <WorkspaceContent />
-    </Suspense>
   );
 }

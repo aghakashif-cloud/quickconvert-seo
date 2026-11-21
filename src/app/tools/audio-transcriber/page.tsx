@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import { useDropzone } from "react-dropzone";
 import { FFmpeg, type FFFSType } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -1591,6 +1592,37 @@ export default function AudioTranscriberPage() {
             />
           </div>
         )}
+
+        <ToolSeoContent
+          toolName="AI Audio & Video Transcriber"
+          aboutParagraphs={[
+            "Our AI Audio & Video Transcriber converts spoken words from audio recordings, video files, and short YouTube or Facebook links into clean, editable text transcripts directly inside your web browser. Using FFmpeg WebAssembly for 16kHz Mono PCM audio normalization and OpenAI Whisper via Transformers.js, speech recognition runs locally on your own computer without uploading your private media files to third-party transcription servers.",
+            "Designed for journalists, podcasters, students, and YouTube creators, the transcriber supports English, Urdu, Hindi, Arabic, and over 95 additional languages. It automatically chooses the optimal multilingual Whisper model for your selected language, caches the model in your browser after the first run for faster repeat use, and lets you toggle timestamps or export your finished transcript as a plain .TXT file.",
+          ]}
+          howToSteps={[
+            {
+              title: "Upload a File or Paste a Link",
+              detail:
+                "Drop any MP3, WAV, M4A, MP4, MOV, or WebM file into Upload File mode, or switch to Paste Link for short public YouTube and Facebook videos under 10 minutes.",
+            },
+            {
+              title: "Select the Spoken Language",
+              detail:
+                "Choose English, Urdu, Hindi, Arabic, or another language from the dropdown so Whisper transcribes accurately in the native script.",
+            },
+            {
+              title: "Transcribe & Export",
+              detail:
+                "Click Transcribe, watch the local processing progress bars, and copy or download your timestamped or plain-text transcript.",
+            },
+          ]}
+          highlights={[
+            "100% browser-based Whisper AI speech recognition for uploaded files—zero cloud uploads and complete privacy.",
+            "Multilingual accuracy supporting English, Urdu (with automatic right-to-left rendering), Hindi, Arabic, and 95+ languages.",
+            "Built-in FFmpeg WASM audio extraction handles video containers like MP4, MOV, MKV, and WebM automatically.",
+            "Optional timestamp markers, one-click clipboard copy, and instant .TXT file download.",
+          ]}
+        />
       </div>
     </div>
   );

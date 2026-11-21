@@ -39,10 +39,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "how-to-convert-pdf-to-audiobook-for-free-listen-to-any-document",
     title: "How to Convert PDF to Audiobook for Free (Listen to Any Document)",
-    metaTitle:
-      "How to Convert PDF to Audiobook Free (Listen to Any Document) | QuickConvert",
+    metaTitle: "Convert PDF to Audiobook Free Online | QuickConvert",
     metaDescription:
-      "Turn any PDF ebook, textbook, or report into spoken audio for free right in your browser. Step-by-step guide to our 100% private client-side PDF to Audiobook reader.",
+      "Turn any PDF ebook, textbook, or report into spoken audio for free in your browser with our 100% private client-side PDF to Audiobook reader.",
     excerpt:
       "Have a 60-page PDF textbook, research paper, or business report you don't have time to read on a screen? Learn how to convert PDF to audiobook free locally in your browser using Text-to-Speech with adjustable speed and natural voices.",
     focusKeywords: [
@@ -171,10 +170,9 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: "how-to-convert-heic-to-jpg-for-free-iphone-to-windows-mac",
     title: "How to Convert HEIC to JPG for Free (iPhone to Windows/Mac)",
-    metaTitle:
-      "How to Convert HEIC to JPG Free (iPhone to Windows & Mac) | QuickConvert",
+    metaTitle: "Convert HEIC to JPG Free (Windows & Mac) | QuickConvert",
     metaDescription:
-      "Need to convert HEIC to JPG free on Windows or Mac? Learn why iPhones use HEIC, why Windows struggles to open them, and how to convert iPhone photos locally in seconds.",
+      "Convert iPhone HEIC photos to JPG free on Windows or Mac in seconds. Learn why HEIC fails to open and convert images 100% locally in your browser.",
     excerpt:
       "Transferred iPhone photos to your Windows PC only to find unreadable .HEIC files? Learn what HEIC is, why compatibility issues happen, and how to convert HEIC to JPG free 100% privately inside your browser.",
     focusKeywords: [
@@ -330,10 +328,9 @@ export const BLOG_POSTS: BlogPost[] = [
     slug: "how-to-compress-video-files-for-whatsapp-and-discord-without-losing-quality",
     title:
       "How to Compress Video Files for WhatsApp & Discord (Without Losing Quality)",
-    metaTitle:
-      "How to Compress Video for WhatsApp & Discord Free (No Quality Loss)",
+    metaTitle: "Compress Video for WhatsApp & Discord Free | QuickConvert",
     metaDescription:
-      "Blocked by WhatsApp's 16MB limit or Discord's 10MB/25MB upload cap? Learn how to compress video for WhatsApp free locally in your browser without losing quality.",
+      "Bypass WhatsApp's 16MB limit and Discord's upload cap. Compress MP4 videos for free locally in your browser without losing visual quality.",
     excerpt:
       "Tired of seeing 'Your files are too powerful' on Discord or having WhatsApp chop and blur your videos? Learn how video compression works and how to compress video for WhatsApp free in seconds without sacrificing sharpness.",
     focusKeywords: [

@@ -3,9 +3,10 @@ import Link from "next/link";
 import { FileText } from "lucide-react";
 
 export const metadata = {
-  title: "Terms and Conditions — QuickConvert & SEO Tools",
+  title: "Terms and Conditions | QuickConvert & SEO Tools",
   description:
-    "Read the Terms and Conditions governing the use of QuickConvert & SEO Tools, including our client-side file converter and AI YouTube metadata generator.",
+    "Read the Terms and Conditions governing QuickConvert & SEO Tools, including our browser-based file converters and AI YouTube SEO utilities.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

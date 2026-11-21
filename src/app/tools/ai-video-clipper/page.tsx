@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import { useDropzone } from "react-dropzone";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -855,6 +856,37 @@ export default function AiVideoClipperPage() {
             </div>
           </div>
         )}
+
+        <ToolSeoContent
+          toolName="AI Video Clipper & Viral Segment Finder"
+          aboutParagraphs={[
+            "The AI Video Clipper & Viral Segment Finder helps podcast hosts, educators, and YouTube creators repurpose long-form videos into punchy 30 to 60 second YouTube Shorts, Instagram Reels, and TikTok clips. Instead of scrubbing through an entire recording manually, the tool extracts a compact audio track 100% locally inside your browser using FFmpeg WebAssembly and analyzes the spoken moments with Gemini AI to identify the highest-retention hooks and standout takeaways.",
+            "For every suggested viral segment, you receive exact start and end timestamps, a hook explanation, and a ready-to-copy social caption—plus one-click local video trimming via FFmpeg WASM so you can preview and download each short clip straight from your browser with zero server video uploads.",
+          ]}
+          howToSteps={[
+            {
+              title: "Upload Your Long-Form Video",
+              detail:
+                "Drop an MP4, MOV, or WebM video file into the upload zone to load it locally in your browser.",
+            },
+            {
+              title: "Find Viral 30-60s Segments",
+              detail:
+                "Click Analyze Video to extract audio via FFmpeg WASM and let Gemini AI pinpoint the most engaging short-form moments with timestamps.",
+            },
+            {
+              title: "Trim & Download Clips Locally",
+              detail:
+                "Review the recommended clips, copy the suggested captions, and export trimmed video segments directly to your device.",
+            },
+          ]}
+          highlights={[
+            "Extracts audio and trims final video clips locally in your browser via FFmpeg WebAssembly—your full video never uploads to a server.",
+            "Pinpoints 30 to 60 second high-retention moments ideal for YouTube Shorts, TikTok, and Instagram Reels.",
+            "Provides exact timestamp ranges, virality reasoning, and copy-ready social media captions for every clip.",
+            "Fast, free creator workflow requiring no desktop video editor or paid clipping subscription.",
+          ]}
+        />
       </div>
     </div>
   );

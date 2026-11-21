@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
+import ToolSeoContent from "@/components/ToolSeoContent";
 import { useDropzone, type FileRejection } from "react-dropzone";
 import { FFmpeg, type FFFSType } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
@@ -1503,6 +1504,37 @@ export default function VideoToSeoPage() {
             </div>
           </div>
         )}
+
+        <ToolSeoContent
+          toolName="Video-to-SEO Generator"
+          aboutParagraphs={[
+            "The Video-to-SEO Generator turns a raw short video clip into a complete, publish-ready YouTube optimization package in one automated workflow. Instead of manually writing titles, descriptions, hashtags, and tags from scratch, this tool extracts your video's audio track locally with FFmpeg WebAssembly, transcribes the spoken script using Whisper AI in your browser, and sends only the resulting text transcript to Google Gemini AI to generate high-CTR YouTube SEO metadata.",
+            "Alongside your SEO metadata, the built-in HD Thumbnail Studio captures crisp video frames at 25%, 50%, 75%, and 90% of your clip using the HTML5 Video and Canvas APIs. You can pick the best visual frame, customize the bold white overlay headline pre-filled from your generated SEO title, and download a ready-to-upload 1280x720 HD PNG thumbnail without opening Photoshop or Canva.",
+          ]}
+          howToSteps={[
+            {
+              title: "Upload a Short Video or Audio Clip",
+              detail:
+                "Drag and drop an MP4, MOV, WebM, or audio file under 100 MB (ideally under 2 minutes for fastest browser processing).",
+            },
+            {
+              title: "Pick Spoken Language & Generate",
+              detail:
+                "Select the spoken language in your clip and click Generate SEO & Thumbnails to run the 4-step extraction, transcription, SEO, and frame pipeline.",
+            },
+            {
+              title: "Copy Metadata & Download HD Thumbnail",
+              detail:
+                "Copy your under-60-character title, description, hashtags, and 15-20 SEO tags, then select a video frame and export your custom 1280x720 PNG thumbnail.",
+            },
+          ]}
+          highlights={[
+            "All-in-one creator workflow combining FFmpeg WASM, Whisper AI transcription, Gemini SEO generation, and a 1280x720 Canvas thumbnail builder.",
+            "Generates strict under-60-character high-CTR YouTube titles, structured descriptions, hashtags, and 15-20 keyword tags.",
+            "Extracts multiple key video frames locally and overlays a dark readability gradient with bold white shadowed text.",
+            "Privacy-first architecture: raw video files remain strictly inside your browser and are never uploaded to our server.",
+          ]}
+        />
       </div>
     </div>
   );

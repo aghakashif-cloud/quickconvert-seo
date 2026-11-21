@@ -5,9 +5,10 @@ import { BookOpen, Clock, Calendar, ArrowRight, Sparkles, ShieldCheck } from "lu
 import { BLOG_POSTS } from "@/lib/blogData";
 
 export const metadata: Metadata = {
-  title: "Blog & Guides — QuickConvert & SEO Tools",
+  title: "Blog & Guides | QuickConvert & SEO Tools",
   description:
     "Read step-by-step tutorials, file conversion guides, and YouTube SEO strategies from QuickConvert & SEO Tools.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogIndexPage() {

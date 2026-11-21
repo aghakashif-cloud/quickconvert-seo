@@ -3,9 +3,10 @@ import Link from "next/link";
 import { AlertTriangle } from "lucide-react";
 
 export const metadata = {
-  title: "Disclaimer — QuickConvert & SEO Tools",
+  title: "Disclaimer | QuickConvert & SEO Tools",
   description:
-    "Legal disclaimer for QuickConvert & SEO Tools regarding client-side file conversions, AI-generated YouTube metadata, and external links.",
+    "Read the legal disclaimer for QuickConvert & SEO Tools covering browser-based file conversions, AI-generated YouTube metadata, and links.",
+  alternates: { canonical: "/disclaimer" },
 };
 
 export default function DisclaimerPage() {
