@@ -14,6 +14,7 @@ import {
   Scissors,
   Mic,
   Headphones,
+  Wand2,
 } from "lucide-react";
 import YouTubeGenerator from "@/components/YouTubeGenerator";
 import BackButton from "@/components/BackButton";
@@ -198,6 +199,13 @@ function WorkspaceContent() {
                 >
                   <Headphones className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
                   <span>PDF to Audiobook</span>
+                </Link>
+                <Link
+                  href="/tools/video-to-seo"
+                  className="px-3 py-2 rounded-lg text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5 whitespace-nowrap"
+                >
+                  <Wand2 className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                  <span>Video-to-SEO Generator</span>
                 </Link>
               </nav>
             </div>

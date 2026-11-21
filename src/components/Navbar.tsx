@@ -26,6 +26,7 @@ import {
   Scissors,
   Mic,
   Headphones,
+  Wand2,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -120,6 +121,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Transcribe audio & video locally in-browser with Whisper AI",
         href: "/tools/audio-transcriber",
         icon: <Mic className="w-4 h-4 text-cyan-400" />,
+      },
+      {
+        label: "Video-to-SEO Generator",
+        description: "Auto-transcribe video into SEO title, tags & 1280×720 HD thumbnail",
+        href: "/tools/video-to-seo",
+        icon: <Wand2 className="w-4 h-4 text-rose-400" />,
       },
     ],
   },
