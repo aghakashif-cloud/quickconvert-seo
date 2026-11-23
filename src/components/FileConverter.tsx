@@ -28,9 +28,17 @@ import {
   ChevronDown,
   ChevronUp,
   Settings2,
+  Info,
 } from "lucide-react";
 
-type FileCategory = "image" | "video" | "audio" | "pdf" | "document" | "unknown";
+type FileCategory =
+  | "image"
+  | "video"
+  | "audio"
+  | "pdf"
+  | "spreadsheet"
+  | "document"
+  | "unknown";
 
 interface AdvancedSettings {
   // Image options
@@ -91,9 +99,36 @@ const FORMAT_OPTIONS: Record<
     { label: "FLAC (Lossless)", value: "flac", mime: "audio/flac" },
   ],
   pdf: [
+    {
+      label: "Word (DOCX)",
+      value: "docx",
+      mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    },
+    {
+      label: "Excel (XLSX)",
+      value: "xlsx",
+      mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    },
     { label: "PNG (PDF Page to PNG)", value: "png", mime: "image/png" },
     { label: "JPG (PDF Page to JPG)", value: "jpg", mime: "image/jpeg" },
     { label: "TXT (Extract PDF Text)", value: "txt", mime: "text/plain" },
+  ],
+  spreadsheet: [
+    {
+      label: "PDF (Spreadsheet to PDF Table)",
+      value: "pdf",
+      mime: "application/pdf",
+    },
+    {
+      label: "Excel (XLSX)",
+      value: "xlsx",
+      mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    },
+    {
+      label: "CSV (Comma-Separated)",
+      value: "csv",
+      mime: "text/csv",
+    },
   ],
   document: [
     { label: "PDF (Document to PDF)", value: "pdf", mime: "application/pdf" },
@@ -109,6 +144,28 @@ async function detectSmartCategory(
 ): Promise<{ category: FileCategory; detectedMime: string; ext: string }> {
   const ext = file.name.split(".").pop()?.toLowerCase() || "";
   let mime = file.type.toLowerCase();
+
+  // Check Office & CSV extensions before ZIP/CFB magic-byte inspection
+  if (
+    ext === "xlsx" ||
+    ext === "xls" ||
+    ext === "csv" ||
+    mime.includes("spreadsheetml") ||
+    mime === "application/vnd.ms-excel" ||
+    mime === "text/csv"
+  ) {
+    const resolvedMime =
+      ext === "csv" || mime === "text/csv"
+        ? "text/csv"
+        : ext === "xls" || mime === "application/vnd.ms-excel"
+        ? "application/vnd.ms-excel"
+        : "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    return {
+      category: "spreadsheet",
+      detectedMime: resolvedMime,
+      ext: ext || "xlsx",
+    };
+  }
 
   try {
     const slice = await file.slice(0, 4100).arrayBuffer();
@@ -180,7 +237,8 @@ function getDefaultTargetFormat(category: FileCategory, currentExt: string): str
   if (category === "image" && (currentExt === "jpg" || currentExt === "jpeg")) return "png";
   if (category === "video" && currentExt === "mp4") return "mp3";
   if (category === "video" && currentExt === "mov") return "mp4";
-  if (category === "pdf") return "png";
+  if (category === "pdf") return "docx";
+  if (category === "spreadsheet") return "pdf";
   if (category === "document" && currentExt === "docx") return "pdf";
   if (category === "document" && currentExt === "txt") return "pdf";
   const diff = options.find((o) => o.value !== currentExt);
@@ -707,7 +765,72 @@ export default function FileConverter() {
     return { url: URL.createObjectURL(blob), size: blob.size, outputName };
   };
 
-  // 3. PDF CONVERSIONS (PDF to PNG / JPG / TXT using pdfjs-dist & HTML5 Canvas)
+  // 3. PDF CONVERSIONS (PDF to DOCX / XLSX / PNG / JPG / TXT using pdfjs-dist, docx, xlsx & Canvas)
+  const extractPdfPagesAsLines = async (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    pdf: any,
+    itemId: string
+  ): Promise<string[][]> => {
+    const pagesLines: string[][] = [];
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const pct = Math.min(72, Math.round(25 + (i / pdf.numPages) * 45));
+      setItemProgress(
+        itemId,
+        pct,
+        `Extracting text from page ${i} of ${pdf.numPages}...`
+      );
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+
+      const lines: string[] = [];
+      let currentLine = "";
+      let lastY: number | null = null;
+
+      for (const rawItem of content.items) {
+        if (!("str" in rawItem)) continue;
+        const textPart = String(rawItem.str);
+        const transform = Array.isArray(rawItem.transform)
+          ? rawItem.transform
+          : null;
+        const currentY = transform ? Number(transform[5]) : null;
+
+        // Start a new line when the vertical baseline shifts significantly
+        if (
+          lastY !== null &&
+          currentY !== null &&
+          Math.abs(currentY - lastY) > 4
+        ) {
+          const trimmed = currentLine.trim();
+          if (trimmed) lines.push(trimmed);
+          currentLine = textPart;
+        } else {
+          if (currentLine && textPart && !currentLine.endsWith(" ") && !textPart.startsWith(" ")) {
+            currentLine += ` ${textPart}`;
+          } else {
+            currentLine += textPart;
+          }
+        }
+
+        if (rawItem.hasEOL) {
+          const trimmed = currentLine.trim();
+          if (trimmed) lines.push(trimmed);
+          currentLine = "";
+          lastY = null;
+        } else if (currentY !== null) {
+          lastY = currentY;
+        }
+      }
+
+      const trailing = currentLine.trim();
+      if (trailing) lines.push(trailing);
+
+      pagesLines.push(lines);
+    }
+
+    return pagesLines;
+  };
+
   const convertPdf = async (
     item: QueueItem
   ): Promise<{ url: string; size: number; outputName: string }> => {
@@ -722,18 +845,124 @@ export default function FileConverter() {
     const baseName = item.file.name.replace(/\.[^/.]+$/, "");
     const outputName = `${baseName}-converted.${item.targetFormat}`;
 
-    if (item.targetFormat === "txt") {
-      setItemProgress(item.id, 55, `Extracting text from ${pdf.numPages} page(s)...`);
-      let fullText = "";
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const content = await page.getTextContent();
-        const strings = content.items.map((it) => ("str" in it ? it.str : ""));
-        fullText += `--- Page ${i} ---\n${strings.join(" ")}\n\n`;
-      }
-      const txtBlob = new Blob([fullText.trim() || "No extractable text found in PDF."], {
-        type: "text/plain;charset=utf-8",
+    if (item.targetFormat === "docx") {
+      const pagesLines = await extractPdfPagesAsLines(pdf, item.id);
+      setItemProgress(item.id, 82, "Building Word (DOCX) document locally...");
+
+      const { Document, Packer, Paragraph, TextRun, HeadingLevel, PageBreak } =
+        await import("docx");
+
+      const children: InstanceType<typeof Paragraph>[] = [];
+
+      pagesLines.forEach((lines, pageIndex) => {
+        if (pagesLines.length > 1) {
+          if (pageIndex > 0) {
+            children.push(new Paragraph({ children: [new PageBreak()] }));
+          }
+          children.push(
+            new Paragraph({
+              heading: HeadingLevel.HEADING_2,
+              children: [new TextRun({ text: `Page ${pageIndex + 1}`, bold: true })],
+            })
+          );
+        }
+
+        if (lines.length === 0) {
+          children.push(
+            new Paragraph({
+              children: [new TextRun("(No extractable text on this page)")],
+            })
+          );
+        } else {
+          for (const line of lines) {
+            children.push(
+              new Paragraph({
+                spacing: { after: 120 },
+                children: [new TextRun(line)],
+              })
+            );
+          }
+        }
       });
+
+      if (children.length === 0) {
+        children.push(
+          new Paragraph({
+            children: [new TextRun("No extractable text found in PDF.")],
+          })
+        );
+      }
+
+      const doc = new Document({
+        sections: [{ properties: {}, children }],
+      });
+
+      const docxBlob = await Packer.toBlob(doc);
+      return {
+        url: URL.createObjectURL(docxBlob),
+        size: docxBlob.size,
+        outputName,
+      };
+    }
+
+    if (item.targetFormat === "xlsx") {
+      const pagesLines = await extractPdfPagesAsLines(pdf, item.id);
+      setItemProgress(item.id, 82, "Building Excel (XLSX) workbook locally...");
+
+      const XLSX = await import("xlsx");
+      const workbook = XLSX.utils.book_new();
+
+      pagesLines.forEach((lines, pageIndex) => {
+        const rows: string[][] =
+          lines.length > 0
+            ? lines.map((line) => {
+                // Prefer splitting on multi-space / tab column gaps; otherwise split by spaces
+                const multiSpaceCols = line
+                  .split(/\t+|\s{2,}/)
+                  .map((cell) => cell.trim())
+                  .filter(Boolean);
+                if (multiSpaceCols.length > 1) {
+                  return multiSpaceCols;
+                }
+                return line
+                  .split(/\s+/)
+                  .map((cell) => cell.trim())
+                  .filter(Boolean);
+              })
+            : [["No extractable text found on this page"]];
+
+        const worksheet = XLSX.utils.aoa_to_sheet(rows);
+        const sheetName =
+          pagesLines.length === 1 ? "Extracted Data" : `Page ${pageIndex + 1}`;
+        XLSX.utils.book_append_sheet(workbook, worksheet, sheetName.slice(0, 31));
+      });
+
+      const xlsxArray = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const xlsxBlob = new Blob([xlsxArray], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      return {
+        url: URL.createObjectURL(xlsxBlob),
+        size: xlsxBlob.size,
+        outputName,
+      };
+    }
+
+    if (item.targetFormat === "txt") {
+      const pagesLines = await extractPdfPagesAsLines(pdf, item.id);
+      const fullText = pagesLines
+        .map((lines, idx) => `--- Page ${idx + 1} ---\n${lines.join("\n")}`)
+        .join("\n\n");
+      const txtBlob = new Blob(
+        [fullText.trim() || "No extractable text found in PDF."],
+        {
+          type: "text/plain;charset=utf-8",
+        }
+      );
       return {
         url: URL.createObjectURL(txtBlob),
         size: txtBlob.size,
@@ -852,6 +1081,149 @@ export default function FileConverter() {
     };
   };
 
+  // 5. SPREADSHEET CONVERSIONS (XLSX / XLS / CSV -> PDF Table / XLSX / CSV using SheetJS, jsPDF & jspdf-autotable)
+  const convertSpreadsheet = async (
+    item: QueueItem
+  ): Promise<{ url: string; size: number; outputName: string }> => {
+    setItemProgress(item.id, 25, "Reading spreadsheet data locally...");
+    const XLSX = await import("xlsx");
+    const arrayBuffer = await item.file.arrayBuffer();
+    const workbook = XLSX.read(new Uint8Array(arrayBuffer), { type: "array" });
+
+    if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+      throw new Error("No worksheets were found in this spreadsheet file.");
+    }
+
+    const baseName = item.file.name.replace(/\.[^/.]+$/, "");
+    const outputName = `${baseName}-converted.${item.targetFormat}`;
+
+    if (item.targetFormat === "csv") {
+      setItemProgress(item.id, 75, "Exporting worksheet to CSV locally...");
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const csvText = XLSX.utils.sheet_to_csv(firstSheet);
+      const csvBlob = new Blob([csvText], { type: "text/csv;charset=utf-8" });
+      return {
+        url: URL.createObjectURL(csvBlob),
+        size: csvBlob.size,
+        outputName,
+      };
+    }
+
+    if (item.targetFormat === "xlsx") {
+      setItemProgress(item.id, 75, "Generating Excel (XLSX) workbook locally...");
+      const xlsxArray = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const xlsxBlob = new Blob([xlsxArray], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      return {
+        url: URL.createObjectURL(xlsxBlob),
+        size: xlsxBlob.size,
+        outputName,
+      };
+    }
+
+    // Spreadsheet (XLSX/XLS/CSV) -> PDF Table via jsPDF + jspdf-autotable
+    setItemProgress(item.id, 55, "Formatting spreadsheet rows into PDF tables...");
+    const { default: autoTable } = await import("jspdf-autotable");
+
+    // Extract normalized string rows for each sheet
+    const parsedSheets = workbook.SheetNames.map((sheetName) => {
+      const sheet = workbook.Sheets[sheetName];
+      const rawRows = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
+        header: 1,
+        defval: "",
+      });
+
+      const normalizedRows = rawRows
+        .map((row) =>
+          Array.isArray(row) ? row.map((cell) => String(cell ?? "").trim()) : []
+        )
+        .filter((row) => row.some((cell) => cell.length > 0));
+
+      const maxCols = normalizedRows.reduce(
+        (max, row) => Math.max(max, row.length),
+        0
+      );
+
+      // Pad rows evenly so every row matches the header column count
+      const evenRows = normalizedRows.map((row) => {
+        const padded = [...row];
+        while (padded.length < maxCols) padded.push("");
+        return padded;
+      });
+
+      return { sheetName, rows: evenRows, maxCols };
+    });
+
+    const widestCols = parsedSheets.reduce(
+      (max, s) => Math.max(max, s.maxCols),
+      0
+    );
+    const orientation = widestCols > 6 ? "landscape" : "portrait";
+
+    const doc = new jsPDF({
+      orientation,
+      unit: "pt",
+      format: "a4",
+    });
+
+    parsedSheets.forEach(({ sheetName, rows }, sheetIdx) => {
+      if (sheetIdx > 0) {
+        doc.addPage();
+      }
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(13);
+      doc.setTextColor(15, 23, 42);
+      const heading =
+        parsedSheets.length > 1 ? `${baseName} — ${sheetName}` : baseName;
+      doc.text(heading, 36, 38);
+
+      if (rows.length === 0) {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(100, 116, 139);
+        doc.text("(This worksheet contains no tabular data.)", 36, 62);
+        return;
+      }
+
+      const [headerRow, ...bodyRows] = rows;
+
+      autoTable(doc, {
+        startY: 52,
+        head: [headerRow],
+        body: bodyRows.length > 0 ? bodyRows : [headerRow.map(() => "")],
+        theme: "grid",
+        margin: { left: 36, right: 36, top: 44, bottom: 36 },
+        styles: {
+          fontSize: widestCols > 10 ? 7 : 8.5,
+          cellPadding: 4.5,
+          overflow: "linebreak",
+          textColor: [15, 23, 42],
+        },
+        headStyles: {
+          fillColor: [79, 70, 229],
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+        },
+        alternateRowStyles: {
+          fillColor: [248, 250, 252],
+        },
+      });
+    });
+
+    setItemProgress(item.id, 90, "Finalizing PDF document...");
+    const pdfBlob = doc.output("blob");
+    return {
+      url: URL.createObjectURL(pdfBlob),
+      size: pdfBlob.size,
+      outputName,
+    };
+  };
+
   // Convert a single QueueItem
   const convertItem = async (id: string) => {
     const target = queue.find((q) => q.id === id);
@@ -880,6 +1252,8 @@ export default function FileConverter() {
         result = await convertMediaWithFFmpeg(target);
       } else if (target.category === "pdf") {
         result = await convertPdf(target);
+      } else if (target.category === "spreadsheet") {
+        result = await convertSpreadsheet(target);
       } else if (target.category === "document") {
         result = await convertDocument(target);
       } else {
@@ -1019,6 +1393,12 @@ export default function FileConverter() {
           badge: "bg-rose-500/10 text-rose-300 border-rose-500/30",
           label: "PDF Document",
         };
+      case "spreadsheet":
+        return {
+          icon: <FileSpreadsheet className="w-5 h-5 text-emerald-400" />,
+          badge: "bg-emerald-500/10 text-emerald-300 border-emerald-500/30",
+          label: "Excel / CSV",
+        };
       case "document":
         return {
           icon: <FileText className="w-5 h-5 text-cyan-400" />,
@@ -1082,9 +1462,9 @@ export default function FileConverter() {
               PDF Studio
             </h3>
             <p className="text-xs text-slate-300 font-medium mt-0.5">
-              PDF to PNG/JPG/TXT & Images to PDF
+              PDF to Word/Excel/PNG/JPG/TXT &amp; Images to PDF
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5">pdf-lib & PDF.js Engine</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">PDF.js, docx &amp; SheetJS</p>
           </div>
         </div>
 
@@ -1094,12 +1474,12 @@ export default function FileConverter() {
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-              Documents
+              Documents &amp; Excel
             </h3>
             <p className="text-xs text-slate-300 font-medium mt-0.5">
-              DOCX to PDF/TXT/HTML & Text to PDF
+              DOCX &amp; Excel/CSV to PDF Table, TXT, HTML
             </p>
-            <p className="text-[11px] text-slate-500 mt-0.5">mammoth.js & jsPDF</p>
+            <p className="text-[11px] text-slate-500 mt-0.5">mammoth.js, SheetJS &amp; jsPDF</p>
           </div>
         </div>
       </div>
@@ -1265,7 +1645,14 @@ export default function FileConverter() {
                 item.category === "image" ||
                 item.category === "video" ||
                 item.category === "audio" ||
-                item.category === "pdf";
+                (item.category === "pdf" &&
+                  (item.targetFormat === "png" || item.targetFormat === "jpg"));
+              const isOfficeOrTableConversion =
+                (item.category === "pdf" &&
+                  (item.targetFormat === "docx" ||
+                    item.targetFormat === "xlsx")) ||
+                (item.category === "spreadsheet" &&
+                  item.targetFormat === "pdf");
 
               return (
                 <div
@@ -1395,8 +1782,18 @@ export default function FileConverter() {
                     </div>
                   </div>
 
+                  {/* Client-Side Office / Spreadsheet Conversion Warning */}
+                  {isOfficeOrTableConversion && (
+                    <div className="bg-amber-500/10 border border-amber-500/25 rounded-xl px-3.5 py-2.5 flex items-start gap-2 text-xs text-amber-200">
+                      <Info className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                      <span>
+                        Note: Complex formatting, charts, and images may not be perfectly preserved in these client-side conversions.
+                      </span>
+                    </div>
+                  )}
+
                   {/* Collapsible Pro Advanced Options Panel */}
-                  {item.showAdvanced && (
+                  {item.showAdvanced && hasAdvancedSupport && (
                     <div className="bg-slate-950/90 border border-slate-800/90 rounded-xl p-4 space-y-3">
                       <div className="flex items-center gap-2 text-xs font-semibold text-indigo-300">
                         <Sliders className="w-3.5 h-3.5" />
