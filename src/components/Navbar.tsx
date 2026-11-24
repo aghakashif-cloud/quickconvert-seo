@@ -29,6 +29,7 @@ import {
   Headphones,
   Wand2,
   Files,
+  Images,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -88,6 +89,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Combine & reorder multiple PDF files locally with zero uploads",
         href: "/tools/merge-pdf",
         icon: <Files className="w-4 h-4 text-rose-400" />,
+      },
+      {
+        label: "Merge Images",
+        description: "Combine JPG, PNG & WebP photos into one long JPG or PDF",
+        href: "/tools/merge-images",
+        icon: <Images className="w-4 h-4 text-emerald-400" />,
       },
     ],
   },

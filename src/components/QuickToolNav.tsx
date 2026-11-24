@@ -14,6 +14,7 @@ import {
   Headphones,
   Wand2,
   Files,
+  Images,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -88,6 +89,14 @@ const TOOL_LINKS = [
     icon: Files,
     activeClass: "bg-rose-600 text-white shadow",
     iconClass: "text-rose-400",
+  },
+  {
+    href: "/tools/merge-images",
+    matchPaths: ["/tools/merge-images"],
+    label: "Merge Images",
+    icon: Images,
+    activeClass: "bg-emerald-600 text-white shadow",
+    iconClass: "text-emerald-400",
   },
   {
     href: "/tools/video-to-seo",
