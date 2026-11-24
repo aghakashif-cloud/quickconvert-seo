@@ -13,6 +13,7 @@ import {
   Mic,
   Headphones,
   Wand2,
+  Files,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -79,6 +80,14 @@ const TOOL_LINKS = [
     icon: Headphones,
     activeClass: "bg-indigo-600 text-white shadow",
     iconClass: "text-indigo-400",
+  },
+  {
+    href: "/tools/merge-pdf",
+    matchPaths: ["/tools/merge-pdf"],
+    label: "Merge PDF",
+    icon: Files,
+    activeClass: "bg-rose-600 text-white shadow",
+    iconClass: "text-rose-400",
   },
   {
     href: "/tools/video-to-seo",

@@ -28,6 +28,7 @@ import {
   Mic,
   Headphones,
   Wand2,
+  Files,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -81,6 +82,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Listen to any PDF aloud locally with browser Text-to-Speech",
         href: "/tools/pdf-to-audiobook",
         icon: <Headphones className="w-4 h-4 text-cyan-400" />,
+      },
+      {
+        label: "Merge PDF",
+        description: "Combine & reorder multiple PDF files locally with zero uploads",
+        href: "/tools/merge-pdf",
+        icon: <Files className="w-4 h-4 text-rose-400" />,
       },
     ],
   },
