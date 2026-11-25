@@ -173,7 +173,7 @@ const NAV_CATEGORIES: NavCategory[] = [
       },
       {
         label: "Tax Calculator",
-        description: "Estimate income tax & slab breakdown for PK, IN, US, UK & UAE",
+        description: "Salary & property tax estimator for PK, IN, US, UK & UAE",
         href: "/tools/tax-calculator",
         icon: <Landmark className="w-4 h-4 text-amber-400" />,
       },
