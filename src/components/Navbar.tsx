@@ -30,6 +30,9 @@ import {
   Wand2,
   Files,
   Images,
+  Percent,
+  AlignLeft,
+  KeyRound,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -136,6 +139,29 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Auto-transcribe video into SEO title, tags & 1280×720 HD thumbnail",
         href: "/tools/video-to-seo",
         icon: <Wand2 className="w-4 h-4 text-rose-400" />,
+      },
+    ],
+  },
+  {
+    title: "Utilities",
+    items: [
+      {
+        label: "Percentage Calculator",
+        description: "Calculate X% of Y, percent of total & increase/decrease instantly",
+        href: "/tools/percentage-calculator",
+        icon: <Percent className="w-4 h-4 text-indigo-400" />,
+      },
+      {
+        label: "Word & Character Counter",
+        description: "Real-time words, characters, sentences, paragraphs & SEO limits",
+        href: "/tools/word-counter",
+        icon: <AlignLeft className="w-4 h-4 text-cyan-400" />,
+      },
+      {
+        label: "Password Generator",
+        description: "Cryptographically secure random passwords via Web Crypto API",
+        href: "/tools/password-generator",
+        icon: <KeyRound className="w-4 h-4 text-emerald-400" />,
       },
     ],
   },

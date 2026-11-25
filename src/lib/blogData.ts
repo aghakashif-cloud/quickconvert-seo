@@ -37,6 +37,91 @@ export interface BlogPost {
 
 export const BLOG_POSTS: BlogPost[] = [
   {
+    slug: "how-to-calculate-percentages-fast-formulas-and-free-calculator",
+    title: "How to Calculate Percentages Fast: Simple Formulas & Free Calculator",
+    metaTitle: "How to Calculate Percentages Fast | QuickConvert",
+    metaDescription:
+      "Master percentage formulas for X% of Y, percent of total, and percentage increase or decrease—plus use our free online Percentage Calculator.",
+    excerpt:
+      "Need to figure out a shopping discount, sales tax, exam score, or revenue growth rate in seconds? Here are the three everyday percentage formulas with clear examples and a free browser calculator.",
+    focusKeywords: [
+      "percentage calculator online free",
+      "how to calculate percentage increase",
+      "what is X percent of Y formula",
+      "percentage decrease calculator",
+    ],
+    category: "Utilities & Productivity",
+    readTime: "4 min read",
+    publishedAt: "November 25, 2026",
+    author: "QuickConvert Editorial Team",
+    sections: [
+      {
+        heading: "Why Everyday Percentage Math Trips People Up",
+        paragraphs: [
+          "Percentages show up everywhere—from calculating a 25% store discount or adding 15% tip at dinner, to checking how much your monthly YouTube traffic grew compared to last month. Yet even with a phone calculator, it is surprisingly easy to divide by the wrong number and get a misleading answer.",
+          "Instead of guessing which formula to use, you can bookmark our free [Percentage Calculator](/tools/percentage-calculator) for instant answers, or keep these three simple formulas handy whenever you work with numbers.",
+        ],
+      },
+      {
+        heading: "The 3 Essential Percentage Formulas Explained",
+        paragraphs: [
+          "Almost every real-world percentage question falls into one of three calculations:",
+        ],
+        subSections: [
+          {
+            subheading: "1. What is X% of Y? (Discounts, Tax & Commissions)",
+            paragraphs: [
+              "To find a percentage of any number, divide the percentage by 100 and multiply by the base number: Result = (X / 100) × Y.",
+              "Example: What is 20% of 250? Calculate (20 / 100) × 250 = 50. If an item costs 250 with a 20% discount, you save 50 and pay 200.",
+            ],
+          },
+          {
+            subheading: "2. X is What Percent of Y? (Scores, Budgets & Shares)",
+            paragraphs: [
+              "To see what portion one number represents out of a total, divide the part by the whole and multiply by 100: Percentage = (X / Y) × 100.",
+              "Example: You scored 45 out of 60 on a quiz. Calculate (45 / 60) × 100 = 75%.",
+            ],
+          },
+          {
+            subheading: "3. Percentage Increase or Decrease (Growth & Price Drops)",
+            paragraphs: [
+              "To measure change from an original value to a new value, subtract the old number from the new number, divide by the original value, and multiply by 100: Change % = ((New − Original) / |Original|) × 100.",
+              "Example: Monthly website visitors rose from 1,200 to 1,500. Calculate ((1,500 − 1,200) / 1,200) × 100 = +25% growth. If a price drops from 200 to 150, ((150 − 200) / 200) × 100 = −25% decrease.",
+            ],
+          },
+        ],
+        ctaLink: {
+          text: "Open Free Percentage Calculator",
+          href: "/tools/percentage-calculator",
+        },
+      },
+      {
+        heading: "Calculate Instantly With Zero Tracking",
+        paragraphs: [
+          "Our [Percentage Calculator](/tools/percentage-calculator) puts all three formulas side by side in one clean, dark-mode interface. Results update live as you type, show both discount and markup totals automatically, and include one-click copy buttons for spreadsheets and invoices.",
+          "Like every tool in our new Utilities suite—including our real-time [Word & Character Counter](/tools/word-counter) and cryptographically secure [Password Generator](/tools/password-generator)—all calculations run 100% locally in your browser with zero server uploads and no sign-up required.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        question: "How do I quickly calculate a 15% or 20% tip in my head?",
+        answer:
+          "Find 10% first by moving the decimal point one place to the left. Double that number for 20%, or add half of 10% to get 15%. For example, on an 80 bill, 10% is 8, so 20% is 16 and 15% is 12.",
+      },
+      {
+        question: "Why is a 50% increase followed by a 50% decrease not back to the original number?",
+        answer:
+          "Because each percentage applies to a different starting base. Starting at 100, a 50% increase gives 150. Taking 50% off 150 subtracts 75, leaving you with 75 instead of 100.",
+      },
+      {
+        question: "Does the QuickConvert Percentage Calculator work offline and privately?",
+        answer:
+          "Yes. All math runs locally in JavaScript inside your web browser, so none of your financial figures, grades, or business metrics ever leave your device.",
+      },
+    ],
+  },
+  {
     slug: "how-to-merge-multiple-images-into-one-jpg-or-pdf-free-private",
     title: "How to Merge Multiple Images into One JPG or PDF (Free & Private)",
     metaTitle: "Merge Images into One JPG or PDF Free | QuickConvert",

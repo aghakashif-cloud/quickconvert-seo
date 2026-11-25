@@ -15,6 +15,9 @@ import {
   Wand2,
   Files,
   Images,
+  Percent,
+  AlignLeft,
+  KeyRound,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -105,6 +108,30 @@ const TOOL_LINKS = [
     icon: Wand2,
     activeClass: "bg-rose-600 text-white shadow",
     iconClass: "text-rose-400",
+  },
+  {
+    href: "/tools/percentage-calculator",
+    matchPaths: ["/tools/percentage-calculator"],
+    label: "Percentage Calculator",
+    icon: Percent,
+    activeClass: "bg-indigo-600 text-white shadow",
+    iconClass: "text-indigo-400",
+  },
+  {
+    href: "/tools/word-counter",
+    matchPaths: ["/tools/word-counter"],
+    label: "Word Counter",
+    icon: AlignLeft,
+    activeClass: "bg-cyan-600 text-white shadow",
+    iconClass: "text-cyan-400",
+  },
+  {
+    href: "/tools/password-generator",
+    matchPaths: ["/tools/password-generator"],
+    label: "Password Generator",
+    icon: KeyRound,
+    activeClass: "bg-emerald-600 text-white shadow",
+    iconClass: "text-emerald-400",
   },
 ];
 
