@@ -18,6 +18,8 @@ import {
   Percent,
   AlignLeft,
   KeyRound,
+  Globe,
+  Landmark,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -132,6 +134,22 @@ const TOOL_LINKS = [
     icon: KeyRound,
     activeClass: "bg-emerald-600 text-white shadow",
     iconClass: "text-emerald-400",
+  },
+  {
+    href: "/tools/currency-converter",
+    matchPaths: ["/tools/currency-converter"],
+    label: "Currency Converter",
+    icon: Globe,
+    activeClass: "bg-indigo-600 text-white shadow",
+    iconClass: "text-indigo-400",
+  },
+  {
+    href: "/tools/tax-calculator",
+    matchPaths: ["/tools/tax-calculator"],
+    label: "Tax Calculator",
+    icon: Landmark,
+    activeClass: "bg-amber-600 text-white shadow",
+    iconClass: "text-amber-400",
   },
 ];
 

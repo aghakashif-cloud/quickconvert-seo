@@ -33,6 +33,8 @@ import {
   Percent,
   AlignLeft,
   KeyRound,
+  Globe,
+  Landmark,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -162,6 +164,18 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Cryptographically secure random passwords via Web Crypto API",
         href: "/tools/password-generator",
         icon: <KeyRound className="w-4 h-4 text-emerald-400" />,
+      },
+      {
+        label: "Currency Converter",
+        description: "Convert 160+ world currencies with live exchange rates",
+        href: "/tools/currency-converter",
+        icon: <Globe className="w-4 h-4 text-indigo-400" />,
+      },
+      {
+        label: "Tax Calculator",
+        description: "Estimate income tax & slab breakdown for PK, IN, US, UK & UAE",
+        href: "/tools/tax-calculator",
+        icon: <Landmark className="w-4 h-4 text-amber-400" />,
       },
     ],
   },
