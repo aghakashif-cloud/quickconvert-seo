@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "YouTube SEO Audit & Video Analyzer | QuickConvert",
+  title: "YouTube Tag Extractor & SEO Audit Tool [Free & Instant]",
   description:
-    "Paste any YouTube video URL to audit its title, description, and tags with an instant 0-100 AI SEO scorecard and optimized metadata fixes.",
+    "See hidden YouTube tags and audit any video URL for a 0-100 SEO score in seconds. 100% free with instant AI title & tag fixes. Paste a URL now!",
   alternates: { canonical: "/tools/youtube-seo-audit" },
 };
 

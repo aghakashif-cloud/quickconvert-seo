@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Audio & Video Transcriber | QuickConvert",
+  title: "Free Audio & Video to Text Transcriber (Whisper AI)",
   description:
-    "Transcribe audio, video, YouTube, and Facebook links into text locally in your browser using Whisper AI. Supports English, Urdu, and 95+ languages.",
+    "Transcribe MP3, MP4, YouTube & Facebook links into text locally with Whisper AI. 100% private, free, and supports 95+ languages. Start transcribing!",
   alternates: { canonical: "/tools/ai-transcriber" },
 };
 

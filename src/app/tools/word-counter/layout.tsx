@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Word & Character Counter — Free Online | QuickConvert",
+  title: "Word & Character Counter - Real-Time Tool [Free]",
   description:
-    "Count words, characters with and without spaces, sentences, paragraphs, and reading time in real time directly in your browser—100% private.",
+    "Count words, characters with and without spaces, sentences, paragraphs & reading time live as you type. 100% free and private. Paste your text now!",
   alternates: { canonical: "/tools/word-counter" },
 };
 

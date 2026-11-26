@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Video Clipper & Viral Shorts Finder | QuickConvert",
+  title: "AI Video Clipper - Find Viral Shorts & Reels (Free)",
   description:
-    "Upload a video to extract audio locally with FFmpeg WASM and let Gemini AI pinpoint the most engaging 30-60 second Shorts and Reels clips.",
+    "Automatically find the best 30-60s viral Shorts and Reels clips from long videos. Local audio extraction with free AI timestamps. Try it today!",
   alternates: { canonical: "/tools/ai-video-clipper" },
 };
 

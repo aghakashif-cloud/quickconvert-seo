@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Merge PDF Files Free Online (100% Private) | QuickConvert",
+  title: "Merge PDF Files Online - Combine PDFs Free (No Upload)",
   description:
-    "Combine multiple PDF files into one document locally in your browser using pdf-lib. Reorder pages, merge instantly, and keep files 100% private.",
+    "Combine and reorder multiple PDF files into one document instantly in your browser. 100% private, free, and zero watermarks. Merge your PDFs now!",
   alternates: { canonical: "/tools/merge-pdf" },
 };
 

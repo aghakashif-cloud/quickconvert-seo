@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Video to Animated GIF Converter | QuickConvert",
+  title: "Video to GIF Converter - MP4 & WebM to GIF (No Upload)",
   description:
-    "Convert MP4, MOV, and WebM video clips into lightweight animated GIFs 100% locally in your browser using FFmpeg WebAssembly—free and private.",
+    "Convert MP4, MOV, and WebM clips into smooth animated GIFs right in your browser. 100% free, private, and watermark-free. Create your GIF now!",
   alternates: { canonical: "/tools/video-to-gif" },
 };
 

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Percentage Calculator — Free Online Tool | QuickConvert",
+  title: "Percentage Calculator - Discounts, Tax & Growth (Free)",
   description:
-    "Calculate X% of Y, what percent X is of Y, and percentage increase or decrease instantly in your browser—100% free and accurate.",
+    "Calculate X% of Y, percent of total, and percentage increase or decrease instantly. Free, accurate, and 100% private in your browser. Calculate now!",
   alternates: { canonical: "/tools/percentage-calculator" },
 };
 

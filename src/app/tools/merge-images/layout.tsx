@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Merge Images to JPG or PDF Free Online | QuickConvert",
+  title: "Merge Images to JPG or PDF Online [Free & No Upload]",
   description:
-    "Combine multiple JPG, PNG, and WebP images into one long JPG image or a multi-page PDF document locally in your browser—100% free and private.",
+    "Stitch JPG, PNG, and WebP photos into one long JPG or multi-page PDF locally in seconds. 100% private, free, and easy to reorder. Try it now!",
   alternates: { canonical: "/tools/merge-images" },
 };
 

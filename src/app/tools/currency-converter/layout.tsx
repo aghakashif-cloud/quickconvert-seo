@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free Live Currency Converter Online | QuickConvert",
+  title: "Free Currency Converter - Live Exchange Rates (160+)",
   description:
-    "Convert 160+ world currencies instantly with live exchange rates. Free client-side USD, EUR, GBP, PKR, INR & AED converter with last-updated dates.",
+    "Convert USD, EUR, GBP, PKR, INR, AED & 160+ currencies instantly using live exchange rates. Free, accurate, with timestamps. Convert now!",
   alternates: {
     canonical: "/tools/currency-converter",
   },
   openGraph: {
-    title: "Free Live Currency Converter Online | QuickConvert",
+    title: "Free Currency Converter - Live Exchange Rates (160+)",
     description:
-      "Convert world currencies in real time with live exchange rates for USD, EUR, GBP, PKR, INR, AED, and 160+ more currencies.",
+      "Convert USD, EUR, GBP, PKR, INR, AED & 160+ currencies instantly using live exchange rates. Free, accurate, with timestamps. Convert now!",
     url: "https://www.quickconvertseo.com/tools/currency-converter",
     type: "website",
   },

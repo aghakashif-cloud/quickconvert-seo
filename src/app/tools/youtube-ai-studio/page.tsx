@@ -7,9 +7,9 @@ import YouTubeGenerator from "@/components/YouTubeGenerator";
 import ToolSeoContent from "@/components/ToolSeoContent";
 
 export const metadata: Metadata = {
-  title: "YouTube AI Studio — Titles & Tags | QuickConvert",
+  title: "AI YouTube Title, Description & Tag Generator (Free)",
   description:
-    "Generate high-CTR YouTube titles, SEO descriptions, chapters, thumbnail hooks, and viral keyword tags instantly using Google Gemini AI—free.",
+    "Generate high-CTR YouTube titles, SEO descriptions, chapters, and viral tags in one click. Free Gemini AI studio with no sign-up. Try it now!",
   alternates: { canonical: "/tools/youtube-ai-studio" },
 };
 

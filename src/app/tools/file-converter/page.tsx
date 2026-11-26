@@ -7,9 +7,9 @@ import ToolSeoContent from "@/components/ToolSeoContent";
 import FileConverterWorkspace from "./FileConverterWorkspace";
 
 export const metadata: Metadata = {
-  title: "Free Online File Converter (100% Private) | QuickConvert",
+  title: "Free File Converter - Video, Audio & PDF (No Upload)",
   description:
-    "Convert videos, audio, images, PDFs, and Word documents locally in your browser using FFmpeg WASM and HTML5 Canvas with zero server uploads.",
+    "Convert MP4, MP3, and PDF files instantly in your browser. 100% secure, private, and free with no file size limits. Try it now!",
   alternates: { canonical: "/tools/file-converter" },
 };
 

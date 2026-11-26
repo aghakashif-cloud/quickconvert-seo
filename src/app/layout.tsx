@@ -7,9 +7,9 @@ import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const siteTitle = "QuickConvert & SEO Tools — Free Converter & AI Suite";
+const siteTitle = "Free File Converter & AI SEO Tools (100% Private)";
 const siteDescription =
-  "Convert video, audio, images, and PDFs 100% locally in your browser, plus generate high-CTR YouTube SEO titles, descriptions, and tags free.";
+  "Convert video, audio, images & PDFs locally with zero uploads—plus audit YouTube SEO and transcribe audio free. Fast, private, no sign-up. Try it now!";
 const siteUrl = "https://www.quickconvertseo.com";
 
 export const viewport: Viewport = {

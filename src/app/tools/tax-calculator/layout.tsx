@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Salary & Property Tax Calculator Free | QuickConvert",
+  title: "Income & Property Tax Calculator 2024/2025 [Free]",
   description:
-    "Calculate monthly salary take-home pay, 2024/2025 income tax slabs, and estimated annual property tax for Pakistan, India, US, UK, and UAE free online.",
+    "Calculate monthly take-home salary, 2024/2025 income tax slabs, and annual property tax for PK, IN, US, UK & UAE. 100% private. Estimate yours now!",
   alternates: {
     canonical: "/tools/tax-calculator",
   },
   openGraph: {
-    title: "Salary & Property Tax Calculator Free | QuickConvert",
+    title: "Income & Property Tax Calculator 2024/2025 [Free]",
     description:
-      "Free country-wise Salary Income Tax (Monthly to Annual) and Property Tax estimator for Pakistan, India, US, UK, and UAE.",
+      "Calculate monthly take-home salary, 2024/2025 income tax slabs, and annual property tax for PK, IN, US, UK & UAE. 100% private. Estimate yours now!",
     url: "https://www.quickconvertseo.com/tools/tax-calculator",
     type: "website",
   },

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "3D Tilt Video Player Online Free | QuickConvert",
+  title: "3D Tilt Video Player - Watch & Record 3D Clips (Free)",
   description:
-    "Watch MP4 & WebM videos in an interactive 3D parallax tilt player with mouse hover & mobile gyroscope motion. 100% private, client-side & free.",
+    "Play MP4 & WebM videos in an interactive 3D parallax player with mouse hover, mobile gyroscope & WebM clip recording. 100% private. Try it now!",
   alternates: {
     canonical: "/tools/3d-video-player",
   },
   openGraph: {
-    title: "3D Tilt Video Player Online Free | QuickConvert",
+    title: "3D Tilt Video Player - Watch & Record 3D Clips (Free)",
     description:
-      "Play local MP4 and WebM videos inside an interactive 3D parallax tilt cinema with glowing ambient depth and mobile gyroscope support.",
+      "Play MP4 & WebM videos in an interactive 3D parallax player with mouse hover, mobile gyroscope & WebM clip recording. 100% private. Try it now!",
     url: "https://www.quickconvertseo.com/tools/3d-video-player",
     type: "website",
   },

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "PDF to Audiobook Converter (Free TTS) | QuickConvert",
+  title: "PDF to Audiobook Reader - Free PDF Voice TTS (Private)",
   description:
-    "Convert any PDF document, textbook, or ebook into spoken audio locally in your browser using free Text-to-Speech with adjustable voices and speed.",
+    "Listen to any PDF book, notes, or document aloud with natural browser voices and speed controls. 100% free, local, and zero uploads. Listen now!",
   alternates: { canonical: "/tools/pdf-to-audiobook" },
 };
 
