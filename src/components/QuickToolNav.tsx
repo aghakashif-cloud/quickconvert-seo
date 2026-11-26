@@ -20,6 +20,7 @@ import {
   KeyRound,
   Globe,
   Landmark,
+  Box,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -110,6 +111,14 @@ const TOOL_LINKS = [
     icon: Wand2,
     activeClass: "bg-rose-600 text-white shadow",
     iconClass: "text-rose-400",
+  },
+  {
+    href: "/tools/image-to-3d",
+    matchPaths: ["/tools/image-to-3d"],
+    label: "Image to 3D",
+    icon: Box,
+    activeClass: "bg-purple-600 text-white shadow",
+    iconClass: "text-purple-400",
   },
   {
     href: "/tools/percentage-calculator",

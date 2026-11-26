@@ -35,6 +35,7 @@ import {
   KeyRound,
   Globe,
   Landmark,
+  Box,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -141,6 +142,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Auto-transcribe video into SEO title, tags & 1280×720 HD thumbnail",
         href: "/tools/video-to-seo",
         icon: <Wand2 className="w-4 h-4 text-rose-400" />,
+      },
+      {
+        label: "Image to 3D",
+        description: "Turn any 2D photo into an interactive 3D parallax scene with AI",
+        href: "/tools/image-to-3d",
+        icon: <Box className="w-4 h-4 text-purple-400" />,
       },
     ],
   },
