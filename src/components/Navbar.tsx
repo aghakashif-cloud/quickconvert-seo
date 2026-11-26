@@ -36,6 +36,7 @@ import {
   Globe,
   Landmark,
   Box,
+  MonitorPlay,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -148,6 +149,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Turn any 2D photo into an interactive 3D parallax scene with AI",
         href: "/tools/image-to-3d",
         icon: <Box className="w-4 h-4 text-purple-400" />,
+      },
+      {
+        label: "3D Tilt Player",
+        description: "Watch MP4 & WebM videos in an interactive 3D parallax player",
+        href: "/tools/3d-video-player",
+        icon: <MonitorPlay className="w-4 h-4 text-indigo-400" />,
       },
     ],
   },

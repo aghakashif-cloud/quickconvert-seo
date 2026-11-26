@@ -21,6 +21,7 @@ import {
   Globe,
   Landmark,
   Box,
+  MonitorPlay,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -119,6 +120,14 @@ const TOOL_LINKS = [
     icon: Box,
     activeClass: "bg-purple-600 text-white shadow",
     iconClass: "text-purple-400",
+  },
+  {
+    href: "/tools/3d-video-player",
+    matchPaths: ["/tools/3d-video-player"],
+    label: "3D Tilt Player",
+    icon: MonitorPlay,
+    activeClass: "bg-indigo-600 text-white shadow",
+    iconClass: "text-indigo-400",
   },
   {
     href: "/tools/percentage-calculator",
