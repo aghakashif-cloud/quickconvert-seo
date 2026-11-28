@@ -34,9 +34,8 @@ interface GradientPreset {
   angleDeg: number;
 }
 
-// Exact version matching "@imgly/background-removal": "^1.7.0" in package.json
-const IMGLY_CDN_PUBLIC_PATH =
-  "https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/";
+// Self-hosted IMG.LY v1.7.0 model & WASM directory inside public/models/
+const LOCAL_MODELS_PATH = "/models/";
 
 const SOLID_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "white", label: "White", hex: "#ffffff" },
@@ -202,10 +201,14 @@ export default function BackgroundRemoverPage() {
     try {
       const { removeBackground } = await import("@imgly/background-removal");
 
+      // Resolve absolute URL from current origin so `new URL("resources.json", publicPath)` succeeds
+      const publicPath = `${window.location.origin}${LOCAL_MODELS_PATH}`;
+
       const config: NonNullable<Parameters<typeof removeBackground>[1]> = {
-        publicPath: IMGLY_CDN_PUBLIC_PATH,
+        publicPath,
         debug: true, // Keep true to inspect detailed IMG.LY & ONNX logs in browser console
         model: "isnet_quint8",
+        device: "cpu",
         progress: (key: string, current: number, total: number) => {
           if (total > 0) {
             const pct = Math.min(
@@ -215,7 +218,7 @@ export default function BackgroundRemoverPage() {
             setProgressPct(pct);
             if (key.toLowerCase().includes("fetch")) {
               setStatusMessage(
-                `Downloading AI model into browser cache (${pct}%)...`
+                `Loading local AI model into browser cache (${pct}%)...`
               );
             } else {
               setStatusMessage(`Removing image background locally (${pct}%)...`);
@@ -224,22 +227,7 @@ export default function BackgroundRemoverPage() {
         },
       };
 
-      let resultBlob: Blob;
-      try {
-        resultBlob = await removeBackground(sourceFile, config);
-      } catch (firstErr: unknown) {
-        console.warn("[BackgroundRemover] First attempt failed, retrying:", firstErr);
-        const msg =
-          firstErr instanceof Error ? firstErr.message : String(firstErr);
-        const isFetchErr =
-          /failed to fetch|network|cors|load|resource/i.test(msg);
-        if (!isFetchErr) throw firstErr;
-
-        // Retry once automatically after a brief pause in case of a transient CDN hiccup
-        setStatusMessage("Retrying AI model download from official IMG.LY CDN...");
-        await new Promise((r) => setTimeout(r, 1500));
-        resultBlob = await removeBackground(sourceFile, config);
-      }
+      const resultBlob = await removeBackground(sourceFile, config);
 
       const outUrl = URL.createObjectURL(resultBlob);
       if (cutoutUrl) URL.revokeObjectURL(cutoutUrl);

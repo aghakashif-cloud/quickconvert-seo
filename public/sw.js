@@ -128,6 +128,7 @@ self.addEventListener("fetch", (event) => {
   // Never cache API endpoints, local AI model weights, or the service worker script itself
   if (
     url.pathname.startsWith("/api/") ||
+    url.pathname.startsWith("/models/") ||
     url.pathname.startsWith("/background-removal/") ||
     url.pathname === "/sw.js"
   ) {
