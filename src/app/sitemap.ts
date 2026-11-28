@@ -43,7 +43,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/tools/ai-video-clipper`,
+      url: `${baseUrl}/tools/ai-video-editor`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,

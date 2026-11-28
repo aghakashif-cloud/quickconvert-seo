@@ -67,9 +67,9 @@ const TOOL_LINKS = [
     iconClass: "text-amber-400",
   },
   {
-    href: "/tools/ai-video-clipper",
-    matchPaths: ["/tools/ai-video-clipper"],
-    label: "AI Video Clipper",
+    href: "/tools/ai-video-editor",
+    matchPaths: ["/tools/ai-video-editor"],
+    label: "AI Video Editor",
     icon: Scissors,
     activeClass: "bg-indigo-600 text-white shadow",
     iconClass: "text-indigo-400",

@@ -297,7 +297,7 @@ export const BLOG_POSTS: BlogPost[] = [
             "How QuickConvert's Smart Jump-Cut Editor works in 3 stages: local FFmpeg audio extraction & Whisper transcription, Gemini cut detection, and seamless local MP4 rendering.",
         },
         paragraphs: [
-          "We upgraded our [Smart AI Jump-Cut Editor](/tools/ai-video-clipper) to combine three proven technologies so your raw footage never gets uploaded to a third-party cloud storage bucket:",
+          "We upgraded our [Smart AI Jump-Cut Editor](/tools/ai-video-editor) to combine three proven technologies so your raw footage never gets uploaded to a third-party cloud storage bucket:",
         ],
         subSections: [
           {
@@ -324,16 +324,16 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: "Real-World Test: Tightening a 4-Minute YouTube Vlog Intro Automatically",
         paragraphs: [
           "To see how much time browser-based jump-cut editing saves in real life, we tested an unedited 4-minute 00-second talking-head tutorial intro filmed in one continuous take without a teleprompter. Like most natural recordings, it contained a 3-second pause at the start while leaning back from the keyboard, twelve natural thinking pauses between sentences, and nine stray 'um' and 'uh' filler words.",
-          "Inside our [Smart AI Jump-Cut Editor](/tools/ai-video-clipper), transcribing the audio, analyzing the cuts, and rendering the final smooth MP4 finished locally in about 90 seconds—automatically trimming 38 seconds of dead air and reducing the video to a tight 3 minutes 22 seconds. Watching the before-and-after clips side by side felt like jumping straight from a rough rehearsal to a polished YouTube upload, with zero harsh audio clicks at the cut points and zero manual timeline scrubbing.",
+          "Inside our [Smart AI Jump-Cut Editor](/tools/ai-video-editor), transcribing the audio, analyzing the cuts, and rendering the final smooth MP4 finished locally in about 90 seconds—automatically trimming 38 seconds of dead air and reducing the video to a tight 3 minutes 22 seconds. Watching the before-and-after clips side by side felt like jumping straight from a rough rehearsal to a polished YouTube upload, with zero harsh audio clicks at the cut points and zero manual timeline scrubbing.",
         ],
       },
       {
         heading: "Step-by-Step: How to Auto-Edit Videos and Remove Silences for Free",
         paragraphs: [
-          "Follow these five easy steps using our browser-based [Smart AI Jump-Cut Editor](/tools/ai-video-clipper):",
+          "Follow these five easy steps using our browser-based [Smart AI Jump-Cut Editor](/tools/ai-video-editor):",
         ],
         numberedList: [
-          "Open our [Smart AI Jump-Cut Editor](/tools/ai-video-clipper) in Google Chrome, Microsoft Edge, or Firefox on your laptop or desktop—no software download, account login, or credit card required.",
+          "Open our [Smart AI Jump-Cut Editor](/tools/ai-video-editor) in Google Chrome, Microsoft Edge, or Firefox on your laptop or desktop—no software download, account login, or credit card required.",
           "Drag and drop your raw talking-head MP4, MOV, or WebM recording into the upload zone. Pick your spoken language and optionally tune the Silence Sensitivity preset (Balanced works best for most podcasts and vlogs).",
           "Click Auto-Edit & Remove Silences and keep the browser tab open while the live 3-stage progress bar moves cleanly from Transcribing Audio to Analyzing for Cuts to Rendering Final Video.",
           "Inspect the live transcript card where detected filler words ('um', 'uh', 'ah') appear highlighted in red alongside the exact list of cut timestamp ranges. Want to keep a dramatic pause? Uncheck any cut range and click Re-Render Smooth Video.",
@@ -341,7 +341,7 @@ export const BLOG_POSTS: BlogPost[] = [
         ],
         ctaLink: {
           text: "Open the Free Smart AI Jump-Cut Editor",
-          href: "/tools/ai-video-clipper",
+          href: "/tools/ai-video-editor",
         },
       },
       {
@@ -624,7 +624,7 @@ export const BLOG_POSTS: BlogPost[] = [
     author: "QuickConvert Editorial Team",
     coverImage: {
       src: "/images/blog/top-5-youtube-ai-stack-2026-hero.svg",
-      alt: "The 2026 YouTuber AI workflow stack featuring 5 free browser tools: YouTube AI Studio, Private AI Transcriber, Video-to-SEO and Thumbnail Generator, AI Video Clipper, and YouTube SEO Audit",
+      alt: "The 2026 YouTuber AI workflow stack featuring 5 free browser tools: YouTube AI Studio, Private AI Transcriber, Video-to-SEO and Thumbnail Generator, AI Video Editor, and YouTube SEO Audit",
       caption:
         "The lean 2026 creator stack: five specialized AI tools covering keyword hooks, local captions, 1280×720 thumbnails, Shorts repurposing, and competitor SEO audits.",
     },
@@ -662,9 +662,9 @@ export const BLOG_POSTS: BlogPost[] = [
             ],
           },
           {
-            subheading: "4. AI Video Clipper for Instant YouTube Shorts & Reels Hooks",
+            subheading: "4. AI Video Editor for Instant YouTube Shorts & Reels Hooks",
             paragraphs: [
-              "In 2026, YouTube Shorts acts as the single best discovery funnel for bringing new viewers to your long-form uploads—yet manually scrubbing through a 25-minute podcast or tutorial to find three standalone 45-second viral hooks can eat two hours. Our [AI Video Clipper](/tools/ai-video-clipper) analyzes your video's pacing and transcript to spotlight high-retention hook timestamps and punchy clip titles so you can turn every long-form upload into multiple Shorts, Reels, and TikToks in minutes.",
+              "In 2026, YouTube Shorts acts as the single best discovery funnel for bringing new viewers to your long-form uploads—yet manually scrubbing through a 25-minute podcast or tutorial to find three standalone 45-second viral hooks can eat two hours. Our [AI Video Editor](/tools/ai-video-editor) analyzes your video's pacing and transcript to spotlight high-retention hook timestamps and punchy clip titles so you can turn every long-form upload into multiple Shorts, Reels, and TikToks in minutes.",
             ],
           },
           {
@@ -701,7 +701,7 @@ export const BLOG_POSTS: BlogPost[] = [
           "Before filming (5 minutes): Audit three top-ranking videos in your topic inside [YouTube SEO Audit](/tools/youtube-seo-audit) and inspect their 1280x720 artwork via [YouTube Thumbnail Downloader](/tools/thumbnail-downloader) to spot unmet viewer questions and color contrast gaps.",
           "Right after export (5 minutes): Transcribe your video privately inside [AI Audio/Video Transcriber](/tools/ai-transcriber) to grab timestamped captions and a clean text copy of your exact spoken words.",
           "Metadata packaging (5 minutes): Paste that transcript into [YouTube AI Studio](/tools/youtube-ai-studio) to generate your primary under-60-character title, 4 backup A/B test hook titles, chaptered description, and 15 to 20 clean SEO tags.",
-          "Thumbnail & Shorts prep (15 minutes): Build a bold 2-to-5-word HD thumbnail via [Video-to-SEO](/tools/video-to-seo) and pull 2 to 3 viral Shorts timestamp hooks with [AI Video Clipper](/tools/ai-video-clipper) (and compress any heavy promo clips locally in our [Universal File Converter](/tools/file-converter)).",
+          "Thumbnail & Shorts prep (15 minutes): Build a bold 2-to-5-word HD thumbnail via [Video-to-SEO](/tools/video-to-seo) and pull 2 to 3 viral Shorts timestamp hooks with [AI Video Editor](/tools/ai-video-editor) (and compress any heavy promo clips locally in our [Universal File Converter](/tools/file-converter)).",
           "48-hour CTR check (5 minutes): Check YouTube Studio two days after publishing—if CTR sits below 4% while retention looks healthy, swap in one of your backup AI hook titles and monitor impressions over the next 72 hours.",
         ],
         ctaLink: {
@@ -719,7 +719,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "Do I have to pay monthly subscriptions to use these 5 YouTube AI tools?",
         answer:
-          "Not on QuickConvert. Our YouTube AI Studio, Private AI Transcriber, Video-to-SEO Generator, AI Video Clipper, and YouTube SEO Audit tools are all 100% free to run right inside your web browser with no credit card or account wall.",
+          "Not on QuickConvert. Our YouTube AI Studio, Private AI Transcriber, Video-to-SEO Generator, AI Video Editor, and YouTube SEO Audit tools are all 100% free to run right inside your web browser with no credit card or account wall.",
       },
       {
         question: "Are my unreleased YouTube videos uploaded to a server when I transcribe them?",

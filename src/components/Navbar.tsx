@@ -128,9 +128,9 @@ const NAV_CATEGORIES: NavCategory[] = [
         icon: <BarChart3 className="w-4 h-4 text-amber-400" />,
       },
       {
-        label: "AI Video Clipper",
-        description: "Extract audio locally & find 30-60s viral Shorts segments",
-        href: "/tools/ai-video-clipper",
+        label: "AI Video Editor",
+        description: "Auto-edit videos, merge clips & remove silences/fillers locally",
+        href: "/tools/ai-video-editor",
         icon: <Scissors className="w-4 h-4 text-indigo-400" />,
       },
       {

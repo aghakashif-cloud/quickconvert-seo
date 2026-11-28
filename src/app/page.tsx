@@ -61,7 +61,7 @@ export default function HomePage() {
             highlights={[
               "100% private client-side file conversion—your personal videos, photos, and PDFs never leave your device.",
               "Supports batch file conversion across video (MP4, WebM, MOV, MKV), audio (MP3, WAV, FLAC), images (PNG, JPG, WebP, AVIF, ICO), and documents (PDF, DOCX).",
-              "Built-in YouTube Creator Suite including AI Transcriber, Video-to-SEO Generator, YouTube SEO Audit, AI Video Clipper, and Thumbnail Downloader.",
+              "Built-in YouTube Creator Suite including AI Transcriber, Video-to-SEO Generator, YouTube SEO Audit, AI Video Editor, and Thumbnail Downloader.",
               "Completely free with no account registration, no watermarks, and instant browser downloads.",
             ]}
           />

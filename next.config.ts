@@ -26,6 +26,11 @@ const nextConfig: NextConfig = {
         destination: "/tools/ai-transcriber",
         statusCode: 301,
       },
+      {
+        source: "/tools/ai-video-clipper",
+        destination: "/tools/ai-video-editor",
+        statusCode: 301,
+      },
     ];
   },
   async headers() {

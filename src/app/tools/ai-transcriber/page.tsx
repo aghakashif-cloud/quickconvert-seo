@@ -994,10 +994,10 @@ export default function AudioTranscriberPage() {
 
           <div className="flex flex-wrap items-center gap-2">
             <Link
-              href="/tools/ai-video-clipper"
+              href="/tools/ai-video-editor"
               className="px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 transition"
             >
-              AI Video Clipper
+              AI Video Editor
             </Link>
             <Link
               href="/tools/youtube-seo-audit"

@@ -1038,7 +1038,7 @@ export default function SmartJumpCutEditorPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold">
               <Scissors className="w-3.5 h-3.5" />
-              Smart Jump-Cut Editor
+              AI Video Editor • Smart Jump-Cut
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" />
@@ -1047,14 +1047,14 @@ export default function SmartJumpCutEditorPage() {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            AI Smart Jump-Cut Editor &amp; Silence Remover
+            AI Video Editor
           </h1>
           <p className="text-slate-300 text-sm md:text-base max-w-3xl leading-relaxed">
-            Upload a raw talking-head video, vlog, or podcast clip. Whisper AI
-            transcribes your speech locally, Gemini flags awkward pauses, dead
-            silences, and filler words (&ldquo;um&rdquo;, &ldquo;uh&rdquo;,
-            &ldquo;ah&rdquo;), and FFmpeg WebAssembly stitches a smooth,
-            professionally paced MP4 right inside your browser.
+            Upload your raw talking-head video, vlog, or podcast clip. Whisper
+            AI transcribes your speech locally, Gemini flags awkward pauses,
+            dead silences, and filler words (&ldquo;um&rdquo;, &ldquo;uh&rdquo;,
+            &ldquo;ah&rdquo;), and FFmpeg WebAssembly merges the clean segments
+            into a smooth, professionally edited MP4 right inside your browser.
           </p>
         </div>
 
@@ -1522,7 +1522,7 @@ export default function SmartJumpCutEditorPage() {
         </div>
 
         <ToolSeoContent
-          toolName="Smart AI Jump-Cut Editor & Silence Remover"
+          toolName="AI Video Editor — Smart Jump-Cut & Silence Remover"
           aboutParagraphs={[
             "Our Smart AI Jump-Cut Editor automatically edits raw talking-head videos, YouTube tutorials, webcam explainers, and podcasts directly inside your web browser—removing awkward silences, long pauses, and distracting filler words like 'um', 'uh', and 'ah' without needing paid editing software like Premiere Pro or Descript.",
             "First, FFmpeg WebAssembly extracts a clean 16kHz audio track locally and scans the waveform for dead air while OpenAI Whisper transcribes your speech with timestamps inside a browser Web Worker. Next, Gemini AI analyzes the timestamped transcript to pinpoint the exact start and end seconds to remove—highlighting filler words in red right on screen—before FFmpeg slices the good parts with subtle 30ms audio micro-fades and merges them into a single smooth MP4 download.",
