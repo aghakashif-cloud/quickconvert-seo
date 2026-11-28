@@ -31,16 +31,50 @@ import {
   ArrowDown,
   Flame,
   Film,
+  Ratio,
 } from "lucide-react";
 
 type WhisperModelId = "Xenova/whisper-base" | "Xenova/whisper-small";
 type EditorMode = "remove-silences" | "viral-clip";
 type StageId = "transcribing" | "analyzing" | "rendering";
 type ViralStageId = "transcribing" | "finding-hook" | "cutting";
+type ViralAspectRatio = "9:16" | "16:9" | "1:1";
 type SensitivityMode = "gentle" | "balanced" | "aggressive";
 
 const MAX_VIRAL_UPLOAD_SECONDS = 15 * 60; // 15 minutes max upload to prevent browser crashes
 const MAX_VIRAL_TRANSCRIBE_SECONDS = 5 * 60; // 5 minutes Whisper transcription cap for performance
+
+const VIRAL_ASPECT_RATIOS: {
+  id: ViralAspectRatio;
+  label: string;
+  shortLabel: string;
+  dimensions: string;
+  vf: string;
+}[] = [
+  {
+    id: "9:16",
+    label: "9:16 (Vertical / Shorts / Reels)",
+    shortLabel: "Vertical / Shorts / Reels",
+    dimensions: "1080×1920",
+    // Safe center crop equivalent to crop=ih*(9/16):ih,scale=1080:1920 on landscape videos without crashing on vertical sources
+    vf: "crop='min(iw,ih*9/16)':'min(ih,iw*16/9)',scale=1080:1920,setsar=1",
+  },
+  {
+    id: "16:9",
+    label: "16:9 (Horizontal / YouTube)",
+    shortLabel: "Horizontal / YouTube",
+    dimensions: "1920×1080",
+    vf: "scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black,setsar=1",
+  },
+  {
+    id: "1:1",
+    label: "1:1 (Square)",
+    shortLabel: "Square",
+    dimensions: "1080×1080",
+    // Safe center crop equivalent to crop=ih:ih,scale=1080:1080 on landscape videos without crashing on vertical sources
+    vf: "crop='min(iw,ih)':'min(iw,ih)',scale=1080:1080,setsar=1",
+  },
+];
 
 interface ViralClipSuggestion {
   startTime: number;
@@ -482,6 +516,11 @@ export default function SmartJumpCutEditorPage() {
     useState<ViralClipSuggestion | null>(null);
   const [viralClipUrl, setViralClipUrl] = useState<string | null>(null);
   const [viralClipSize, setViralClipSize] = useState<number>(0);
+  const [viralAspectRatio, setViralAspectRatio] =
+    useState<ViralAspectRatio>("9:16");
+  const [renderedViralRatio, setRenderedViralRatio] =
+    useState<ViralAspectRatio>("9:16");
+  const [viralReCutting, setViralReCutting] = useState<boolean>(false);
   const [viralCappedAtFiveMin, setViralCappedAtFiveMin] =
     useState<boolean>(false);
 
@@ -1404,17 +1443,24 @@ export default function SmartJumpCutEditorPage() {
   };
 
   /**
-   * Cuts the exact [startTime, endTime] viral highlight from the original video via FFmpeg WASM (-ss and -to).
+   * Cuts the exact [startTime, endTime] viral highlight from the original video via FFmpeg WASM (-ss and -to),
+   * applying the selected aspect ratio center-crop/scale video filter (-vf).
    */
   const cutViralVideoClip = async (
     file: File,
     startTime: number,
-    endTime: number
+    endTime: number,
+    ratio: ViralAspectRatio
   ) => {
+    const ratioConfig =
+      VIRAL_ASPECT_RATIOS.find((r) => r.id === ratio) || VIRAL_ASPECT_RATIOS[0];
+
     setViralStatusMessage(
-      `Loading FFmpeg WASM to cut viral clip (${formatSeconds(
-        startTime
-      )} – ${formatSeconds(endTime)})...`
+      `Loading FFmpeg WASM to cut ${ratioConfig.id} (${
+        ratioConfig.dimensions
+      }) viral clip (${formatSeconds(startTime)} – ${formatSeconds(
+        endTime
+      )})...`
     );
     setViralProgress(74);
 
@@ -1437,9 +1483,9 @@ export default function SmartJumpCutEditorPage() {
       }
 
       setViralStatusMessage(
-        `Cutting engaging ${(endTime - startTime).toFixed(
+        `Cropping & encoding ${(endTime - startTime).toFixed(
           1
-        )}s viral highlight locally...`
+        )}s viral clip in ${ratioConfig.id} (${ratioConfig.dimensions})...`
       );
       setViralProgress(84);
 
@@ -1450,6 +1496,8 @@ export default function SmartJumpCutEditorPage() {
         endTime.toFixed(3),
         "-i",
         inputPath,
+        "-vf",
+        ratioConfig.vf,
         "-c:v",
         "libx264",
         "-preset",
@@ -1494,13 +1542,12 @@ export default function SmartJumpCutEditorPage() {
       if (viralClipUrl) URL.revokeObjectURL(viralClipUrl);
       setViralClipUrl(outUrl);
       setViralClipSize(blob.size);
+      setRenderedViralRatio(ratioConfig.id);
       setViralProgress(100);
       setViralStatusMessage(
-        `Viral clip ready! Cut ${(endTime - startTime).toFixed(
+        `Viral clip ready! Exported ${(endTime - startTime).toFixed(
           1
-        )}s highlight (${formatSeconds(startTime)} – ${formatSeconds(
-          endTime
-        )}) locally.`
+        )}s in ${ratioConfig.id} (${ratioConfig.dimensions}) locally.`
       );
     } finally {
       try {
@@ -1629,9 +1676,9 @@ export default function SmartJumpCutEditorPage() {
       setViralClipResult({ startTime, endTime, reason });
       setViralCompletedStages(["transcribing", "finding-hook"]);
 
-      // Stage 3: Cutting Video via FFmpeg WASM (-ss and -to)
+      // Stage 3: Cutting Video via FFmpeg WASM (-ss and -to + selected Aspect Ratio filter)
       setViralStage("cutting");
-      await cutViralVideoClip(viralFile, startTime, endTime);
+      await cutViralVideoClip(viralFile, startTime, endTime, viralAspectRatio);
 
       setViralCompletedStages(["transcribing", "finding-hook", "cutting"]);
       setViralStage(null);
@@ -1644,6 +1691,40 @@ export default function SmartJumpCutEditorPage() {
       );
       setViralStatus("error");
       setViralStage(null);
+    }
+  };
+
+  const handleReCutViralRatio = async () => {
+    if (
+      !viralFile ||
+      !viralClipResult ||
+      viralStatus === "running" ||
+      viralReCutting
+    ) {
+      return;
+    }
+    setViralReCutting(true);
+    setViralError(null);
+    setViralCompletedStages(["transcribing", "finding-hook"]);
+    setViralStage("cutting");
+    try {
+      await cutViralVideoClip(
+        viralFile,
+        viralClipResult.startTime,
+        viralClipResult.endTime,
+        viralAspectRatio
+      );
+      setViralCompletedStages(["transcribing", "finding-hook", "cutting"]);
+      setViralStatus("done");
+    } catch (err: unknown) {
+      setViralError(
+        err instanceof Error
+          ? err.message
+          : "Failed to re-encode clip in the selected aspect ratio."
+      );
+    } finally {
+      setViralStage(null);
+      setViralReCutting(false);
     }
   };
 
@@ -2382,7 +2463,7 @@ export default function SmartJumpCutEditorPage() {
                   <button
                     type="button"
                     onClick={handleGenerateViralClip}
-                    disabled={viralStatus === "running"}
+                    disabled={viralStatus === "running" || viralReCutting}
                     className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-600 via-orange-600 to-amber-500 hover:from-rose-500 hover:via-orange-500 hover:to-amber-400 disabled:opacity-50 text-white font-bold text-sm md:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-rose-600/25"
                   >
                     {viralStatus === "running" ? (
@@ -2397,6 +2478,68 @@ export default function SmartJumpCutEditorPage() {
                       </>
                     )}
                   </button>
+
+                  {/* Aspect Ratio Selector (Directly below Generate Clip button) */}
+                  <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <label className="flex items-center gap-1.5 text-xs font-bold text-slate-200">
+                        <Ratio className="w-3.5 h-3.5 text-rose-400" />
+                        Output Aspect Ratio
+                      </label>
+                      <span className="text-[11px] font-mono text-rose-300 font-semibold">
+                        {
+                          VIRAL_ASPECT_RATIOS.find(
+                            (r) => r.id === viralAspectRatio
+                          )?.dimensions
+                        }
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                      {VIRAL_ASPECT_RATIOS.map((ratio) => {
+                        const isSelected = viralAspectRatio === ratio.id;
+                        return (
+                          <button
+                            key={ratio.id}
+                            type="button"
+                            onClick={() => setViralAspectRatio(ratio.id)}
+                            disabled={
+                              viralStatus === "running" || viralReCutting
+                            }
+                            className={`flex flex-col items-start gap-1 p-3 rounded-xl border text-left transition disabled:opacity-50 ${
+                              isSelected
+                                ? "bg-rose-500/15 border-rose-500 text-white shadow-md shadow-rose-950/30"
+                                : "bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700 hover:text-white"
+                            }`}
+                          >
+                            <div className="w-full flex items-center justify-between gap-2">
+                              <span className="text-sm font-extrabold">
+                                {ratio.id}
+                              </span>
+                              <span
+                                className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                                  isSelected
+                                    ? "bg-rose-500/25 text-rose-200"
+                                    : "bg-slate-800 text-slate-400"
+                                }`}
+                              >
+                                {ratio.dimensions}
+                              </span>
+                            </div>
+                            <span className="text-[11px] text-slate-400">
+                              {ratio.shortLabel}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                      <strong className="text-slate-300">Note:</strong> For
+                      vertical (9:16) videos, the center of the original video
+                      will be cropped to fit the short format.
+                    </p>
+                  </div>
                 </div>
               )}
 
@@ -2480,20 +2623,47 @@ export default function SmartJumpCutEditorPage() {
                     </h2>
                   </div>
 
-                  <a
-                    href={viralClipUrl}
-                    download={`viral-short-${(
-                      viralFile?.name || "video"
-                    ).replace(/\.[^.]+$/, "")}.mp4`}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/25"
-                  >
-                    <Download className="w-4 h-4" />
-                    Download Short
-                  </a>
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    {renderedViralRatio !== viralAspectRatio && (
+                      <button
+                        type="button"
+                        onClick={handleReCutViralRatio}
+                        disabled={viralReCutting || viralStatus === "running"}
+                        className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white font-bold text-xs sm:text-sm transition"
+                      >
+                        {viralReCutting ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            Re-Cutting in {viralAspectRatio}...
+                          </>
+                        ) : (
+                          <>
+                            <RefreshCw className="w-4 h-4" />
+                            Re-Cut in {viralAspectRatio}
+                          </>
+                        )}
+                      </button>
+                    )}
+
+                    <a
+                      href={viralClipUrl}
+                      download={`viral-short-${renderedViralRatio.replace(
+                        ":",
+                        "x"
+                      )}-${(viralFile?.name || "video").replace(
+                        /\.[^.]+$/,
+                        ""
+                      )}.mp4`}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/25"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download Short ({renderedViralRatio})
+                    </a>
+                  </div>
                 </div>
 
                 {/* Clip Metadata Stats */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
                     <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
                       Selected Segment
@@ -2512,6 +2682,23 @@ export default function SmartJumpCutEditorPage() {
                         viralClipResult.endTime - viralClipResult.startTime
                       ).toFixed(1)}
                       s
+                    </p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-rose-500/30">
+                    <p className="text-[11px] uppercase tracking-wider text-rose-400 font-semibold">
+                      Aspect Ratio
+                    </p>
+                    <p className="text-lg font-extrabold text-rose-300 font-mono mt-0.5">
+                      {renderedViralRatio}{" "}
+                      <span className="text-xs font-normal text-slate-400">
+                        (
+                        {
+                          VIRAL_ASPECT_RATIOS.find(
+                            (r) => r.id === renderedViralRatio
+                          )?.dimensions
+                        }
+                        )
+                      </span>
                     </p>
                   </div>
                   <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
