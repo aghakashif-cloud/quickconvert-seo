@@ -34,6 +34,10 @@ interface GradientPreset {
   angleDeg: number;
 }
 
+const IMGLY_MODEL_VERSION = "1.7.0";
+const IMGLY_CDN_PUBLIC_PATH = `https://staticimgly.com/@imgly/background-removal-data/${IMGLY_MODEL_VERSION}/dist/`;
+const LOCAL_FALLBACK_PUBLIC_PATH = "/background-removal/";
+
 const SOLID_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "white", label: "White", hex: "#ffffff" },
   { id: "blue", label: "Blue", hex: "#2563eb" },
@@ -185,6 +189,22 @@ export default function BackgroundRemoverPage() {
     },
   });
 
+  const resolveModelPublicPath = async (): Promise<string> => {
+    // Automatically use self-hosted /background-removal/ assets if present in public/
+    try {
+      const localCheck = await fetch(`${LOCAL_FALLBACK_PUBLIC_PATH}resources.json`, {
+        method: "HEAD",
+        cache: "no-store",
+      });
+      if (localCheck.ok) {
+        return `${window.location.origin}${LOCAL_FALLBACK_PUBLIC_PATH}`;
+      }
+    } catch {
+      // Local fallback not installed; proceed with official IMG.LY CDN
+    }
+    return IMGLY_CDN_PUBLIC_PATH;
+  };
+
   const handleRemoveBackground = async () => {
     if (!sourceFile || processing) return;
 
@@ -197,11 +217,23 @@ export default function BackgroundRemoverPage() {
 
     try {
       const { removeBackground } = await import("@imgly/background-removal");
+      const publicPath = await resolveModelPublicPath();
 
-      const resultBlob = await removeBackground(sourceFile, {
+      const config: NonNullable<Parameters<typeof removeBackground>[1]> = {
+        publicPath,
+        // Use compact quantized model (~42MB vs 84MB default) for faster, more reliable browser loading
+        model: "isnet_quint8",
+        device: "cpu",
+        fetchArgs: {
+          mode: "cors",
+          credentials: "omit",
+        },
         progress: (key: string, current: number, total: number) => {
           if (total > 0) {
-            const pct = Math.min(96, Math.max(10, Math.round((current / total) * 100)));
+            const pct = Math.min(
+              96,
+              Math.max(10, Math.round((current / total) * 100))
+            );
             setProgressPct(pct);
             if (key.toLowerCase().includes("fetch")) {
               setStatusMessage(
@@ -212,7 +244,23 @@ export default function BackgroundRemoverPage() {
             }
           }
         },
-      });
+      };
+
+      let resultBlob: Blob;
+      try {
+        resultBlob = await removeBackground(sourceFile, config);
+      } catch (firstErr: unknown) {
+        const msg =
+          firstErr instanceof Error ? firstErr.message : String(firstErr);
+        const isFetchErr =
+          /failed to fetch|network|cors|load|resource/i.test(msg);
+        if (!isFetchErr) throw firstErr;
+
+        // Retry once automatically after a brief pause in case of a transient CDN hiccup
+        setStatusMessage("Retrying AI model download from CDN...");
+        await new Promise((r) => setTimeout(r, 1500));
+        resultBlob = await removeBackground(sourceFile, config);
+      }
 
       const outUrl = URL.createObjectURL(resultBlob);
       if (cutoutUrl) URL.revokeObjectURL(cutoutUrl);
@@ -223,10 +271,17 @@ export default function BackgroundRemoverPage() {
         "Background removed 100% locally! Choose a color, gradient, or custom photo below and download."
       );
     } catch (err: unknown) {
+      const rawMessage = err instanceof Error ? err.message : String(err || "");
+      const isNetworkOrCorsError =
+        /failed to fetch|networkerror|network request|cors|err_blocked|resource metadata|fetch/i.test(
+          rawMessage
+        );
+
       setError(
-        err instanceof Error
-          ? err.message
-          : "Failed to remove image background in browser. Please try a JPG or PNG under 10MB."
+        isNetworkOrCorsError
+          ? "Failed to load AI model. Please check your internet connection or try again later."
+          : rawMessage ||
+              "Failed to remove image background in browser. Please try a JPG or PNG under 10MB."
       );
     } finally {
       setProcessing(false);
@@ -822,12 +877,23 @@ export default function BackgroundRemoverPage() {
 
           {/* Error Alert */}
           {error && (
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200 text-xs md:text-sm">
-              <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
-              <div className="space-y-1">
-                <p className="font-bold text-rose-300">Background Removal Error</p>
-                <p>{error}</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200 text-xs md:text-sm">
+              <div className="flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                <div className="space-y-1">
+                  <p className="font-bold text-rose-300">Background Removal Error</p>
+                  <p>{error}</p>
+                </div>
               </div>
+              {sourceFile && !processing && (
+                <button
+                  type="button"
+                  onClick={handleRemoveBackground}
+                  className="shrink-0 px-3.5 py-2 rounded-lg bg-rose-600/30 hover:bg-rose-600/50 border border-rose-500/40 text-rose-100 text-xs font-bold transition"
+                >
+                  Try Again
+                </button>
+              )}
             </div>
           )}
         </div>

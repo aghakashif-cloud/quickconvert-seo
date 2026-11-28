@@ -125,8 +125,14 @@ self.addEventListener("fetch", (event) => {
   // Skip cross-origin requests (AdSense, GTM, HuggingFace models, FFmpeg CDN, etc.)
   if (url.origin !== self.location.origin) return;
 
-  // Never cache API endpoints or the service worker script itself
-  if (url.pathname.startsWith("/api/") || url.pathname === "/sw.js") return;
+  // Never cache API endpoints, local AI model weights, or the service worker script itself
+  if (
+    url.pathname.startsWith("/api/") ||
+    url.pathname.startsWith("/background-removal/") ||
+    url.pathname === "/sw.js"
+  ) {
+    return;
+  }
 
   // 1. HTML pages & App Router navigations -> Network First
   if (isHtmlOrNavigationRequest(request, url)) {
