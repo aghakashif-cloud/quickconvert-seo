@@ -34,9 +34,9 @@ interface GradientPreset {
   angleDeg: number;
 }
 
-const IMGLY_MODEL_VERSION = "1.7.0";
-const IMGLY_CDN_PUBLIC_PATH = `https://staticimgly.com/@imgly/background-removal-data/${IMGLY_MODEL_VERSION}/dist/`;
-const LOCAL_FALLBACK_PUBLIC_PATH = "/background-removal/";
+// Exact version matching "@imgly/background-removal": "^1.7.0" in package.json
+const IMGLY_CDN_PUBLIC_PATH =
+  "https://staticimgly.com/@imgly/background-removal-data/1.7.0/dist/";
 
 const SOLID_COLORS: { id: string; label: string; hex: string }[] = [
   { id: "white", label: "White", hex: "#ffffff" },
@@ -189,22 +189,6 @@ export default function BackgroundRemoverPage() {
     },
   });
 
-  const resolveModelPublicPath = async (): Promise<string> => {
-    // Automatically use self-hosted /background-removal/ assets if present in public/
-    try {
-      const localCheck = await fetch(`${LOCAL_FALLBACK_PUBLIC_PATH}resources.json`, {
-        method: "HEAD",
-        cache: "no-store",
-      });
-      if (localCheck.ok) {
-        return `${window.location.origin}${LOCAL_FALLBACK_PUBLIC_PATH}`;
-      }
-    } catch {
-      // Local fallback not installed; proceed with official IMG.LY CDN
-    }
-    return IMGLY_CDN_PUBLIC_PATH;
-  };
-
   const handleRemoveBackground = async () => {
     if (!sourceFile || processing) return;
 
@@ -217,17 +201,11 @@ export default function BackgroundRemoverPage() {
 
     try {
       const { removeBackground } = await import("@imgly/background-removal");
-      const publicPath = await resolveModelPublicPath();
 
       const config: NonNullable<Parameters<typeof removeBackground>[1]> = {
-        publicPath,
-        // Use compact quantized model (~42MB vs 84MB default) for faster, more reliable browser loading
+        publicPath: IMGLY_CDN_PUBLIC_PATH,
+        debug: true, // Keep true to inspect detailed IMG.LY & ONNX logs in browser console
         model: "isnet_quint8",
-        device: "cpu",
-        fetchArgs: {
-          mode: "cors",
-          credentials: "omit",
-        },
         progress: (key: string, current: number, total: number) => {
           if (total > 0) {
             const pct = Math.min(
@@ -250,6 +228,7 @@ export default function BackgroundRemoverPage() {
       try {
         resultBlob = await removeBackground(sourceFile, config);
       } catch (firstErr: unknown) {
+        console.warn("[BackgroundRemover] First attempt failed, retrying:", firstErr);
         const msg =
           firstErr instanceof Error ? firstErr.message : String(firstErr);
         const isFetchErr =
@@ -257,7 +236,7 @@ export default function BackgroundRemoverPage() {
         if (!isFetchErr) throw firstErr;
 
         // Retry once automatically after a brief pause in case of a transient CDN hiccup
-        setStatusMessage("Retrying AI model download from CDN...");
+        setStatusMessage("Retrying AI model download from official IMG.LY CDN...");
         await new Promise((r) => setTimeout(r, 1500));
         resultBlob = await removeBackground(sourceFile, config);
       }
@@ -271,6 +250,7 @@ export default function BackgroundRemoverPage() {
         "Background removed 100% locally! Choose a color, gradient, or custom photo below and download."
       );
     } catch (err: unknown) {
+      console.error("[BackgroundRemover] removeBackground error:", err);
       const rawMessage = err instanceof Error ? err.message : String(err || "");
       const isNetworkOrCorsError =
         /failed to fetch|networkerror|network request|cors|err_blocked|resource metadata|fetch/i.test(
@@ -279,7 +259,7 @@ export default function BackgroundRemoverPage() {
 
       setError(
         isNetworkOrCorsError
-          ? "Failed to load AI model. Please check your internet connection or try again later."
+          ? `Failed to load AI model. Please check your internet connection or try again later. (${rawMessage})`
           : rawMessage ||
               "Failed to remove image background in browser. Please try a JPG or PNG under 10MB."
       );
