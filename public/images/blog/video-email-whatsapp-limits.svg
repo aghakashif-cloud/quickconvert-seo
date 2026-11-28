@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 280" width="800" height="280" role="img" aria-label="Email and Messaging Video Compression Cheat Sheet for Gmail, Outlook, WhatsApp, and Discord">
+  <rect width="800" height="280" rx="20" fill="#0b1120" stroke="#1e293b" stroke-width="2"/>
+  <text x="36" y="42" fill="#818cf8" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.4">PLATFORM SIZE LIMITS CHEAT SHEET</text>
+  <text x="36" y="68" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="20" font-weight="800">Recommended Export Targets for Sharp, Fast-Sending Videos</text>
+
+  <!-- 4 Cards -->
+  <rect x="36" y="92" width="170" height="148" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="52" y="122" fill="#f87171" font-family="system-ui, sans-serif" font-size="14" font-weight="800">Gmail</text>
+  <text x="52" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="800">25 MB Cap</text>
+  <text x="52" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">720p–1080p MP4</text>
+  <text x="52" y="196" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">1.5 – 3.5 Mbps</text>
+  <text x="52" y="220" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Target &lt; 18 MB</text>
+
+  <rect x="222" y="92" width="170" height="148" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="238" y="122" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="14" font-weight="800">Outlook</text>
+  <text x="238" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="800">20 MB Cap</text>
+  <text x="238" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">720p H.264 MP4</text>
+  <text x="238" y="196" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">1.5 – 2.2 Mbps</text>
+  <text x="238" y="220" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Target &lt; 16 MB</text>
+
+  <rect x="408" y="92" width="170" height="148" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="424" y="122" fill="#34d399" font-family="system-ui, sans-serif" font-size="14" font-weight="800">WhatsApp</text>
+  <text x="424" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="800">16 MB Inline</text>
+  <text x="424" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">720p / 1080p MP4</text>
+  <text x="424" y="196" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">2.0 – 3.5 Mbps</text>
+  <text x="424" y="220" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Or send as Document</text>
+
+  <rect x="594" y="92" width="170" height="148" rx="14" fill="#111827" stroke="#334155"/>
+  <text x="610" y="122" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="14" font-weight="800">Discord Free</text>
+  <text x="610" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="800">10 MB Cap</text>
+  <text x="610" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">480p / 720p MP4</text>
+  <text x="610" y="196" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">1.2 – 2.0 Mbps</text>
+  <text x="610" y="220" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Trim dead intro first</text>
+</svg>

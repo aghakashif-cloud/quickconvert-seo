@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" width="800" height="340" role="img" aria-label="Video Compression Test: 240MB Raw 4K Video to 14.8MB Sharp 1080p MP4">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="accent1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="340" rx="20" fill="url(#bg1)" stroke="#1e293b" stroke-width="2"/>
+  <text x="40" y="46" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="700" letter-spacing="1.5">REAL-WORLD COMPRESSION BENCHMARK</text>
+  <text x="40" y="76" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="800">Shrink a 240 MB 4K Phone Video to 14.8 MB — Zero Blur</text>
+
+  <!-- Left Card: Raw 4K -->
+  <rect x="40" y="108" width="215" height="165" rx="14" fill="#1e293b" stroke="#f43f5e" stroke-opacity="0.45" stroke-width="1.5"/>
+  <rect x="60" y="126" width="82" height="24" rx="12" fill="#f43f5e" fill-opacity="0.18"/>
+  <text x="101" y="142" text-anchor="middle" fill="#fda4af" font-family="system-ui, sans-serif" font-size="11" font-weight="700">BEFORE</text>
+  <text x="60" y="182" fill="#ffffff" font-family="system-ui, sans-serif" font-size="30" font-weight="800">240 MB</text>
+  <text x="60" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="13">Raw 4K 60fps (.MOV)</text>
+  <text x="60" y="232" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Bitrate: ~38 Mbps</text>
+  <text x="60" y="254" fill="#fb7185" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Blocked by Gmail (25 MB)</text>
+
+  <!-- Middle Engine -->
+  <path d="M268 190 L306 190" stroke="url(#accent1)" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="306,184 318,190 306,196" fill="#6366f1"/>
+  <rect x="322" y="128" width="156" height="124" rx="14" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="400" y="160" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="12" font-weight="700">FFMPEG WASM</text>
+  <text x="400" y="184" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">100% Local Browser</text>
+  <text x="400" y="208" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">1080p • 2.2 Mbps</text>
+  <text x="400" y="230" text-anchor="middle" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">ZERO SERVER UPLOADS</text>
+  <path d="M482 190 L520 190" stroke="url(#accent1)" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="520,184 532,190 520,196" fill="#10b981"/>
+
+  <!-- Right Card: Compressed -->
+  <rect x="538" y="108" width="222" height="165" rx="14" fill="#1e293b" stroke="#10b981" stroke-opacity="0.55" stroke-width="1.5"/>
+  <rect x="558" y="126" width="108" height="24" rx="12" fill="#10b981" fill-opacity="0.18"/>
+  <text x="612" y="142" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11" font-weight="700">AFTER (-93%)</text>
+  <text x="558" y="182" fill="#34d399" font-family="system-ui, sans-serif" font-size="30" font-weight="800">14.8 MB</text>
+  <text x="558" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="13">Sharp 1080p (.MP4 H.264)</text>
+  <text x="558" y="232" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">128 kbps AAC Audio</text>
+  <text x="558" y="254" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Ready for Gmail &amp; WhatsApp</text>
+
+  <text x="400" y="312" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="12">QuickConvert &amp; SEO Tools — Client-Side Video Compression Workflow</text>
+</svg>

@@ -201,6 +201,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </header>
 
+        {/* Featured Visual Diagram / Illustration */}
+        {post.coverImage && (
+          <figure className="bg-slate-900/70 border border-slate-800 rounded-2xl overflow-hidden p-3 sm:p-4 space-y-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={post.coverImage.src}
+              alt={post.coverImage.alt}
+              width={800}
+              height={340}
+              className="w-full h-auto rounded-xl border border-slate-800/80"
+            />
+            <figcaption className="text-xs text-slate-400 text-center px-2">
+              {post.coverImage.caption}
+            </figcaption>
+          </figure>
+        )}
+
         {/* Article Body (H2 & H3 Semantic Structure) */}
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 md:p-10 space-y-10 leading-relaxed">
           {post.sections.map((section, idx) => (
@@ -208,6 +225,23 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <h2 className="text-xl md:text-2xl font-bold text-white tracking-tight border-b border-slate-800/80 pb-2.5">
                 {section.heading}
               </h2>
+
+              {section.image && (
+                <figure className="my-4 bg-slate-950/70 border border-slate-800/90 rounded-2xl overflow-hidden p-3 space-y-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={section.image.src}
+                    alt={section.image.alt}
+                    width={800}
+                    height={280}
+                    loading="lazy"
+                    className="w-full h-auto rounded-xl border border-slate-800/70"
+                  />
+                  <figcaption className="text-xs text-slate-400 text-center px-2">
+                    {section.image.caption}
+                  </figcaption>
+                </figure>
+              )}
 
               {section.paragraphs.map((paragraph, pIdx) => (
                 <p

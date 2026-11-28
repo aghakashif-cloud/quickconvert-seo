@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320" role="img" aria-label="3-Layer YouTube Tag Formula: Primary Keyword, Long-Tail Variations, and Broad Topic Anchors">
+  <rect width="800" height="320" rx="20" fill="#0b1120" stroke="#1e293b" stroke-width="2"/>
+  <text x="40" y="44" fill="#fb7185" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.4">YOUTUBE SEO TAG ARCHITECTURE</text>
+  <text x="40" y="74" fill="#ffffff" font-family="system-ui, sans-serif" font-size="22" font-weight="800">The 3-Layer Tag Formula (300–420 Focused Characters)</text>
+
+  <!-- Layer 1 -->
+  <rect x="40" y="102" width="720" height="54" rx="12" fill="#1e293b" stroke="#f43f5e" stroke-opacity="0.5"/>
+  <rect x="54" y="115" width="90" height="28" rx="8" fill="#f43f5e" fill-opacity="0.2"/>
+  <text x="99" y="133" text-anchor="middle" fill="#fda4af" font-family="system-ui, sans-serif" font-size="12" font-weight="700">LAYER 1</text>
+  <text x="162" y="126" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Exact Primary Keyword First (1 Tag)</text>
+  <text x="162" y="145" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Example: "how to make garlic naan at home" — matches Title &amp; Opening Description</text>
+
+  <!-- Layer 2 -->
+  <rect x="40" y="170" width="720" height="54" rx="12" fill="#1e293b" stroke="#6366f1" stroke-opacity="0.55"/>
+  <rect x="54" y="183" width="90" height="28" rx="8" fill="#6366f1" fill-opacity="0.2"/>
+  <text x="99" y="201" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="12" font-weight="700">LAYER 2</text>
+  <text x="162" y="194" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Close Long-Tail Variations (4–6 Tags)</text>
+  <text x="162" y="213" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Example: "soft garlic naan without tandoor", "skillet garlic naan easy", common spellings</text>
+
+  <!-- Layer 3 -->
+  <rect x="40" y="238" width="720" height="54" rx="12" fill="#1e293b" stroke="#10b981" stroke-opacity="0.5"/>
+  <rect x="54" y="251" width="90" height="28" rx="8" fill="#10b981" fill-opacity="0.2"/>
+  <text x="99" y="269" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="12" font-weight="700">LAYER 3</text>
+  <text x="162" y="262" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Broad Topic Anchors (2–4 Tags)</text>
+  <text x="162" y="281" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Example: "homemade flatbread recipe", "easy Indian bread" — guides Suggested Videos</text>
+</svg>

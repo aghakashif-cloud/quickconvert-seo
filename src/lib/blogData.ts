@@ -1,3 +1,9 @@
+export interface BlogImageVisual {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
 export interface BlogSubSection {
   subheading: string;
   paragraphs: string[];
@@ -11,6 +17,7 @@ export interface BlogSection {
   bullets?: string[];
   numberedList?: string[];
   subSections?: BlogSubSection[];
+  image?: BlogImageVisual;
   ctaLink?: {
     text: string;
     href: string;
@@ -33,6 +40,7 @@ export interface BlogPost {
   readTime: string;
   publishedAt: string;
   author: string;
+  coverImage?: BlogImageVisual;
   sections: BlogSection[];
   faqs?: BlogFaqItem[];
 }
@@ -56,6 +64,12 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "7 min read",
     publishedAt: "November 26, 2026",
     author: "QuickConvert Editorial Team",
+    coverImage: {
+      src: "/images/blog/video-compression-hero.svg",
+      alt: "Video compression benchmark comparing a 240MB raw 4K clip shrunk to a 14.8MB sharp 1080p MP4 locally in the browser",
+      caption:
+        "Real-world test: resizing a 240MB 4K phone clip to 1080p MP4 at 2.2 Mbps cuts file size by 93% with zero visible blur.",
+    },
     sections: [
       {
         heading: "Why Your Video Files Are So Huge in the First Place",
@@ -97,6 +111,12 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "How to Compress a Video for Email and WhatsApp (Exact Cheat Sheet)",
+        image: {
+          src: "/images/blog/video-email-whatsapp-limits.svg",
+          alt: "Video compression size limit cheat sheet for Gmail 25MB, Outlook 20MB, WhatsApp 16MB, and Discord 10MB",
+          caption:
+            "Recommended MP4 resolution and bitrate targets for Gmail, Outlook, WhatsApp, and free Discord uploads.",
+        },
         paragraphs: [
           "Every app has a different size cap and treats uploaded videos differently. Instead of guessing, use the exact settings we rely on every day:",
         ],
@@ -165,6 +185,12 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "7 min read",
     publishedAt: "November 26, 2026",
     author: "QuickConvert Editorial Team",
+    coverImage: {
+      src: "/images/blog/youtube-tags-hero.svg",
+      alt: "3-Layer YouTube Tag Formula showing Primary Keyword, Long-Tail Variations, and Broad Topic Anchors",
+      caption:
+        "Organize your YouTube Studio tags into three focused layers (300–420 characters) for stronger search and suggested-video matching.",
+    },
     sections: [
       {
         heading: "Why Hidden YouTube Tags Still Help You Understand Your Niche",
@@ -218,6 +244,12 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "How to Convert Video to GIF to Promote Your YouTube Uploads",
+        image: {
+          src: "/images/blog/youtube-gif-promo-workflow.svg",
+          alt: "Three-step creator workflow from competitor YouTube tag audit to aligned metadata and looping social promo GIF",
+          caption:
+            "A repeatable 10-minute launch workflow combining YouTube SEO Audit, aligned titles/tags, and a 5-second looping teaser GIF.",
+        },
         paragraphs: [
           "Getting your tags right helps YouTube search, but sending fresh viewers to your video during the first 24 hours after publishing gives your video an early boost in the recommendation engine. Sharing a plain link on X, Reddit, LinkedIn, or in an email newsletter rarely gets clicks because people scroll right past static text. A short 4-to-6-second looping GIF showing the coolest moment of your video catches eyes instantly.",
           "Learning how to convert video to GIF takes less than a minute using our browser-based [Video to GIF Converter](/tools/video-to-gif) (you can also check our full tutorial on [converting video to GIF online for free](/blog/how-to-convert-video-to-gif-online-for-free)). Here is how to make a clean teaser GIF right after exporting your YouTube edit:",
@@ -276,6 +308,12 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "7 min read",
     publishedAt: "November 26, 2026",
     author: "QuickConvert Editorial Team",
+    coverImage: {
+      src: "/images/blog/transcription-roadmap-hero.svg",
+      alt: "4-Week Free Transcription Practice Roadmap covering Clean Verbatim rules, 3-minute drills, timestamps, and AI post-editing",
+      caption:
+        "A structured 4-week daily practice plan for learning accurate transcription completely free from home.",
+    },
     sections: [
       {
         heading: "What Transcription Actually Looks Like in Real Life",
@@ -298,6 +336,12 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "How to Learn Transcription for Free Using Our AI Audio/Video Transcriber",
+        image: {
+          src: "/images/blog/transcription-accuracy-drill.svg",
+          alt: "Manual-first transcription accuracy check comparing a manual draft against local Whisper AI with timestamps",
+          caption:
+            "Grading your own practice transcripts by comparing a manual 3-minute draft side by side against local Whisper AI output.",
+        },
         paragraphs: [
           "When you study alone at home, there is one huge problem: who grades your practice work? If you mishear a word or skip half a sentence, you might never realize it unless someone checks your draft. That is where our 100% browser-based [AI Audio/Video Transcriber](/tools/ai-transcriber) becomes your free personal teacher. Because it runs Whisper AI locally on your device, your practice files stay private—you can read how local Whisper works in our guide on [how to transcribe audio and video for free privately](/blog/how-to-transcribe-audio-and-video-for-free-100-private).",
         ],
@@ -371,6 +415,12 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "7 min read",
     publishedAt: "November 26, 2026",
     author: "QuickConvert Editorial Team",
+    coverImage: {
+      src: "/images/blog/3d-video-player-hero.svg",
+      alt: "3D Tilt Video Player interactive stage showing floating tilted frame, neon glow, mouse tilt, and mobile gyroscope support",
+      caption:
+        "Interactive 3D parallax framing adds floating depth, ambient glow, and live mouse or smartphone gyroscope tilt to any MP4 or WebM clip.",
+    },
     sections: [
       {
         heading: "Why Flat Web Video Players Feel Boring (And What 3D Tilt Changes)",
@@ -401,6 +451,12 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "Step-by-Step: How to Watch and Record a 3D Tilt Video Clip Free",
+        image: {
+          src: "/images/blog/3d-video-record-share.svg",
+          alt: "Three-step Record and Share 3D Tilt clip workflow: load local MP4 or WebM, record browser tab tilt, auto-download WebM clip",
+          caption:
+            "Capture your interactive 3D tilt motion directly from the browser tab and download a shareable .webm clip for TikTok, Reels, and Shorts.",
+        },
         paragraphs: [
           "You do not need any editing skills to create a sleek 3D tilted video preview. Here is the exact 5-step workflow we use ourselves when recording social media promos:",
         ],
@@ -465,6 +521,12 @@ export const BLOG_POSTS: BlogPost[] = [
     readTime: "7 min read",
     publishedAt: "November 26, 2026",
     author: "QuickConvert Editorial Team",
+    coverImage: {
+      src: "/images/blog/currency-converter-hero.svg",
+      alt: "Live Currency Converter overview covering 160+ global currencies including USD, EUR, GBP, PKR, INR, and AED",
+      caption:
+        "Check live mid-market reference rates across 160+ global currencies with direct/inverse unit rates and visible last-updated dates.",
+    },
     sections: [
       {
         heading: "Why Checking the Real Live Exchange Rate Saves You Real Money",
@@ -512,6 +574,12 @@ export const BLOG_POSTS: BlogPost[] = [
       },
       {
         heading: "Mid-Market Rate vs. Bank Rate: 5 Practical Tips Before You Exchange",
+        image: {
+          src: "/images/blog/mid-market-vs-bank-spread.svg",
+          alt: "Comparison chart showing $1,000 at live mid-market rate versus 3.5% typical bank markup and 8–10% airport kiosk spread",
+          caption:
+            "How hidden exchange-rate markups eat into a $1,000 international invoice or travel budget when you skip checking the live mid-market rate.",
+        },
         paragraphs: [
           "Before you swipe a card overseas or confirm a bank transfer, keep these five practical money-saving habits in mind:",
         ],

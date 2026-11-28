@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-label="Record and Share 3D Tilt Video Clip Workflow for TikTok and Reels">
+  <rect width="800" height="250" rx="20" fill="#0b1120" stroke="#1e293b" stroke-width="2"/>
+  <text x="36" y="42" fill="#f472b6" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.4">RECORD &amp; SHARE WORKFLOW</text>
+  <text x="36" y="68" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="800">Capture Interactive 3D Clips for TikTok, Reels &amp; Shorts</text>
+
+  <rect x="36" y="94" width="220" height="122" rx="14" fill="#111827" stroke="#6366f1" stroke-opacity="0.45"/>
+  <text x="54" y="122" fill="#818cf8" font-family="system-ui, sans-serif" font-size="12" font-weight="800">1. LOAD LOCAL CLIP</text>
+  <text x="54" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700">MP4 or WebM Video</text>
+  <text x="54" y="172" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Zero uploads — instant</text>
+  <text x="54" y="190" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">local HTML5 playback</text>
+
+  <path d="M264 155 L284 155" stroke="#475569" stroke-width="2.5"/>
+  <polygon points="284,150 293,155 284,160" fill="#f43f5e"/>
+
+  <rect x="296" y="94" width="220" height="122" rx="14" fill="#111827" stroke="#f43f5e" stroke-opacity="0.5"/>
+  <text x="314" y="122" fill="#fb7185" font-family="system-ui, sans-serif" font-size="12" font-weight="800">2. RECORD 3D EFFECT</text>
+  <text x="314" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700">Capture Browser Tab</text>
+  <text x="314" y="172" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Move mouse smoothly to</text>
+  <text x="314" y="190" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">animate glowing 3D tilt</text>
+
+  <path d="M524 155 L544 155" stroke="#475569" stroke-width="2.5"/>
+  <polygon points="544,150 553,155 544,160" fill="#10b981"/>
+
+  <rect x="556" y="94" width="208" height="122" rx="14" fill="#111827" stroke="#10b981" stroke-opacity="0.5"/>
+  <text x="574" y="122" fill="#34d399" font-family="system-ui, sans-serif" font-size="12" font-weight="800">3. AUTO-DOWNLOAD</text>
+  <text x="574" y="148" fill="#ffffff" font-family="system-ui, sans-serif" font-size="15" font-weight="700">Save .WebM Clip</text>
+  <text x="574" y="172" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">Post directly or convert</text>
+  <text x="574" y="190" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="12">locally to MP4 in 2s</text>
+</svg>
