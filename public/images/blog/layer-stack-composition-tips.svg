@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">3-Layer Photo Composition Anatomy Using Z-Index Controls</title>
+  <desc id="desc">Visual breakdown of 3-layer photo editing: Layer 1 Canvas Background (solid color, gradient, or photo), Layer 2 Interactive Main Cutout Subject (drag, resize, rotate), and Layer 3 Secondary Elements (logos, badges, products) ordered with Bring Forward and Send Backward.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Mastering the 3-Layer Stack: Background, Subject &amp; Secondary Elements</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Use Bring Forward and Send Backward whenever objects overlap to build studio-grade thumbnails and banners</text>
+
+  <!-- Layer 1 -->
+  <rect x="28" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.4"/>
+  <rect x="44" y="94" width="120" height="22" rx="11" fill="#1e1b4b"/>
+  <text x="104" y="109" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">BASE LAYER (BACK)</text>
+  <text x="44" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Canvas Backdrop</text>
+  <text x="44" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Transparent alpha PNG</text>
+  <text x="44" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Solid, Gradient or Photo</text>
+  <text x="44" y="210" fill="#818cf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Sets visual mood &amp; contrast</text>
+
+  <!-- Layer 2 -->
+  <rect x="282" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="298" y="94" width="132" height="22" rx="11" fill="#0c4a6e"/>
+  <text x="364" y="109" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">MIDDLE LAYER</text>
+  <text x="298" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">AI Cutout Subject</text>
+  <text x="298" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Drag anywhere on canvas</text>
+  <text x="298" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Corner-scale &amp; rotate freely</text>
+  <text x="298" y="210" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Anchor left/right for balance</text>
+
+  <!-- Layer 3 -->
+  <rect x="536" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="552" y="94" width="142" height="22" rx="11" fill="#064e3b"/>
+  <text x="623" y="109" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">TOP LAYER (FRONT)</text>
+  <text x="552" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Secondary Elements</text>
+  <text x="552" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Brand logos &amp; watermarks</text>
+  <text x="552" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Products, stickers &amp; guests</text>
+  <text x="552" y="210" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Order with Forward / Backward</text>
+</svg>

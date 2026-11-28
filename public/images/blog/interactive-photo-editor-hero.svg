@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Interactive Browser Photo Editor With AI Background Removal and Layer Controls</title>
+  <desc id="desc">Split-screen mockup of QuickConvert interactive Fabric.js Photo Editor showing an 800x600 canvas with draggable and resizable AI cutout subject plus secondary logo layer on the left and background, layering, and export controls on the right.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="canvasGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="55%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="36" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18.5" font-weight="700">Interactive Browser Photo Editor: Remove BG, Resize &amp; Layer Elements</text>
+  <text x="32" y="55" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Powered locally by IMG.LY AI Segmentation + Fabric.js Canvas — drag, scale, rotate, layer &amp; export HD PNG/JPG</text>
+
+  <!-- Left: Interactive Canvas Mockup -->
+  <rect x="28" y="72" width="464" height="206" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <rect x="44" y="86" width="432" height="178" rx="8" fill="url(#canvasGrad)"/>
+
+  <!-- Draggable Main Subject with Selection Handles -->
+  <rect x="148" y="108" width="136" height="142" rx="4" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <circle cx="216" cy="148" r="24" fill="#f8fafc"/>
+  <path d="M174 242 C180 186, 252 186, 258 242 Z" fill="#f8fafc"/>
+  <!-- Corner Scale Handles -->
+  <rect x="144" y="104" width="8" height="8" rx="2" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <rect x="280" y="104" width="8" height="8" rx="2" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <rect x="144" y="246" width="8" height="8" rx="2" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <rect x="280" y="246" width="8" height="8" rx="2" fill="#ffffff" stroke="#0284c7" stroke-width="1.5"/>
+  <!-- Rotate handle -->
+  <line x1="216" y1="108" x2="216" y2="94" stroke="#38bdf8" stroke-width="1.5"/>
+  <circle cx="216" cy="92" r="4" fill="#38bdf8"/>
+
+  <!-- Secondary Added Logo / Product Badge -->
+  <rect x="334" y="114" width="114" height="58" rx="10" fill="#0f172a" opacity="0.9" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="391" y="138" text-anchor="middle" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="700">+ 2ND IMAGE</text>
+  <text x="391" y="156" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Logo / Product</text>
+
+  <!-- Canvas label -->
+  <rect x="56" y="232" width="118" height="22" rx="6" fill="#020617" opacity="0.75"/>
+  <text x="115" y="247" text-anchor="middle" fill="#7dd3fc" font-family="ui-monospace, monospace" font-size="10" font-weight="700">800×600 CANVAS</text>
+
+  <!-- Right: Control Panel Mockup -->
+  <rect x="508" y="72" width="264" height="206" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="524" y="96" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.6">CONTROL PANEL</text>
+
+  <!-- Swatches -->
+  <text x="524" y="118" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Background: Colors / Gradients / Photo</text>
+  <circle cx="536" cy="136" r="9" fill="#ffffff" stroke="#475569"/>
+  <circle cx="560" cy="136" r="9" fill="#2563eb"/>
+  <circle cx="584" cy="136" r="9" fill="#dc2626"/>
+  <circle cx="608" cy="136" r="9" fill="#f97316"/>
+  <circle cx="632" cy="136" r="9" fill="#9333ea"/>
+  <rect x="652" y="126" width="104" height="20" rx="6" fill="#1e293b"/>
+  <text x="704" y="140" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="9.5" font-weight="600">+ Upload BG</text>
+
+  <!-- Add Another Image -->
+  <rect x="524" y="158" width="232" height="28" rx="7" fill="#1e1b4b" stroke="#6366f1" stroke-width="1"/>
+  <text x="640" y="176" text-anchor="middle" fill="#c7d2fe" font-family="system-ui, sans-serif" font-size="11" font-weight="700">+ Add Another Image (Layer)</text>
+
+  <!-- Layer Controls -->
+  <rect x="524" y="194" width="112" height="26" rx="7" fill="#1e293b"/>
+  <text x="580" y="211" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">↑ Bring Forward</text>
+  <rect x="644" y="194" width="112" height="26" rx="7" fill="#1e293b"/>
+  <text x="700" y="211" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">↓ Send Backward</text>
+
+  <!-- Download Button -->
+  <rect x="524" y="232" width="232" height="32" rx="8" fill="#059669"/>
+  <text x="640" y="252" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Download Final Image (PNG/JPG)</text>
+</svg>

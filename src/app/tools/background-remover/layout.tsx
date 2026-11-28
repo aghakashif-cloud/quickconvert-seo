@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free AI Background Remover - Transparent PNG (No Upload)",
+  title: "Free AI Background Remover & Photo Editor (No Upload)",
   description:
-    "Remove image backgrounds free 100% locally in your browser. Replace with solid colors, gradients, or custom photos & export HD PNG or JPG.",
+    "Remove photo backgrounds locally with AI, drag and resize subjects on an interactive canvas, add logos or new backgrounds, and export PNG/JPG.",
   alternates: { canonical: "/tools/background-remover" },
 };
 
