@@ -4,7 +4,6 @@ import React, { useState, useRef, useCallback, useEffect } from "react";
 import Link from "next/link";
 import BackButton from "@/components/BackButton";
 import ToolSeoContent from "@/components/ToolSeoContent";
-import { useDropzone } from "react-dropzone";
 import { FFmpeg, type FFFSType } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import {
@@ -394,6 +393,7 @@ function countFillerWords(text: string): number {
 
 export default function SmartJumpCutEditorPage() {
   const [files, setFiles] = useState<File[]>([]);
+  const [isDragActive, setIsDragActive] = useState<boolean>(false);
   const [mergedSourceFile, setMergedSourceFile] = useState<File | null>(null);
   const [videoDuration, setVideoDuration] = useState<number>(0);
 
@@ -454,12 +454,25 @@ export default function SmartJumpCutEditorPage() {
     };
   }, [smoothVideoUrl]);
 
-  const appendSelectedFiles = useCallback(
-    (incoming: File[]) => {
-      if (incoming.length === 0) return;
+  const handleFiles = useCallback(
+    (newFiles: File[]) => {
+      if (newFiles.length === 0) return;
+
+      const validVideos = newFiles.filter((file) => {
+        if (file.type && file.type.startsWith("video/")) return true;
+        return /\.(mp4|mov|webm|mkv|avi|m4v|3gp)$/i.test(file.name);
+      });
+
+      if (validVideos.length === 0) {
+        setError(
+          "Please select valid video files (MP4, MOV, WebM, MKV, AVI, or M4V)."
+        );
+        return;
+      }
+
       if (smoothVideoUrl) URL.revokeObjectURL(smoothVideoUrl);
 
-      setFiles((prev) => [...prev, ...incoming]);
+      setFiles((prevFiles) => [...prevFiles, ...validVideos]);
       setMergedSourceFile(null);
       setVideoDuration(0);
       setSmoothVideoUrl(null);
@@ -474,18 +487,43 @@ export default function SmartJumpCutEditorPage() {
       setOverallProgress(0);
       setError(null);
       setStatusMessage(
-        "Clips added locally. Click Start Processing to merge clips & remove silences."
+        `${validVideos.length} clip${validVideos.length === 1 ? "" : "s"} added locally. Click Start Processing to merge all clips & remove silences.`
       );
     },
     [smoothVideoUrl]
   );
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || []);
     if (selectedFiles.length > 0) {
-      appendSelectedFiles(selectedFiles);
+      handleFiles(selectedFiles);
     }
     e.target.value = "";
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (pipelineStatus !== "running" && !reRendering) {
+      setIsDragActive(true);
+    }
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+    if (pipelineStatus === "running" || reRendering) return;
+    const droppedFiles = Array.from(e.dataTransfer.files || []);
+    if (droppedFiles.length > 0) {
+      handleFiles(droppedFiles);
+    }
   };
 
   const handleRemoveFile = (indexToRemove: number) => {
@@ -515,23 +553,6 @@ export default function SmartJumpCutEditorPage() {
     });
     setMergedSourceFile(null);
   };
-
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      appendSelectedFiles(acceptedFiles);
-    },
-    [appendSelectedFiles]
-  );
-
-  const { getRootProps, isDragActive } = useDropzone({
-    onDrop,
-    multiple: true,
-    noClick: true,
-    disabled: pipelineStatus === "running" || reRendering,
-    accept: {
-      "video/*": [".mp4", ".mov", ".webm", ".mkv", ".avi"],
-    },
-  });
 
   const loadFreshFFmpeg = async (): Promise<FFmpeg> => {
     releaseFFmpeg();
@@ -1231,26 +1252,25 @@ export default function SmartJumpCutEditorPage() {
 
         {/* Upload Dropzone & Multi-Clip Queue Card */}
         <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl shadow-black/25">
-          {/* Explicit native multi-file input supporting Ctrl/Shift multi-select */}
+          {/* Native multi-file input (sr-only instead of display:none for 100% cross-browser multi-select reliability) */}
           <input
+            id="multi-video-upload"
             ref={fileInputRef}
             type="file"
             multiple
             accept="video/*"
-            onChange={handleFileInputChange}
+            onChange={handleFileChange}
             disabled={pipelineStatus === "running" || reRendering}
-            className="hidden"
+            className="sr-only"
           />
 
-          {/* Multi-File Dropzone */}
-          <div
-            {...getRootProps()}
-            onClick={() => {
-              if (pipelineStatus !== "running" && !reRendering) {
-                fileInputRef.current?.click();
-              }
-            }}
-            className={`border-2 border-dashed rounded-2xl ${
+          {/* Native HTML5 Multi-File Label & Drag-and-Drop Zone */}
+          <label
+            htmlFor="multi-video-upload"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`block border-2 border-dashed rounded-2xl ${
               files.length > 0 ? "p-6" : "p-10"
             } text-center cursor-pointer transition ${
               isDragActive
@@ -1263,22 +1283,22 @@ export default function SmartJumpCutEditorPage() {
             </div>
             <h2 className="text-base md:text-lg font-bold text-white mb-1">
               {isDragActive
-                ? "Drop your video clips here"
+                ? "Drop all your video clips here"
                 : files.length > 0
                 ? "Drag & Drop or Click to Add More Video Clips"
-                : "Drag & Drop One or Multiple Video Clips"}
+                : "Drag & Drop Multiple Video Clips (15–20+ Supported)"}
             </h2>
             <p className="text-xs md:text-sm text-slate-400 mb-4">
-              Select multiple MP4, MOV, WebM, MKV, or AVI files at once — clips
-              will be merged in order and auto-edited locally
+              Hold Ctrl/Cmd or Shift to select multiple MP4, MOV, WebM, MKV, or
+              AVI clips at once — all clips merge in order locally
             </p>
             <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/25">
               <PlusCircle className="w-4 h-4" />
               {files.length > 0
                 ? "Add More Video Clips"
-                : "Select Video Files (Multiple Supported)"}
+                : "Select Multiple Video Files"}
             </span>
-          </div>
+          </label>
 
           {/* Uploaded Clips Queue List (Shows EVERY file with Reorder + X Remove button) */}
           {files.length > 0 && (
@@ -1292,15 +1312,24 @@ export default function SmartJumpCutEditorPage() {
                     {formatBytes(files.reduce((sum, f) => sum + f.size, 0))})
                   </h3>
 
-                  <button
-                    type="button"
-                    onClick={resetAll}
-                    disabled={pipelineStatus === "running" || reRendering}
-                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-300 border border-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5 disabled:opacity-40"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    Clear All
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <label
+                      htmlFor="multi-video-upload"
+                      className="px-3 py-1.5 rounded-lg bg-indigo-600/20 hover:bg-indigo-600/35 border border-indigo-500/40 text-xs font-bold text-indigo-200 transition flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <PlusCircle className="w-3.5 h-3.5" />
+                      Add More Clips
+                    </label>
+                    <button
+                      type="button"
+                      onClick={resetAll}
+                      disabled={pipelineStatus === "running" || reRendering}
+                      className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-300 border border-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5 disabled:opacity-40"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Clear All
+                    </button>
+                  </div>
                 </div>
 
                 <div className="space-y-2">

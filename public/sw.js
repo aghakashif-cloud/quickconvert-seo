@@ -1,5 +1,5 @@
-const PAGE_CACHE = "quickconvert-pages-v1";
-const STATIC_CACHE = "quickconvert-static-v1";
+const PAGE_CACHE = "quickconvert-pages-v2";
+const STATIC_CACHE = "quickconvert-static-v2";
 const ACTIVE_CACHES = [PAGE_CACHE, STATIC_CACHE];
 
 const PRECACHE_STATIC_ASSETS = [
