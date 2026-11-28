@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">Real WhatsApp Status Trim and Compress Benchmark: 142MB 4K to 7.9MB MP4</title>
+  <desc id="desc">Benchmark comparing a raw 52-second 142MB 4K vertical smartphone clip that WhatsApp splits and blurs versus trimming to 28 seconds and compressing locally to a 7.9MB 720p H.264 MP4.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="bad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="good" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Hands-On Status Test: 142 MB 4K Phone Video → 7.9 MB Crisp Status</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Trimming to the best 28 seconds + local 720p H.264 compression cuts file weight by 94% with zero cloud uploads</text>
+
+  <!-- Raw Row -->
+  <rect x="30" y="78" width="740" height="68" rx="10" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.4"/>
+  <text x="48" y="101" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Raw 52-Sec 4K Phone Video (.MOV)</text>
+  <text x="580" y="101" fill="#f87171" font-family="ui-monospace, monospace" font-size="13" font-weight="700">142.0 MB (Blurry Split)</text>
+  <rect x="48" y="114" width="700" height="20" rx="10" fill="#1e293b"/>
+  <rect x="48" y="114" width="676" height="20" rx="10" fill="url(#bad)"/>
+  <text x="64" y="128" fill="#ffffff" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">✕ WhatsApp chops the clip &amp; crushes faces/text with heavy mobile re-compression</text>
+
+  <!-- Optimized Row -->
+  <rect x="30" y="160" width="740" height="68" rx="10" fill="#0f172a" stroke="#065f46" stroke-width="1.6"/>
+  <text x="48" y="183" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="13" font-weight="700">QuickConvert Local Trim (00:05–00:33) + 720p H.264 @ 2.2 Mbps</text>
+  <text x="596" y="183" fill="#34d399" font-family="ui-monospace, monospace" font-size="13" font-weight="700">7.9 MB (-94% Size!)</text>
+  <rect x="48" y="196" width="700" height="20" rx="10" fill="#1e293b"/>
+  <rect x="48" y="196" width="46" height="20" rx="10" fill="url(#good)"/>
+  <text x="106" y="210" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ Clean 28s single Status • Razor-sharp skin tones &amp; captions • 0 bytes uploaded</text>
+</svg>

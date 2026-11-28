@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { BookOpen, Clock, Calendar, ArrowRight, Sparkles, ShieldCheck } from "lucide-react";
+import { BookOpen, Clock, Calendar, ArrowRight, Sparkles, ShieldCheck, Flame } from "lucide-react";
 import { BLOG_POSTS } from "@/lib/blogData";
 
 export const metadata: Metadata = {
@@ -38,10 +38,18 @@ export default function BlogIndexPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between gap-2 text-xs">
-                  <span className="px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-semibold">
-                    {post.category}
-                  </span>
-                  <span className="flex items-center gap-1 text-slate-400">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {post.trending && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/30 font-bold">
+                        <Flame className="w-3 h-3 text-amber-400" />
+                        Trending
+                      </span>
+                    )}
+                    <span className="px-2.5 py-1 rounded-md bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-semibold">
+                      {post.category.replace(/^Trending\s*•\s*/, "")}
+                    </span>
+                  </div>
+                  <span className="flex items-center gap-1 text-slate-400 shrink-0">
                     <Clock className="w-3.5 h-3.5" />
                     {post.readTime}
                   </span>

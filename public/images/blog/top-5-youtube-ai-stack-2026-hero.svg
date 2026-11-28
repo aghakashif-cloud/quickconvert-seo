@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Top 5 AI Tools Every YouTuber Needs in 2026 Workflow Stack</title>
+  <desc id="desc">Five-stage creator AI workflow for 2026: 1. YouTube AI Studio for titles and tags, 2. Private Whisper AI Transcriber for scripts and captions, 3. Video-to-SEO and HD Thumbnail Generator, 4. AI Video Clipper for Shorts, and 5. YouTube SEO Audit for competitor intelligence.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="topBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="50%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+  <rect x="1" y="1" width="798" height="5" rx="2.5" fill="url(#topBar)"/>
+
+  <text x="32" y="40" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">The 2026 YouTuber AI Stack: 5 Free Tools From Script to Viral Shorts</text>
+  <text x="32" y="60" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Replace $120+/month in scattered creator subscriptions with one fast, privacy-first browser toolkit</text>
+
+  <!-- 5 Cards Across -->
+  <!-- Tool 1 -->
+  <rect x="24" y="84" width="142" height="186" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="36" y="108" fill="#a5b4fc" font-family="ui-monospace, monospace" font-size="11" font-weight="700">TOOL #1</text>
+  <text x="36" y="132" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">YouTube AI</text>
+  <text x="36" y="149" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Studio</text>
+  <text x="36" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">High-CTR titles,</text>
+  <text x="36" y="192" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">chapters, hooks</text>
+  <text x="36" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">&amp; 20 SEO tags.</text>
+  <rect x="36" y="228" width="118" height="24" rx="6" fill="#1e1b4b"/>
+  <text x="95" y="244" text-anchor="middle" fill="#c7d2fe" font-family="system-ui, sans-serif" font-size="10" font-weight="700">Gemini AI Powered</text>
+
+  <!-- Tool 2 -->
+  <rect x="176" y="84" width="142" height="186" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="188" y="108" fill="#7dd3fc" font-family="ui-monospace, monospace" font-size="11" font-weight="700">TOOL #2</text>
+  <text x="188" y="132" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Private AI</text>
+  <text x="188" y="149" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Transcriber</text>
+  <text x="188" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Local Whisper AI</text>
+  <text x="188" y="192" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">captions, blogs</text>
+  <text x="188" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">&amp; timestamps.</text>
+  <rect x="188" y="228" width="118" height="24" rx="6" fill="#0c4a6e"/>
+  <text x="247" y="244" text-anchor="middle" fill="#bae6fd" font-family="system-ui, sans-serif" font-size="10" font-weight="700">Zero Uploads</text>
+
+  <!-- Tool 3 -->
+  <rect x="328" y="84" width="142" height="186" rx="12" fill="#0f172a" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="340" y="108" fill="#f9a8d4" font-family="ui-monospace, monospace" font-size="11" font-weight="700">TOOL #3</text>
+  <text x="340" y="132" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Video-to-SEO</text>
+  <text x="340" y="149" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">&amp; Thumbnails</text>
+  <text x="340" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Auto-grabs HD</text>
+  <text x="340" y="192" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">1280×720 frames</text>
+  <text x="340" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">+ full SEO pack.</text>
+  <rect x="340" y="228" width="118" height="24" rx="6" fill="#500724"/>
+  <text x="399" y="244" text-anchor="middle" fill="#fbcfe8" font-family="system-ui, sans-serif" font-size="10" font-weight="700">No Photoshop</text>
+
+  <!-- Tool 4 -->
+  <rect x="480" y="84" width="142" height="186" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="492" y="108" fill="#fde68a" font-family="ui-monospace, monospace" font-size="11" font-weight="700">TOOL #4</text>
+  <text x="492" y="132" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">AI Video</text>
+  <text x="492" y="149" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Clipper</text>
+  <text x="492" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Finds viral hooks</text>
+  <text x="492" y="192" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">to slice Shorts,</text>
+  <text x="492" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Reels &amp; TikToks.</text>
+  <rect x="492" y="228" width="118" height="24" rx="6" fill="#451a03"/>
+  <text x="551" y="244" text-anchor="middle" fill="#fde68a" font-family="system-ui, sans-serif" font-size="10" font-weight="700">Shorts Multiplier</text>
+
+  <!-- Tool 5 -->
+  <rect x="632" y="84" width="144" height="186" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="644" y="108" fill="#6ee7b7" font-family="ui-monospace, monospace" font-size="11" font-weight="700">TOOL #5</text>
+  <text x="644" y="132" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">YouTube SEO</text>
+  <text x="644" y="149" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Audit Tool</text>
+  <text x="644" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Extracts rival</text>
+  <text x="644" y="192" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">tags + scores</text>
+  <text x="644" y="208" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">SEO 0 to 100.</text>
+  <rect x="644" y="228" width="120" height="24" rx="6" fill="#064e3b"/>
+  <text x="704" y="244" text-anchor="middle" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="10" font-weight="700">Competitor Intel</text>
+</svg>

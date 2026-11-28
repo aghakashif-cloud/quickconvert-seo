@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">WhatsApp Status Video Limits and Ideal Export Settings for Crisp Playback</title>
+  <desc id="desc">Visual specification card showing WhatsApp Status video duration rules (30 seconds classic sweet spot, up to 60 seconds on latest builds), 16MB file size cap, 720p or 1080p vertical 9:16 H.264 MP4 container, and 2 to 2.5 Mbps bitrate to avoid blurry re-compression.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="waAccent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">WhatsApp Status Video Specs: Stay Sharp, Stop the Blur</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Pre-trimming and compressing locally prevents WhatsApp's harsh automatic encoder from crushing your status clip</text>
+
+  <!-- Left Phone Frame Mockup -->
+  <rect x="34" y="78" width="126" height="196" rx="18" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+  <rect x="46" y="92" width="102" height="4" rx="2" fill="#10b981"/>
+  <text x="97" y="114" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10" font-weight="700">STATUS PREVIEW</text>
+  <rect x="46" y="124" width="102" height="114" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+  <text x="97" y="168" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="16" font-weight="700">9 : 16</text>
+  <text x="97" y="188" text-anchor="middle" fill="#34d399" font-family="ui-monospace, monospace" font-size="11" font-weight="700">≤ 30 SEC</text>
+  <text x="97" y="206" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9.5">720p / 1080p MP4</text>
+  <text x="97" y="258" text-anchor="middle" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700">Target &lt; 10 MB</text>
+
+  <!-- Right 4 Spec Cards (2x2 Grid) -->
+  <!-- Card 1: Duration -->
+  <rect x="184" y="78" width="282" height="90" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.4"/>
+  <rect x="184" y="78" width="282" height="4" rx="2" fill="url(#waAccent)"/>
+  <text x="200" y="104" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">01. DURATION SWEET SPOT</text>
+  <text x="200" y="126" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="15" font-weight="700">Under 30 Seconds</text>
+  <text x="200" y="148" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Even with 60s rollouts, 15–29s clips keep</text>
+  <text x="200" y="162" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">higher bitrate per second &amp; zero splitting.</text>
+
+  <!-- Card 2: File Size -->
+  <rect x="484" y="78" width="286" height="90" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.4"/>
+  <text x="500" y="104" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="700">02. FILE SIZE CEILING</text>
+  <text x="500" y="126" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="15" font-weight="700">16 MB Cap (Aim 6–12 MB)</text>
+  <text x="500" y="148" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Files over 16 MB trigger aggressive</text>
+  <text x="500" y="162" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">downscaling &amp; blocky pixelation.</text>
+
+  <!-- Card 3: Codec -->
+  <rect x="184" y="184" width="282" height="90" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.4"/>
+  <text x="200" y="210" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="11" font-weight="700">03. SAFE CONTAINER &amp; CODEC</text>
+  <text x="200" y="232" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="15" font-weight="700">MP4 (H.264 + AAC Audio)</text>
+  <text x="200" y="254" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Avoid raw iPhone HEVC .MOV or .MKV</text>
+  <text x="200" y="268" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">which force harsh server re-encoding.</text>
+
+  <!-- Card 4: Resolution & Bitrate -->
+  <rect x="484" y="184" width="286" height="90" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="1.4"/>
+  <text x="500" y="210" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="700">04. CRISP BITRATE RECIPE</text>
+  <text x="500" y="232" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="15" font-weight="700">720p @ 2.0–2.5 Mbps</text>
+  <text x="500" y="254" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Sharp on OLED phone screens while</text>
+  <text x="500" y="268" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">uploading over mobile data in 2 seconds.</text>
+</svg>
