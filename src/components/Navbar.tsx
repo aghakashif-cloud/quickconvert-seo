@@ -37,6 +37,7 @@ import {
   Landmark,
   Box,
   MonitorPlay,
+  Eraser,
 } from "lucide-react";
 
 interface NavDropdownItem {
@@ -143,6 +144,12 @@ const NAV_CATEGORIES: NavCategory[] = [
         description: "Auto-transcribe video into SEO title, tags & 1280×720 HD thumbnail",
         href: "/tools/video-to-seo",
         icon: <Wand2 className="w-4 h-4 text-rose-400" />,
+      },
+      {
+        label: "Background Remover",
+        description: "Remove & replace image backgrounds free 100% locally with AI",
+        href: "/tools/background-remover",
+        icon: <Eraser className="w-4 h-4 text-emerald-400" />,
       },
       {
         label: "Image to 3D",

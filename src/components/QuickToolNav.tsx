@@ -22,6 +22,7 @@ import {
   Landmark,
   Box,
   MonitorPlay,
+  Eraser,
 } from "lucide-react";
 
 const TOOL_LINKS = [
@@ -112,6 +113,14 @@ const TOOL_LINKS = [
     icon: Wand2,
     activeClass: "bg-rose-600 text-white shadow",
     iconClass: "text-rose-400",
+  },
+  {
+    href: "/tools/background-remover",
+    matchPaths: ["/tools/background-remover"],
+    label: "Background Remover",
+    icon: Eraser,
+    activeClass: "bg-emerald-600 text-white shadow",
+    iconClass: "text-emerald-400",
   },
   {
     href: "/tools/image-to-3d",

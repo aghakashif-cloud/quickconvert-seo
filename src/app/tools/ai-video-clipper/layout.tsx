@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AI Video Clipper - Find Viral Shorts & Reels (Free)",
+  title: "Smart AI Jump-Cut Editor - Remove Silences Free",
   description:
-    "Automatically find the best 30-60s viral Shorts and Reels clips from long videos. Local audio extraction with free AI timestamps. Try it today!",
+    "Auto-edit talking-head videos free in your browser. Remove silences, awkward pauses, and filler words (um, uh) with Whisper AI & FFmpeg WASM.",
   alternates: { canonical: "/tools/ai-video-clipper" },
 };
 

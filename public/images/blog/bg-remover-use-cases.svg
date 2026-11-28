@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">Top 4 Real-World Uses for Free AI Background Removal</title>
+  <desc id="desc">Four everyday scenarios for browser background removal: white e-commerce product listings, clean LinkedIn and passport headshots, high-CTR YouTube thumbnail cutouts, and transparent brand stickers.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">4 Everyday Jobs Where Free Background Removal Saves Hours</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Match your export format and backdrop to your exact platform for sharp, professional results</text>
+
+  <!-- Card 1 -->
+  <rect x="28" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#e2e8f0" stroke-width="1.3"/>
+  <text x="44" y="104" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="11" font-weight="700">01. E-COMMERCE</text>
+  <text x="44" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Pure White Studio</text>
+  <text x="44" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Amazon, Shopify &amp;</text>
+  <text x="44" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Daraz product shots</text>
+  <text x="44" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">on crisp #FFFFFF.</text>
+  <text x="44" y="212" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Export: White JPG</text>
+
+  <!-- Card 2 -->
+  <rect x="217" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.3"/>
+  <text x="233" y="104" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="700">02. HEADSHOTS</text>
+  <text x="233" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">LinkedIn &amp; CV ID</text>
+  <text x="233" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Replace cluttered</text>
+  <text x="233" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">bedrooms with clean</text>
+  <text x="233" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">blue, gray or white.</text>
+  <text x="233" y="212" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Export: Solid JPG/PNG</text>
+
+  <!-- Card 3 -->
+  <rect x="406" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#ec4899" stroke-width="1.3"/>
+  <text x="422" y="104" fill="#f472b6" font-family="system-ui, sans-serif" font-size="11" font-weight="700">03. CREATORS</text>
+  <text x="422" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">YouTube Cutouts</text>
+  <text x="422" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Pop expressive faces</text>
+  <text x="422" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">over Sunset, Ocean,</text>
+  <text x="422" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">or custom backdrops.</text>
+  <text x="422" y="212" fill="#f9a8d4" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Export: Gradient PNG</text>
+
+  <!-- Card 4 -->
+  <rect x="595" y="78" width="177" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.3"/>
+  <text x="611" y="104" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">04. DESIGNERS</text>
+  <text x="611" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Clear PNG Assets</text>
+  <text x="611" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Drop transparent</text>
+  <text x="611" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">logos, pets &amp; items</text>
+  <text x="611" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">into slides &amp; flyers.</text>
+  <text x="611" y="212" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Export: Alpha PNG</text>
+</svg>

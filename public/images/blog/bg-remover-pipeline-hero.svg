@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">100% Local Browser AI Image Background Removal and Replacement Pipeline</title>
+  <desc id="desc">Four-stage client-side workflow: Drop any JPG or PNG photo, isolate subject locally with browser AI segmentation, preview transparent checkerboard cutout, and replace with solid color, gradient, or custom photo via HTML5 Canvas.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="sunset" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="50%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <pattern id="checker" width="16" height="16" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#1e293b"/>
+      <rect x="8" width="8" height="8" fill="#0f172a"/>
+      <rect y="8" width="8" height="8" fill="#0f172a"/>
+      <rect x="8" y="8" width="8" height="8" fill="#1e293b"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">How Browser AI Removes Image Backgrounds (Zero Photoshop)</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Neural segmentation + HTML5 Canvas run strictly inside your browser RAM — zero uploads, zero watermarks</text>
+
+  <!-- Step 1: Original Photo -->
+  <rect x="28" y="84" width="164" height="182" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="44" y="108" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">1. DROP PHOTO</text>
+  <rect x="48" y="122" width="124" height="88" rx="8" fill="#334155"/>
+  <circle cx="110" cy="152" r="18" fill="#cbd5e1"/>
+  <path d="M82 204 C86 174, 134 174, 138 204 Z" fill="#cbd5e1"/>
+  <text x="110" y="232" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Cluttered room</text>
+  <text x="110" y="248" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">JPG / PNG / WebP</text>
+
+  <path d="M196 175 L218 175" stroke="#38bdf8" stroke-width="2.5"/>
+  <polygon points="218,169 228,175 218,181" fill="#38bdf8"/>
+
+  <!-- Step 2: Browser AI -->
+  <rect x="232" y="84" width="164" height="182" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="248" y="108" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">2. LOCAL AI MODEL</text>
+  <text x="248" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Edge Masking</text>
+  <text x="248" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Isolates hair, edges,</text>
+  <text x="248" y="176" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">products &amp; logos via</text>
+  <text x="248" y="194" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">WebAssembly ONNX.</text>
+  <rect x="248" y="214" width="132" height="34" rx="8" fill="#1e1b4b"/>
+  <text x="314" y="235" text-anchor="middle" fill="#c7d2fe" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">🔒 0 Bytes Uploaded</text>
+
+  <path d="M400 175 L422 175" stroke="#818cf8" stroke-width="2.5"/>
+  <polygon points="422,169 432,175 422,181" fill="#818cf8"/>
+
+  <!-- Step 3: Transparent Checkerboard -->
+  <rect x="436" y="84" width="164" height="182" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="452" y="108" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">3. CLEAR ALPHA</text>
+  <rect x="456" y="122" width="124" height="88" rx="8" fill="url(#checker)" stroke="#475569" stroke-width="1"/>
+  <circle cx="518" cy="152" r="18" fill="#f8fafc"/>
+  <path d="M490 204 C494 174, 542 174, 546 204 Z" fill="#f8fafc"/>
+  <text x="518" y="232" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="11">Transparent PNG</text>
+  <text x="518" y="248" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10">Checkerboard preview</text>
+
+  <path d="M604 175 L626 175" stroke="#34d399" stroke-width="2.5"/>
+  <polygon points="626,169 636,175 626,181" fill="#34d399"/>
+
+  <!-- Step 4: Replace & Export -->
+  <rect x="640" y="84" width="134" height="182" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.6"/>
+  <text x="654" y="108" fill="#34d399" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">4. SWAP &amp; SAVE</text>
+  <rect x="654" y="122" width="106" height="88" rx="8" fill="url(#sunset)"/>
+  <circle cx="707" cy="152" r="18" fill="#ffffff"/>
+  <path d="M679 204 C683 174, 731 174, 735 204 Z" fill="#ffffff"/>
+  <text x="707" y="232" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11" font-weight="700">Solid • Gradient</text>
+  <text x="707" y="248" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10">HD PNG or JPG</text>
+</svg>
