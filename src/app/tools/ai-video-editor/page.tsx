@@ -26,6 +26,10 @@ import {
   RefreshCw,
   Wand2,
   BookOpen,
+  X,
+  PlusCircle,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 
 type WhisperModelId = "Xenova/whisper-base" | "Xenova/whisper-small";
@@ -389,8 +393,8 @@ function countFillerWords(text: string): number {
 }
 
 export default function SmartJumpCutEditorPage() {
-  const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [videoPreviewUrl, setVideoPreviewUrl] = useState<string | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
+  const [mergedSourceFile, setMergedSourceFile] = useState<File | null>(null);
   const [videoDuration, setVideoDuration] = useState<number>(0);
 
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
@@ -404,7 +408,7 @@ export default function SmartJumpCutEditorPage() {
   const [completedStages, setCompletedStages] = useState<StageId[]>([]);
   const [overallProgress, setOverallProgress] = useState<number>(0);
   const [statusMessage, setStatusMessage] = useState<string>(
-    "Upload a talking-head video to automatically cut silences and filler words."
+    "Upload one or multiple talking-head clips to merge and automatically remove silences & filler words."
   );
   const [error, setError] = useState<string | null>(null);
 
@@ -419,6 +423,7 @@ export default function SmartJumpCutEditorPage() {
   const [smoothDuration, setSmoothDuration] = useState<number>(0);
   const [reRendering, setReRendering] = useState<boolean>(false);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const ffmpegRef = useRef<FFmpeg | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
@@ -445,26 +450,17 @@ export default function SmartJumpCutEditorPage() {
 
   useEffect(() => {
     return () => {
-      if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
-    };
-  }, [videoPreviewUrl]);
-
-  useEffect(() => {
-    return () => {
       if (smoothVideoUrl) URL.revokeObjectURL(smoothVideoUrl);
     };
   }, [smoothVideoUrl]);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (acceptedFiles.length === 0) return;
-      const file = acceptedFiles[0];
-
-      if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
+  const appendSelectedFiles = useCallback(
+    (incoming: File[]) => {
+      if (incoming.length === 0) return;
       if (smoothVideoUrl) URL.revokeObjectURL(smoothVideoUrl);
 
-      setVideoFile(file);
-      setVideoPreviewUrl(URL.createObjectURL(file));
+      setFiles((prev) => [...prev, ...incoming]);
+      setMergedSourceFile(null);
       setVideoDuration(0);
       setSmoothVideoUrl(null);
       setSmoothVideoSize(0);
@@ -478,15 +474,59 @@ export default function SmartJumpCutEditorPage() {
       setOverallProgress(0);
       setError(null);
       setStatusMessage(
-        "Video loaded locally. Click Auto-Edit & Remove Silences to begin."
+        "Clips added locally. Click Start Processing to merge clips & remove silences."
       );
     },
-    [videoPreviewUrl, smoothVideoUrl]
+    [smoothVideoUrl]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length > 0) {
+      appendSelectedFiles(selectedFiles);
+    }
+    e.target.value = "";
+  };
+
+  const handleRemoveFile = (indexToRemove: number) => {
+    if (pipelineStatus === "running" || reRendering) return;
+    setFiles((prev) => prev.filter((_, i) => i !== indexToRemove));
+    setMergedSourceFile(null);
+    if (smoothVideoUrl) {
+      URL.revokeObjectURL(smoothVideoUrl);
+      setSmoothVideoUrl(null);
+    }
+    setCuts([]);
+    setTranscriptChunks([]);
+    setFullTranscript("");
+    setPipelineStatus("idle");
+  };
+
+  const handleMoveFile = (index: number, direction: -1 | 1) => {
+    if (pipelineStatus === "running" || reRendering) return;
+    const target = index + direction;
+    setFiles((prev) => {
+      if (target < 0 || target >= prev.length) return prev;
+      const copy = [...prev];
+      const temp = copy[index];
+      copy[index] = copy[target];
+      copy[target] = temp;
+      return copy;
+    });
+    setMergedSourceFile(null);
+  };
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      appendSelectedFiles(acceptedFiles);
+    },
+    [appendSelectedFiles]
+  );
+
+  const { getRootProps, isDragActive } = useDropzone({
     onDrop,
-    multiple: false,
+    multiple: true,
+    noClick: true,
     disabled: pipelineStatus === "running" || reRendering,
     accept: {
       "video/*": [".mp4", ".mov", ".webm", ".mkv", ".avi"],
@@ -854,11 +894,129 @@ export default function SmartJumpCutEditorPage() {
   };
 
   /**
-   * Full 3-Stage Auto-Edit Pipeline:
-   * 1. Transcribing Audio -> 2. Analyzing for Cuts -> 3. Rendering Final Video
+   * Merges all uploaded clips in `files` into one normalized H.264/AAC MP4 locally via FFmpeg WASM.
+   * Normalizing resolution (720p), FPS (30), and audio (44.1kHz stereo) guarantees seamless concat
+   * even when mixing clips from different phones, webcams, or formats (.MOV + .MP4 + .WebM).
+   */
+  const mergeAllClips = async (clipList: File[]): Promise<File> => {
+    if (clipList.length === 1) return clipList[0];
+
+    setStatusMessage(
+      `Loading FFmpeg WASM to merge ${clipList.length} video clips...`
+    );
+    setOverallProgress(4);
+
+    const ffmpeg = await loadFreshFFmpeg();
+    const normFiles: string[] = [];
+    const inputFiles: string[] = [];
+    const mergedOutput = "merged_all_clips.mp4";
+
+    try {
+      for (let i = 0; i < clipList.length; i++) {
+        const clip = clipList[i];
+        const ext = clip.name.split(".").pop()?.toLowerCase() || "mp4";
+        const inName = `clip_in_${i}.${ext}`;
+        const normName = `clip_norm_${i}.mp4`;
+
+        setStatusMessage(
+          `Normalizing clip ${i + 1} of ${clipList.length}: ${clip.name}...`
+        );
+        setOverallProgress(Math.round(5 + (i / clipList.length) * 10));
+
+        await ffmpeg.writeFile(inName, await fetchFile(clip));
+        inputFiles.push(inName);
+
+        const normCode = await ffmpeg.exec([
+          "-i",
+          inName,
+          "-vf",
+          "scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2:black,fps=30",
+          "-c:v",
+          "libx264",
+          "-preset",
+          "ultrafast",
+          "-crf",
+          "23",
+          "-pix_fmt",
+          "yuv420p",
+          "-c:a",
+          "aac",
+          "-b:a",
+          "128k",
+          "-ar",
+          "44100",
+          "-ac",
+          "2",
+          "-movflags",
+          "+faststart",
+          normName,
+        ]);
+
+        if (normCode !== 0) {
+          throw new Error(
+            `FFmpeg failed to prepare clip #${i + 1} (${clip.name}). Ensure every clip contains valid video and audio.`
+          );
+        }
+
+        normFiles.push(normName);
+        await ffmpeg.deleteFile(inName).catch(() => {});
+      }
+
+      setStatusMessage(
+        `Merging all ${clipList.length} clips into one continuous timeline...`
+      );
+      setOverallProgress(15);
+
+      await ffmpeg.writeFile(
+        "merge_list.txt",
+        normFiles.map((f) => `file '${f}'`).join("\n")
+      );
+
+      const concatCode = await ffmpeg.exec([
+        "-f",
+        "concat",
+        "-safe",
+        "0",
+        "-i",
+        "merge_list.txt",
+        "-c",
+        "copy",
+        "-movflags",
+        "+faststart",
+        mergedOutput,
+      ]);
+
+      if (concatCode !== 0) {
+        throw new Error(
+          `Failed to concatenate the ${clipList.length} uploaded clips (exit code ${concatCode}).`
+        );
+      }
+
+      const data = await ffmpeg.readFile(mergedOutput);
+      const uint8 =
+        data instanceof Uint8Array
+          ? data
+          : new TextEncoder().encode(String(data));
+      const mergedBlob = new Blob([uint8.buffer as ArrayBuffer], {
+        type: "video/mp4",
+      });
+      return new File([mergedBlob], "merged-clips.mp4", { type: "video/mp4" });
+    } finally {
+      for (const f of [...inputFiles, ...normFiles]) {
+        await ffmpeg.deleteFile(f).catch(() => {});
+      }
+      await ffmpeg.deleteFile("merge_list.txt").catch(() => {});
+      await ffmpeg.deleteFile(mergedOutput).catch(() => {});
+      releaseFFmpeg();
+    }
+  };
+
+  /**
+   * Full Multi-Clip + 3-Stage Auto-Edit Pipeline:
+   * (Merge ALL Clips if >1) -> 1. Transcribing Audio -> 2. Analyzing for Cuts -> 3. Rendering Final Video
    */
   const handleRunSmartAutoEdit = async () => {
-    if (!videoFile || pipelineStatus === "running") return;
+    if (files.length === 0 || pipelineStatus === "running") return;
 
     setPipelineStatus("running");
     setError(null);
@@ -870,15 +1028,17 @@ export default function SmartJumpCutEditorPage() {
     setFullTranscript("");
 
     try {
+      // Pre-step: Merge ALL uploaded files into one continuous clip if multiple clips were added
+      const workingVideoFile =
+        files.length > 1 ? await mergeAllClips(files) : files[0];
+      setMergedSourceFile(workingVideoFile);
+
       // STAGE 1: Transcribing Audio (FFmpeg WASM -> PCM Silence Scan -> Whisper AI)
-      const wavBuffer = await extract16kWav(videoFile);
+      const wavBuffer = await extract16kWav(workingVideoFile);
       const parsed =
         parsePcm16MonoWav(wavBuffer) || (await decodeAudioTo16kHzMono(wavBuffer));
-      const actualDuration =
-        videoDuration > 0 ? videoDuration : parsed.duration;
-      if (videoDuration === 0 && parsed.duration > 0) {
-        setVideoDuration(parsed.duration);
-      }
+      const actualDuration = parsed.duration;
+      setVideoDuration(actualDuration);
 
       // Compute exact acoustic silence gaps before transferring PCM buffer to Whisper Worker
       const preset = SENSITIVITY_CONFIG[sensitivity];
@@ -959,7 +1119,7 @@ export default function SmartJumpCutEditorPage() {
 
       // STAGE 3: Rendering Final Video (FFmpeg -ss/-to + concat locally)
       setCurrentStage("rendering");
-      await renderSmoothVideo(videoFile, detectedCuts, actualDuration);
+      await renderSmoothVideo(workingVideoFile, detectedCuts, actualDuration);
 
       setCompletedStages(["transcribing", "analyzing", "rendering"]);
       setCurrentStage(null);
@@ -968,7 +1128,7 @@ export default function SmartJumpCutEditorPage() {
       setError(
         err instanceof Error
           ? err.message
-          : "An unexpected error occurred during AI Smart Jump-Cut editing."
+          : "An unexpected error occurred during AI Video Editor processing."
       );
       setPipelineStatus("error");
       setCurrentStage(null);
@@ -982,12 +1142,13 @@ export default function SmartJumpCutEditorPage() {
   };
 
   const handleReRender = async () => {
-    if (!videoFile || reRendering || pipelineStatus === "running") return;
+    const sourceForRender = mergedSourceFile || files[0];
+    if (!sourceForRender || reRendering || pipelineStatus === "running") return;
     setReRendering(true);
     setError(null);
     setCurrentStage("rendering");
     try {
-      await renderSmoothVideo(videoFile, cuts, videoDuration);
+      await renderSmoothVideo(sourceForRender, cuts, videoDuration);
       setPipelineStatus("done");
     } catch (err: unknown) {
       setError(
@@ -1000,10 +1161,9 @@ export default function SmartJumpCutEditorPage() {
   };
 
   const resetAll = () => {
-    if (videoPreviewUrl) URL.revokeObjectURL(videoPreviewUrl);
     if (smoothVideoUrl) URL.revokeObjectURL(smoothVideoUrl);
-    setVideoFile(null);
-    setVideoPreviewUrl(null);
+    setFiles([]);
+    setMergedSourceFile(null);
     setVideoDuration(0);
     setSmoothVideoUrl(null);
     setSmoothVideoSize(0);
@@ -1017,7 +1177,7 @@ export default function SmartJumpCutEditorPage() {
     setOverallProgress(0);
     setError(null);
     setStatusMessage(
-      "Upload a talking-head video to automatically cut silences and filler words."
+      "Upload one or multiple talking-head clips to merge and automatically remove silences & filler words."
     );
   };
 
@@ -1069,81 +1229,147 @@ export default function SmartJumpCutEditorPage() {
           </p>
         </div>
 
-        {/* Upload Dropzone & Controls Card */}
+        {/* Upload Dropzone & Multi-Clip Queue Card */}
         <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl shadow-black/25">
-          {!videoFile ? (
-            <div
-              {...getRootProps()}
-              className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition ${
-                isDragActive
-                  ? "border-indigo-400 bg-indigo-500/10"
-                  : "border-slate-700 hover:border-indigo-500/60 bg-slate-950/60"
-              }`}
-            >
-              <input {...getInputProps()} />
-              <div className="w-14 h-14 mx-auto mb-4 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center">
-                <Upload className="w-7 h-7 text-indigo-400" />
-              </div>
-              <h2 className="text-lg font-bold text-white mb-1.5">
-                {isDragActive
-                  ? "Drop your talking-head video here"
-                  : "Drag & Drop Your Talking-Head Video"}
-              </h2>
-              <p className="text-xs md:text-sm text-slate-400 mb-4">
-                Supports MP4, MOV, WebM, MKV, and AVI — processed locally via
-                FFmpeg WASM &amp; Whisper AI
-              </p>
-              <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/25">
-                <Video className="w-4 h-4" />
-                Select Video File
-              </span>
+          {/* Explicit native multi-file input supporting Ctrl/Shift multi-select */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            multiple
+            accept="video/*"
+            onChange={handleFileInputChange}
+            disabled={pipelineStatus === "running" || reRendering}
+            className="hidden"
+          />
+
+          {/* Multi-File Dropzone */}
+          <div
+            {...getRootProps()}
+            onClick={() => {
+              if (pipelineStatus !== "running" && !reRendering) {
+                fileInputRef.current?.click();
+              }
+            }}
+            className={`border-2 border-dashed rounded-2xl ${
+              files.length > 0 ? "p-6" : "p-10"
+            } text-center cursor-pointer transition ${
+              isDragActive
+                ? "border-indigo-400 bg-indigo-500/10"
+                : "border-slate-700 hover:border-indigo-500/60 bg-slate-950/60"
+            }`}
+          >
+            <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center">
+              <Upload className="w-6 h-6 text-indigo-400" />
             </div>
-          ) : (
+            <h2 className="text-base md:text-lg font-bold text-white mb-1">
+              {isDragActive
+                ? "Drop your video clips here"
+                : files.length > 0
+                ? "Drag & Drop or Click to Add More Video Clips"
+                : "Drag & Drop One or Multiple Video Clips"}
+            </h2>
+            <p className="text-xs md:text-sm text-slate-400 mb-4">
+              Select multiple MP4, MOV, WebM, MKV, or AVI files at once — clips
+              will be merged in order and auto-edited locally
+            </p>
+            <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-indigo-600/25">
+              <PlusCircle className="w-4 h-4" />
+              {files.length > 0
+                ? "Add More Video Clips"
+                : "Select Video Files (Multiple Supported)"}
+            </span>
+          </div>
+
+          {/* Uploaded Clips Queue List (Shows EVERY file with Reorder + X Remove button) */}
+          {files.length > 0 && (
             <div className="space-y-5">
-              {/* Loaded File Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-slate-950/80 border border-slate-800">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center shrink-0">
-                    <Video className="w-5 h-5 text-indigo-400" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-bold text-white truncate">
-                      {videoFile.name}
-                    </p>
-                    <p className="text-xs text-slate-400">
-                      {formatBytes(videoFile.size)}
-                      {videoDuration > 0
-                        ? ` • ${formatSeconds(videoDuration)} duration`
-                        : ""}
-                    </p>
-                  </div>
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    <Video className="w-4 h-4 text-indigo-400" />
+                    Uploaded Clips Queue ({files.length}{" "}
+                    {files.length === 1 ? "file" : "files"} •{" "}
+                    {formatBytes(files.reduce((sum, f) => sum + f.size, 0))})
+                  </h3>
+
+                  <button
+                    type="button"
+                    onClick={resetAll}
+                    disabled={pipelineStatus === "running" || reRendering}
+                    className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-300 border border-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5 disabled:opacity-40"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    Clear All
+                  </button>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={resetAll}
-                  disabled={pipelineStatus === "running" || reRendering}
-                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-300 border border-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5 disabled:opacity-40"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  Change Video
-                </button>
+                <div className="space-y-2">
+                  {files.map((file, idx) => (
+                    <div
+                      key={`${file.name}-${file.size}-${file.lastModified}-${idx}`}
+                      className="flex items-center justify-between gap-3 p-3.5 rounded-xl bg-slate-950/85 border border-slate-800 hover:border-slate-700 transition"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className="w-7 h-7 rounded-lg bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-extrabold flex items-center justify-center shrink-0">
+                          {idx + 1}
+                        </span>
+                        <div className="min-w-0">
+                          <p className="text-xs sm:text-sm font-bold text-white truncate">
+                            {file.name}
+                          </p>
+                          <p className="text-[11px] text-slate-400">
+                            {formatBytes(file.size)}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {files.length > 1 && (
+                          <>
+                            <button
+                              type="button"
+                              title="Move clip up"
+                              onClick={() => handleMoveFile(idx, -1)}
+                              disabled={
+                                idx === 0 ||
+                                pipelineStatus === "running" ||
+                                reRendering
+                              }
+                              className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 disabled:opacity-30 transition"
+                            >
+                              <ArrowUp className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              title="Move clip down"
+                              onClick={() => handleMoveFile(idx, 1)}
+                              disabled={
+                                idx === files.length - 1 ||
+                                pipelineStatus === "running" ||
+                                reRendering
+                              }
+                              className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 disabled:opacity-30 transition"
+                            >
+                              <ArrowDown className="w-3.5 h-3.5" />
+                            </button>
+                          </>
+                        )}
+
+                        <button
+                          type="button"
+                          title="Remove clip"
+                          aria-label={`Remove ${file.name}`}
+                          onClick={() => handleRemoveFile(idx)}
+                          disabled={pipelineStatus === "running" || reRendering}
+                          className="p-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 disabled:opacity-40 transition"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-
-              {/* Original Video Preview */}
-              {videoPreviewUrl && !smoothVideoUrl && (
-                <div className="rounded-xl overflow-hidden bg-black border border-slate-800">
-                  <video
-                    src={videoPreviewUrl}
-                    controls
-                    onLoadedMetadata={(e) => {
-                      const d = e.currentTarget.duration;
-                      if (Number.isFinite(d) && d > 0) setVideoDuration(d);
-                    }}
-                    className="w-full max-h-[360px] mx-auto"
-                  />
-                </div>
-              )}
 
               {/* Settings Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1206,12 +1432,16 @@ export default function SmartJumpCutEditorPage() {
                 {pipelineStatus === "running" ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Auto-Editing Video Locally ({overallProgress}%)...
+                    Processing {files.length}{" "}
+                    {files.length === 1 ? "Clip" : "Clips"} Locally (
+                    {overallProgress}%)...
                   </>
                 ) : (
                   <>
                     <Wand2 className="w-5 h-5" />
-                    Auto-Edit &amp; Remove Silences / Filler Words
+                    {files.length > 1
+                      ? `Start Processing: Merge ${files.length} Clips & Remove Silences`
+                      : "Start Processing: Remove Silences & Filler Words"}
                   </>
                 )}
               </button>
@@ -1298,7 +1528,11 @@ export default function SmartJumpCutEditorPage() {
 
               <a
                 href={smoothVideoUrl}
-                download={`smooth-${(videoFile?.name || "video").replace(/\.[^.]+$/, "")}.mp4`}
+                download={
+                  files.length > 1
+                    ? `smooth-merged-${files.length}-clips.mp4`
+                    : `smooth-${(files[0]?.name || "video").replace(/\.[^.]+$/, "")}.mp4`
+                }
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/25"
               >
                 <Download className="w-4 h-4" />
