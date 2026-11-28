@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">5-Second Image Format Decision Matrix</title>
+  <desc id="desc">Quick three-column chooser: pick WebP or AVIF for fast websites and Core Web Vitals, JPG for universal email and portal compatibility, and PNG for logos, UI screenshots, and transparent master files.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">5-Second Decision Rule: Which Image Extension Should You Pick?</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Batch-convert and resize to exact web widths (e.g. 1200px at 80–90% quality) locally inside QuickConvert</text>
+
+  <!-- Card 1: Web -->
+  <rect x="28" y="76" width="236" height="150" rx="12" fill="#064e3b" stroke="#10b981" stroke-width="1.6"/>
+  <rect x="44" y="92" width="132" height="22" rx="11" fill="#022c22"/>
+  <text x="110" y="107" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">WEBSITES &amp; BLOGS</text>
+  <text x="44" y="136" fill="#ecfdf5" font-family="system-ui, sans-serif" font-size="15" font-weight="700">WebP (or AVIF)</text>
+  <text x="44" y="158" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11.5">• 82%–88% quality target</text>
+  <text x="44" y="177" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11.5">• Cuts LCP load time fast</text>
+  <text x="44" y="210" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">★ Best for SEO &amp; speed</text>
+
+  <!-- Card 2: Universal -->
+  <rect x="282" y="76" width="236" height="150" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="1.5"/>
+  <rect x="298" y="92" width="138" height="22" rx="11" fill="#451a03"/>
+  <text x="367" y="107" text-anchor="middle" fill="#fde68a" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">EMAILS &amp; PORTALS</text>
+  <text x="298" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="15" font-weight="700">JPG / JPEG</text>
+  <text x="298" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Job, bank &amp; visa uploads</text>
+  <text x="298" y="177" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Print shops &amp; older apps</text>
+  <text x="298" y="210" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Clean white fill for PNGs</text>
+
+  <!-- Card 3: Pixel-Perfect -->
+  <rect x="536" y="76" width="236" height="150" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="552" y="92" width="144" height="22" rx="11" fill="#0c4a6e"/>
+  <text x="624" y="107" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">LOGOS &amp; UI TEXT</text>
+  <text x="552" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="15" font-weight="700">PNG (Lossless)</text>
+  <text x="552" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Crisp icons &amp; sharp text</text>
+  <text x="552" y="177" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Editable transparent alpha</text>
+  <text x="552" y="210" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Zero compression blur</text>
+</svg>

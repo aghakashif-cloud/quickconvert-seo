@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Competitor YouTube Tag Extraction and SEO Audit Workflow</title>
+  <desc id="desc">Visual workflow showing how pasting a top-ranking competitor YouTube URL into QuickConvert YouTube SEO Audit extracts hidden keyword tags, grades SEO from 0 to 100, and reveals packaging gaps.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="yt" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="ai" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">How to Reverse-Engineer Top-Ranking Competitor YouTube Tags</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Audit 3 outperforming small channels in incognito search to uncover proven long-tail keywords and description gaps</text>
+
+  <!-- Step 1: URL Input -->
+  <rect x="28" y="82" width="212" height="186" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <rect x="28" y="82" width="212" height="5" rx="2.5" fill="url(#yt)"/>
+  <text x="44" y="110" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">1. COPY TOP URL</text>
+  <rect x="44" y="124" width="180" height="34" rx="6" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="54" y="145" fill="#e2e8f0" font-family="ui-monospace, monospace" font-size="10.5">youtube.com/watch?v=...</text>
+  <text x="44" y="182" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Watch, Shorts &amp; youtu.be</text>
+  <text x="44" y="202" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Target smaller channels</text>
+  <text x="44" y="220" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">  ranking in Top 5 search</text>
+  <text x="44" y="248" fill="#f87171" font-family="system-ui, sans-serif" font-size="11" font-weight="600">No login or Chrome plugin</text>
+
+  <!-- Arrow 1 -->
+  <path d="M246 174 L274 174" stroke="#38bdf8" stroke-width="2.5"/>
+  <polygon points="274,168 286,174 274,180" fill="#38bdf8"/>
+
+  <!-- Step 2: Audit Engine -->
+  <rect x="292" y="82" width="222" height="186" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.6"/>
+  <rect x="292" y="82" width="222" height="36" rx="12" fill="url(#ai)"/>
+  <text x="403" y="105" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700">2. YouTube SEO Audit</text>
+
+  <text x="308" y="142" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">EXTRACTED HIDDEN TAGS:</text>
+  <rect x="308" y="152" width="108" height="22" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1"/>
+  <text x="362" y="167" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10">fix 100 disk win 11</text>
+  <rect x="422" y="152" width="76" height="22" rx="6" fill="#1e293b" stroke="#6366f1" stroke-width="1"/>
+  <text x="460" y="167" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10">startup apps</text>
+  <rect x="308" y="180" width="132" height="22" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="1"/>
+  <text x="374" y="195" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10">make old laptop faster</text>
+
+  <rect x="308" y="214" width="190" height="40" rx="8" fill="#1e293b"/>
+  <text x="322" y="232" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">AI SEO Score: 74 / 100</text>
+  <text x="322" y="246" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Gap found: Missing chapters!</text>
+
+  <!-- Arrow 2 -->
+  <path d="M520 174 L548 174" stroke="#34d399" stroke-width="2.5"/>
+  <polygon points="548,168 560,174 548,180" fill="#34d399"/>
+
+  <!-- Step 3: Smarter Upload -->
+  <rect x="566" y="82" width="206" height="186" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.6"/>
+  <text x="582" y="110" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">3. BEAT THE GAP</text>
+  <text x="582" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Your Winning Plan</text>
+  <text x="582" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">✓ Put main phrase as Tag #1</text>
+  <text x="582" y="182" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">✓ Keep 12–18 focused tags</text>
+  <text x="582" y="204" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">✓ Add missing timestamps</text>
+  <text x="582" y="226" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">✓ Pair with higher-CTR title</text>
+  <text x="582" y="252" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11" font-weight="600">Target: 300–450 / 500 chars</text>
+</svg>

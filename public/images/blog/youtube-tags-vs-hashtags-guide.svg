@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">YouTube Studio Tags Box vs Description Hashtags Compliance Guide</title>
+  <desc id="desc">Side-by-side comparison showing safe formatting for YouTube Studio Tags (12 to 20 plain comma-separated keywords without hash symbols) versus Video Description Hashtags (3 to 5 clean hashtags only, never keyword stuffing).</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">YouTube Tags vs. Description Hashtags: Stay 100% Policy-Safe</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Mixing up where tags and hashtags belong is one of the fastest ways to trigger YouTube spam filters</text>
+
+  <!-- Left: Studio Tags Box -->
+  <rect x="28" y="76" width="362" height="150" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="44" y="92" width="152" height="22" rx="11" fill="#064e3b"/>
+  <text x="120" y="107" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">STUDIO TAGS BOX</text>
+  <text x="44" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Plain Keywords (No # Symbols)</text>
+  <text x="44" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">• 12–20 focused phrases (250–420 chars)</text>
+  <text x="44" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">• Comma-separated CSV from AI Studio</text>
+  <text x="44" y="206" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✕ Never paste competitor channel names</text>
+
+  <!-- Right: Description Hashtags -->
+  <rect x="410" y="76" width="362" height="150" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="426" y="92" width="184" height="22" rx="11" fill="#0c4a6e"/>
+  <text x="518" y="107" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">DESCRIPTION FOOTER</text>
+  <text x="426" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">3 to 5 Clean #Hashtags Only</text>
+  <text x="426" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">• Example: #YouTubeSEO #VideoEditing</text>
+  <text x="426" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">• Write natural sentences + timestamps</text>
+  <text x="426" y="206" fill="#f87171" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✕ Never dump a wall of comma tags here</text>
+</svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Before and After High-CTR YouTube Title Rewrites Under 60 Characters</title>
+  <desc id="desc">Comparison table transforming three weak generic YouTube titles into punchy high-CTR titles under 60 characters using curiosity, concrete payoff, and front-loaded keywords.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">Before &amp; After: Turning Plain Titles Into High-CTR Click Magnets</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Stay under 60–65 characters so mobile never truncates your hook with "..." — front-load the payoff</text>
+
+  <!-- Column Headers -->
+  <text x="44" y="84" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">✕ WEAK GENERIC TITLE</text>
+  <text x="364" y="84" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">✓ HIGH-CTR AI REWRITE (&lt; 60 CHARS)</text>
+
+  <!-- Row 1 -->
+  <rect x="28" y="94" width="302" height="52" rx="8" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.2"/>
+  <text x="42" y="117" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">My Video Editing Tutorial Episode 4</text>
+  <text x="42" y="135" fill="#f87171" font-family="system-ui, sans-serif" font-size="10.5">Zero payoff • Feels like homework</text>
+
+  <path d="M336 120 L352 120" stroke="#34d399" stroke-width="2"/>
+  <polygon points="352,115 360,120 352,125" fill="#34d399"/>
+
+  <rect x="364" y="94" width="408" height="52" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="1.3"/>
+  <text x="378" y="117" fill="#ecfdf5" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700">Edit Videos 2x Faster Without Expensive Software</text>
+  <text x="378" y="135" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="10.5">48 chars • Clear speed benefit + zero fluff</text>
+
+  <!-- Row 2 -->
+  <rect x="28" y="156" width="302" height="52" rx="8" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.2"/>
+  <text x="42" y="179" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">How to Fix Slow Laptop Windows 11 Guide</text>
+  <text x="42" y="197" fill="#f87171" font-family="system-ui, sans-serif" font-size="10.5">Flat textbook phrasing • Blends in</text>
+
+  <path d="M336 182 L352 182" stroke="#34d399" stroke-width="2"/>
+  <polygon points="352,177 360,182 352,187" fill="#34d399"/>
+
+  <rect x="364" y="156" width="408" height="52" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.3"/>
+  <text x="378" y="179" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700">5 Windows 11 Settings Secretly Slowing Your Laptop</text>
+  <text x="378" y="197" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5">50 chars • Sparks curiosity + numbered promise</text>
+
+  <!-- Row 3 -->
+  <rect x="28" y="218" width="302" height="52" rx="8" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.2"/>
+  <text x="42" y="241" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Making Homemade Pizza at Home Vlog</text>
+  <text x="42" y="259" fill="#f87171" font-family="system-ui, sans-serif" font-size="10.5">No visual result • Weak click trigger</text>
+
+  <path d="M336 244 L352 244" stroke="#34d399" stroke-width="2"/>
+  <polygon points="352,239 360,244 352,249" fill="#34d399"/>
+
+  <rect x="364" y="218" width="408" height="52" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.3"/>
+  <text x="378" y="241" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700">Crispy Pizzeria Crust in a Regular Home Oven</text>
+  <text x="378" y="259" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="10.5">44 chars • Specific craving + relatable tool</text>
+</svg>

@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 260" width="800" height="260" role="img" aria-labelledby="title desc">
+  <title id="title">3 Mental Percentage Shortcuts for Fast Everyday Math</title>
+  <desc id="desc">Visual breakdown of the 10% decimal shift, reversible percentage trick (8% of 50 equals 50% of 8), and why +50% followed by -50% lands on 75.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="accent1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="accent2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="accent3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="260" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="258" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Header -->
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">3 Mental Percentage Shortcuts &amp; The Asymmetry Trap</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Sanity-check discounts, tips, and price changes in 3 seconds without reaching for a spreadsheet</text>
+
+  <!-- Card 1: 10% Decimal Shift -->
+  <rect x="28" y="78" width="236" height="156" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="28" y="78" width="236" height="4" rx="2" fill="url(#accent1)"/>
+  <text x="44" y="106" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">SHORTCUT 01</text>
+  <text x="44" y="126" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">10% Decimal Shift</text>
+  <rect x="44" y="140" width="204" height="38" rx="8" fill="#1e293b"/>
+  <text x="146" y="158" text-anchor="middle" fill="#e2e8f0" font-family="ui-monospace, monospace" font-size="13" font-weight="700">10% of $84.00 = $8.40</text>
+  <text x="146" y="172" text-anchor="middle" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="10">Move decimal 1 spot left</text>
+  <text x="44" y="198" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• 15% tip = $8.40 + $4.20 = $12.60</text>
+  <text x="44" y="216" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11">• 5% = half of 10% | 20% = double</text>
+
+  <!-- Card 2: Reversible Trick -->
+  <rect x="282" y="78" width="236" height="156" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="282" y="78" width="236" height="4" rx="2" fill="url(#accent2)"/>
+  <text x="298" y="106" fill="#34d399" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">SHORTCUT 02</text>
+  <text x="298" y="126" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">Reversible Symmetry</text>
+  <rect x="298" y="140" width="204" height="38" rx="8" fill="#1e293b"/>
+  <text x="400" y="158" text-anchor="middle" fill="#e2e8f0" font-family="ui-monospace, monospace" font-size="13" font-weight="700">8% of 50 = 50% of 8</text>
+  <text x="400" y="172" text-anchor="middle" fill="#34d399" font-family="system-ui, -apple-system, sans-serif" font-size="10">Both equal 4 (X% of Y = Y% of X)</text>
+  <text x="298" y="198" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• 16% of 25 = 25% of 16 = 4</text>
+  <text x="298" y="216" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11">• Flip whenever Y is 25, 50, or 100</text>
+
+  <!-- Card 3: Asymmetry Trap -->
+  <rect x="536" y="78" width="236" height="156" rx="12" fill="#0f172a" stroke="#1e293b" stroke-width="1.5"/>
+  <rect x="536" y="78" width="236" height="4" rx="2" fill="url(#accent3)"/>
+  <text x="552" y="106" fill="#fbbf24" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">COMMON TRAP</text>
+  <text x="552" y="126" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="15" font-weight="700">+50% then -50% ≠ 100</text>
+  <rect x="552" y="140" width="204" height="38" rx="8" fill="#1e293b"/>
+  <text x="654" y="158" text-anchor="middle" fill="#fbbf24" font-family="ui-monospace, monospace" font-size="13" font-weight="700">$100 → $150 → $75</text>
+  <text x="654" y="172" text-anchor="middle" fill="#f87171" font-family="system-ui, -apple-system, sans-serif" font-size="10">Net -25% loss because base changed</text>
+  <text x="552" y="198" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="11.5">• Recovering -50% needs +100%</text>
+  <text x="552" y="216" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11">• Always check the starting base</text>
+</svg>

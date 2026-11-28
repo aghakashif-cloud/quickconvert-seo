@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">PDF Audiobook Speed Guide and Text-PDF vs Scanned-PDF Compatibility</title>
+  <desc id="desc">Visual guide showing ideal listening speeds (0.75x-1.0x for language study, 1.25x-1.4x optimal study focus cutting 30 minutes to 22 minutes, and 1.5x-2.0x fast review) plus text-based PDF compatibility note.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Listening Speed Sweet Spots &amp; Best Browser Voices</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Tip: Use Microsoft Edge or Chrome and pick voices labeled "Natural" for lifelike human narration</text>
+
+  <!-- Speed Tier 1 -->
+  <rect x="28" y="78" width="236" height="106" rx="10" fill="#0f172a" stroke="#38bdf8" stroke-width="1.3"/>
+  <text x="44" y="102" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="14" font-weight="700">0.75x – 1.0x</text>
+  <text x="44" y="122" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Deep Study &amp; Proofreading</text>
+  <text x="44" y="144" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Ideal for foreign language reading,</text>
+  <text x="44" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">legal clauses &amp; catching essay typos.</text>
+
+  <!-- Speed Tier 2 (Recommended) -->
+  <rect x="282" y="78" width="236" height="106" rx="10" fill="#064e3b" stroke="#10b981" stroke-width="1.8"/>
+  <text x="298" y="102" fill="#6ee7b7" font-family="ui-monospace, monospace" font-size="14" font-weight="700">1.25x – 1.4x ★ BEST</text>
+  <text x="298" y="122" fill="#ecfdf5" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Optimal Focus Zone</text>
+  <text x="298" y="144" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11.5">Cuts a 30-min chapter down to</text>
+  <text x="298" y="162" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11.5">~22 min while keeping full recall.</text>
+
+  <!-- Speed Tier 3 -->
+  <rect x="536" y="78" width="236" height="106" rx="10" fill="#0f172a" stroke="#a855f7" stroke-width="1.3"/>
+  <text x="552" y="102" fill="#c084fc" font-family="ui-monospace, monospace" font-size="14" font-weight="700">1.5x – 2.0x</text>
+  <text x="552" y="122" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Rapid Exam Review</text>
+  <text x="552" y="144" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Great for re-listening to familiar</text>
+  <text x="552" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">lecture slides right before a test.</text>
+
+  <!-- Bottom Compatibility Bar -->
+  <rect x="28" y="198" width="744" height="34" rx="8" fill="#1e293b"/>
+  <text x="46" y="219" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">Quick Check:</text>
+  <text x="128" y="219" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="11.5">Works on digital text PDFs (Word, Google Docs, eBooks). Pure photo-scanned PDFs need OCR before reading aloud.</text>
+</svg>

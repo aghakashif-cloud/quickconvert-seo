@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">100% Private In-Browser PDF Merging Architecture</title>
+  <desc id="desc">Workflow diagram showing Cover Letter.pdf, Resume.pdf, and Certificates.pdf combined locally inside the browser using pdf-lib into one crisp searchable PDF with zero server uploads.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="engine" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <linearGradient id="out" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Header -->
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">How Private Client-Side PDF Merging Works</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Vector fonts, hyperlinks, and ATS-searchable text stay 100% intact inside your device RAM</text>
+
+  <!-- Privacy Badge -->
+  <rect x="598" y="22" width="174" height="28" rx="14" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
+  <text x="685" y="40" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="11.5" font-weight="700">🔒 ZERO SERVER UPLOADS</text>
+
+  <!-- Step 1: Input PDFs -->
+  <rect x="30" y="84" width="210" height="176" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="46" y="108" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="700" letter-spacing="0.8">1. DROP &amp; REORDER</text>
+
+  <rect x="46" y="120" width="178" height="36" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <rect x="54" y="128" width="28" height="20" rx="4" fill="#ef4444"/>
+  <text x="68" y="142" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">PDF</text>
+  <text x="90" y="142" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Cover_Letter.pdf</text>
+
+  <rect x="46" y="164" width="178" height="36" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <rect x="54" y="172" width="28" height="20" rx="4" fill="#6366f1"/>
+  <text x="68" y="186" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">PDF</text>
+  <text x="90" y="186" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Resume_2025.pdf</text>
+
+  <rect x="46" y="208" width="178" height="36" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <rect x="54" y="216" width="28" height="20" rx="4" fill="#0ea5e9"/>
+  <text x="68" y="230" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="9" font-weight="700">PDF</text>
+  <text x="90" y="230" fill="#f1f5f9" font-family="system-ui, sans-serif" font-size="12" font-weight="600">Certificates.pdf</text>
+
+  <!-- Arrow 1 -->
+  <path d="M248 172 L284 172" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="284,166 296,172 284,178" fill="#38bdf8"/>
+
+  <!-- Step 2: Browser Engine -->
+  <rect x="302" y="84" width="214" height="176" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.8"/>
+  <rect x="302" y="84" width="214" height="38" rx="12" fill="url(#engine)"/>
+  <text x="409" y="108" text-anchor="middle" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="700">2. Local pdf-lib Engine</text>
+
+  <text x="320" y="144" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">✓ Copies raw PDF page objects</text>
+  <text x="320" y="168" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">✓ Preserves vector fonts &amp; links</text>
+  <text x="320" y="192" fill="#e2e8f0" font-family="system-ui, -apple-system, sans-serif" font-size="12">✓ No rasterizing or blurring</text>
+  <rect x="320" y="208" width="178" height="36" rx="8" fill="#1e293b"/>
+  <text x="409" y="224" text-anchor="middle" fill="#38bdf8" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="700">Works Even Offline After Load</text>
+  <text x="409" y="238" text-anchor="middle" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="10">Memory cleared on tab close</text>
+
+  <!-- Arrow 2 -->
+  <path d="M524 172 L560 172" stroke="#34d399" stroke-width="2.5" stroke-linecap="round"/>
+  <polygon points="560,166 572,172 560,178" fill="#34d399"/>
+
+  <!-- Step 3: Output PDF -->
+  <rect x="578" y="84" width="194" height="176" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.8"/>
+  <rect x="578" y="84" width="194" height="38" rx="12" fill="url(#out)"/>
+  <text x="675" y="108" text-anchor="middle" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="12.5" font-weight="700">3. Instant Download</text>
+
+  <rect x="606" y="138" width="138" height="70" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.2"/>
+  <text x="675" y="162" text-anchor="middle" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">Application_Pack.pdf</text>
+  <text x="675" y="180" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="10.5">Searchable • Watermark-Free</text>
+  <text x="675" y="196" text-anchor="middle" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="10">ATS &amp; Portal Ready</text>
+
+  <text x="675" y="236" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, -apple-system, sans-serif" font-size="11">Ready for HR, Banks &amp; Tax Filings</text>
+</svg>

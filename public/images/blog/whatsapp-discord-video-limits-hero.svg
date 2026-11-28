@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Shrinking a 68MB Gameplay Clip to 8.4MB for Discord and WhatsApp</title>
+  <desc id="desc">Real compression test showing a 68MB 1080p 60fps video compressed locally via FFmpeg WebAssembly to an 8.4MB 720p H.264 MP4 that passes both Discord 10MB and WhatsApp 16MB limits.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="origBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="compBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">Real Test: 68 MB Gameplay Clip → 8.4 MB Crisp MP4 (87% Smaller)</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Trimmed 4 dead seconds + scaled to 720p H.264 @ 2 Mbps locally in browser — zero Nitro, zero WhatsApp blur</text>
+
+  <!-- Original Row -->
+  <rect x="30" y="78" width="740" height="74" rx="12" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.4"/>
+  <text x="48" y="102" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Raw 28-Sec 1080p 60fps Capture</text>
+  <text x="580" y="102" fill="#f87171" font-family="ui-monospace, monospace" font-size="13.5" font-weight="700">68.0 MB (Blocked)</text>
+  <rect x="48" y="116" width="700" height="22" rx="11" fill="#1e293b"/>
+  <rect x="48" y="116" width="668" height="22" rx="11" fill="url(#origBar)"/>
+  <text x="64" y="131" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="700">✕ Rejected by Discord (10MB cap) &amp; heavily crushed by WhatsApp (16MB inline limit)</text>
+
+  <!-- Compressed Row -->
+  <rect x="30" y="166" width="740" height="106" rx="12" fill="#0f172a" stroke="#065f46" stroke-width="1.6"/>
+  <text x="48" y="190" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">QuickConvert Local FFmpeg WASM (720p H.264 • 2 Mbps)</text>
+  <text x="572" y="190" fill="#34d399" font-family="ui-monospace, monospace" font-size="13.5" font-weight="700">8.4 MB (Passes Both!)</text>
+  <rect x="48" y="204" width="700" height="22" rx="11" fill="#1e293b"/>
+  <rect x="48" y="204" width="90" height="22" rx="11" fill="url(#compBar)"/>
+  <text x="150" y="219" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">Sharp HUD text • Instant inline playback • 0 bytes uploaded</text>
+
+  <!-- Limit Badges -->
+  <rect x="48" y="238" width="218" height="24" rx="6" fill="#1e1b4b" stroke="#6366f1" stroke-width="1"/>
+  <text x="157" y="254" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="11" font-weight="700">✓ Discord Free Limit: &lt; 10 MB</text>
+  <rect x="280" y="238" width="234" height="24" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1"/>
+  <text x="397" y="254" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11" font-weight="700">✓ WhatsApp Inline Play: &lt; 16 MB</text>
+  <rect x="528" y="238" width="220" height="24" rx="6" fill="#1e293b"/>
+  <text x="638" y="254" text-anchor="middle" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">No Watermarks • 100% Private</text>
+</svg>

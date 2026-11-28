@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Cloud Upload Converter vs 100% Client-Side WebAssembly Converter</title>
+  <desc id="desc">Architecture comparison showing traditional free converters uploading personal PDFs and IDs to remote servers versus QuickConvert processing files 100% locally inside browser RAM via WebAssembly.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="danger" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="safe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">Where Does Your File Actually Go? Cloud vs. Client-Side</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Traditional upload sites transmit your private PDFs and scans across the internet; WebAssembly keeps every byte on your device</text>
+
+  <!-- Top Track: Cloud Server Risk -->
+  <rect x="28" y="76" width="744" height="96" rx="12" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.5"/>
+  <rect x="28" y="76" width="6" height="96" rx="3" fill="url(#danger)"/>
+  <text x="48" y="98" fill="#fca5a5" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" letter-spacing="0.6">RISKY: TRADITIONAL CLOUD UPLOAD SITE</text>
+
+  <rect x="48" y="110" width="144" height="48" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="120" y="131" text-anchor="middle" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Your Device</text>
+  <text x="120" y="147" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">ID Scan / Bank PDF</text>
+
+  <path d="M198 134 L276 134" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="5,4"/>
+  <polygon points="276,128 288,134 276,140" fill="#ef4444"/>
+  <text x="240" y="124" text-anchor="middle" fill="#f87171" font-family="system-ui, sans-serif" font-size="10" font-weight="700">Uploads File</text>
+
+  <rect x="292" y="110" width="218" height="48" rx="8" fill="#450a0a" stroke="#ef4444" stroke-width="1.2"/>
+  <text x="401" y="131" text-anchor="middle" fill="#fecaca" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Unknown Remote Server</text>
+  <text x="401" y="147" text-anchor="middle" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="10">Logs • Backups • Metadata Exposed</text>
+
+  <path d="M516 134 L568 134" stroke="#f97316" stroke-width="2" stroke-dasharray="5,4"/>
+  <polygon points="568,128 580,134 568,140" fill="#f97316"/>
+
+  <rect x="584" y="110" width="172" height="48" rx="8" fill="#1e293b" stroke="#7f1d1d" stroke-width="1"/>
+  <text x="670" y="131" text-anchor="middle" fill="#fdba74" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">Wait in Queue</text>
+  <text x="670" y="147" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">No proof of deletion</text>
+
+  <!-- Bottom Track: Client-Side Safe -->
+  <rect x="28" y="186" width="744" height="96" rx="12" fill="#0f172a" stroke="#065f46" stroke-width="1.5"/>
+  <rect x="28" y="186" width="6" height="96" rx="3" fill="url(#safe)"/>
+  <text x="48" y="208" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700" letter-spacing="0.6">SAFE: QUICKCONVERT 100% CLIENT-SIDE WEBASSEMBLY</text>
+
+  <rect x="48" y="220" width="462" height="48" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+  <text x="279" y="241" text-anchor="middle" fill="#ecfdf5" font-family="system-ui, sans-serif" font-size="12.5" font-weight="700">Inside Your Browser Tab RAM (FFmpeg WASM • Canvas • pdf-lib)</text>
+  <text x="279" y="257" text-anchor="middle" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="10.5">File stays locally on your CPU — works even if Wi-Fi is turned off after load</text>
+
+  <path d="M516 244 L568 244" stroke="#10b981" stroke-width="2.5"/>
+  <polygon points="568,238 580,244 568,250" fill="#10b981"/>
+
+  <rect x="584" y="220" width="172" height="48" rx="8" fill="#1e293b" stroke="#10b981" stroke-width="1.2"/>
+  <text x="670" y="241" text-anchor="middle" fill="#34d399" font-family="system-ui, sans-serif" font-size="12" font-weight="700">0 Bytes Uploaded</text>
+  <text x="670" y="257" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="10">Cleared when tab closes</text>
+</svg>

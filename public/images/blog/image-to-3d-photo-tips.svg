@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-label="Best Photos for 3D Depth Relief vs Flat Graphics to Avoid">
+  <rect width="800" height="250" rx="20" fill="#0b1120" stroke="#1e293b" stroke-width="2"/>
+  <text x="36" y="42" fill="#34d399" font-family="system-ui, sans-serif" font-size="12" font-weight="700" letter-spacing="1.4">HANDS-ON PHOTO SELECTION GUIDE</text>
+  <text x="36" y="68" fill="#ffffff" font-family="system-ui, sans-serif" font-size="20" font-weight="800">Which Photos Create the Sharpest 3D Parallax Pop?</text>
+
+  <rect x="36" y="94" width="352" height="124" rx="14" fill="#111827" stroke="#10b981" stroke-opacity="0.5"/>
+  <text x="54" y="122" fill="#34d399" font-family="system-ui, sans-serif" font-size="13" font-weight="800">BEST RESULTS (CLEAR DEPTH LAYERS)</text>
+  <text x="54" y="148" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">• Portraits, pets &amp; close-up subjects</text>
+  <text x="54" y="170" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="13">• Street photography, cars &amp; hallways</text>
+  <text x="54" y="194" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Sweet-spot slider: 0.55 – 0.75 Displacement</text>
+
+  <rect x="412" y="94" width="352" height="124" rx="14" fill="#111827" stroke="#f43f5e" stroke-opacity="0.45"/>
+  <text x="430" y="122" fill="#fb7185" font-family="system-ui, sans-serif" font-size="13" font-weight="800">AVOID (NO PHYSICAL PERSPECTIVE)</text>
+  <text x="430" y="148" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="13">• Flat text screenshots &amp; spreadsheets</text>
+  <text x="430" y="170" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="13">• Repeating geometric wallpaper patterns</text>
+  <text x="430" y="194" fill="#fda4af" font-family="system-ui, sans-serif" font-size="12" font-weight="700">Mobile tip: Use photos under 2 MB</text>
+</svg>

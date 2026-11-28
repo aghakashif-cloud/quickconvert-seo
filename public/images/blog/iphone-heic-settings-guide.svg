@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">Two Built-in iPhone Settings to Avoid HEIC Compatibility Errors on Windows</title>
+  <desc id="desc">Visual guide showing the two iPhone Settings paths: Camera Formats Most Compatible for shooting direct JPGs, or Photos Transfer to Mac or PC Automatic for auto-converting during USB transfer.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Bonus iPhone Fix: 2 Built-In Switches to Auto-Export JPG</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Choose whether you want every new iPhone photo saved as JPG, or only converted when plugged into a Windows PC</text>
+
+  <!-- Option A -->
+  <rect x="28" y="78" width="362" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="44" y="94" width="142" height="22" rx="11" fill="#0c4a6e"/>
+  <text x="115" y="109" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">OPTION A: ALWAYS JPG</text>
+  <text x="44" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Shoot Directly in Most Compatible</text>
+  <rect x="44" y="150" width="330" height="32" rx="8" fill="#1e293b"/>
+  <text x="58" y="170" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11.5" font-weight="600">Settings → Camera → Formats → Most Compatible</text>
+  <text x="44" y="206" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Best if you email or copy photos to Windows daily.</text>
+
+  <!-- Option B -->
+  <rect x="410" y="78" width="362" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="426" y="94" width="166" height="22" rx="11" fill="#064e3b"/>
+  <text x="509" y="109" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">OPTION B: USB AUTO-CONVERT</text>
+  <text x="426" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Save Phone Space + Export JPG on PC</text>
+  <rect x="426" y="150" width="330" height="32" rx="8" fill="#1e293b"/>
+  <text x="438" y="170" fill="#34d399" font-family="ui-monospace, monospace" font-size="11" font-weight="600">Settings → Photos → Transfer to Mac/PC → Automatic</text>
+  <text x="426" y="206" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Keeps tiny HEIC on iPhone; converts on cable copy.</text>
+</svg>

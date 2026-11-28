@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Anatomy of a High-CTR 1280x720 YouTube Thumbnail Without Photoshop</title>
+  <desc id="desc">Annotated 16:9 YouTube thumbnail layout showing exact 1280x720 HD dimensions, focal subject framing, dark bottom readability gradient, bold 2 to 5 word shadowed hook, and clear bottom-right timestamp safe zone.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="thumbBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="55%" stop-color="#312e81"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.82"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">Anatomy of a Clickable 1280×720 YouTube Thumbnail</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Exact 16:9 HD layout automatically built by QuickConvert Video-to-SEO — zero Photoshop or design skills needed</text>
+
+  <!-- Mock 16:9 Thumbnail Canvas (360 x 202) -->
+  <rect x="34" y="76" width="360" height="202" rx="10" fill="url(#thumbBg)" stroke="#38bdf8" stroke-width="2"/>
+  <!-- Stylized Subject Silhouette -->
+  <circle cx="290" cy="136" r="34" fill="#6366f1" opacity="0.65"/>
+  <path d="M235 232 C240 184, 340 184, 345 232 Z" fill="#4f46e5" opacity="0.7"/>
+  <!-- Dark Bottom Vignette -->
+  <rect x="36" y="176" width="356" height="100" rx="8" fill="url(#vignette)"/>
+
+  <!-- Top-left spec badge -->
+  <rect x="48" y="90" width="114" height="22" rx="6" fill="#0f172a" opacity="0.85"/>
+  <text x="105" y="105" text-anchor="middle" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700">1280×720 HD</text>
+
+  <!-- Bold 3-Word Hook -->
+  <text x="52" y="218" fill="#000000" opacity="0.85" font-family="system-ui, sans-serif" font-size="28" font-weight="900">90% SMALLER</text>
+  <text x="50" y="216" fill="#ffffff" font-family="system-ui, sans-serif" font-size="28" font-weight="900">90% SMALLER</text>
+  <text x="52" y="252" fill="#000000" opacity="0.85" font-family="system-ui, sans-serif" font-size="28" font-weight="900">MP4 VIDEO!</text>
+  <text x="50" y="250" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="28" font-weight="900">MP4 VIDEO!</text>
+
+  <!-- Bottom-right YouTube Duration Safe Zone -->
+  <rect x="322" y="244" width="60" height="24" rx="5" fill="#000000" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="352" y="260" text-anchor="middle" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="11" font-weight="700">08:42</text>
+
+  <!-- Right Side Callout Cards -->
+  <rect x="424" y="76" width="346" height="44" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="440" y="96" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">1. Crisp 16:9 Frame Auto-Extracted (25/50/75/90%)</text>
+  <text x="440" y="112" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Pick expressive eye contact or a clear result — zero motion blur.</text>
+
+  <rect x="424" y="128" width="346" height="44" rx="8" fill="#0f172a" stroke="#fbbf24" stroke-width="1.2"/>
+  <text x="440" y="148" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">2. Short 2–5 Word Hook + Drop Shadow</text>
+  <text x="440" y="164" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Passes the 2-inch mobile squint test; never repeats full title.</text>
+
+  <rect x="424" y="180" width="346" height="44" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1.2"/>
+  <text x="440" y="200" fill="#34d399" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">3. Dark Bottom Contrast Gradient</text>
+  <text x="440" y="216" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Quiets noisy desk backgrounds so white/yellow letters pop.</text>
+
+  <rect x="424" y="232" width="346" height="44" rx="8" fill="#0f172a" stroke="#ef4444" stroke-width="1.2"/>
+  <text x="440" y="252" fill="#f87171" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">4. Keep Bottom-Right Clear (Duration Badge)</text>
+  <text x="440" y="268" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">YouTube stamps the timer here — keep under 2MB PNG/JPG.</text>
+</svg>

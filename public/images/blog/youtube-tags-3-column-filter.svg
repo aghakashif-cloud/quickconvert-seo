@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 260" width="800" height="260" role="img" aria-labelledby="title desc">
+  <title id="title">The 3-Column Filter for Extracted YouTube Competitor Tags</title>
+  <desc id="desc">Three-column keyword filtering strategy separating extracted competitor tags into Must-Use Exact Phrases, Question Variations, and Noise or Competitor Brand Names to Delete.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="260" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="258" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Never Blindly "Copy All": Use the 3-Column Tag Filter</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Sort extracted tags from 3 top competitors in 5 minutes to build 12–18 high-signal tags without violating metadata policies</text>
+
+  <!-- Column 1: Keep -->
+  <rect x="28" y="78" width="236" height="158" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="28" y="78" width="236" height="32" rx="12" fill="#064e3b"/>
+  <text x="146" y="99" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="12" font-weight="700">✓ 1. MUST-USE PHRASES</text>
+  <text x="44" y="132" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Shared by 2+ winning videos:</text>
+  <text x="44" y="156" fill="#34d399" font-family="ui-monospace, monospace" font-size="11.5">• speed up windows 11</text>
+  <text x="44" y="176" fill="#34d399" font-family="ui-monospace, monospace" font-size="11.5">• disable startup apps</text>
+  <text x="44" y="196" fill="#34d399" font-family="ui-monospace, monospace" font-size="11.5">• fix 100 disk usage</text>
+  <text x="44" y="222" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5">Place strongest phrase as Tag #1</text>
+
+  <!-- Column 2: Questions -->
+  <rect x="282" y="78" width="236" height="158" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="282" y="78" width="236" height="32" rx="12" fill="#0c4a6e"/>
+  <text x="400" y="99" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="12" font-weight="700">? 2. QUESTION VARIATIONS</text>
+  <text x="298" y="132" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Real phrasing viewers type:</text>
+  <text x="298" y="156" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11.5">• why is my laptop slow</text>
+  <text x="298" y="176" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11.5">• windows 11 lag fix</text>
+  <text x="298" y="196" fill="#38bdf8" font-family="ui-monospace, monospace" font-size="11.5">• make old pc faster</text>
+  <text x="298" y="222" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5">Use 5–8 long-tail matches</text>
+
+  <!-- Column 3: Delete -->
+  <rect x="536" y="78" width="236" height="158" rx="12" fill="#0f172a" stroke="#ef4444" stroke-width="1.5"/>
+  <rect x="536" y="78" width="236" height="32" rx="12" fill="#450a0a"/>
+  <text x="654" y="99" text-anchor="middle" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="12" font-weight="700">✕ 3. DELETE IMMEDIATELY</text>
+  <text x="552" y="132" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Hurts rankings or breaks rules:</text>
+  <text x="552" y="156" fill="#f87171" font-family="ui-monospace, monospace" font-size="11.5">✕ Competitor channel names</text>
+  <text x="552" y="176" fill="#f87171" font-family="ui-monospace, monospace" font-size="11.5">✕ Outdated years (2022)</text>
+  <text x="552" y="196" fill="#f87171" font-family="ui-monospace, monospace" font-size="11.5">✕ Spam ("viral", "trending")</text>
+  <text x="552" y="222" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5">Avoid misleading metadata flags</text>
+</svg>

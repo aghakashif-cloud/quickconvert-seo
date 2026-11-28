@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">Exact Resolution and Bitrate Recipes for Discord 10MB and WhatsApp 16MB Videos</title>
+  <desc id="desc">Three proven MP4 compression presets: 15 to 30 second Discord clips at 720p 2 Mbps, 45 to 60 second Discord clips at 480p 1.2 Mbps, and 60 second WhatsApp clips at 720p 1.8 Mbps.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Exact Bitrate Cheat Sheet: Hit 10 MB &amp; 16 MB on the First Try</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Always trim dead seconds off the start/end first, then dial in one of these three tested H.264 MP4 presets</text>
+
+  <!-- Card 1: Short Discord -->
+  <rect x="28" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <rect x="44" y="94" width="128" height="22" rx="11" fill="#1e1b4b"/>
+  <text x="108" y="109" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">DISCORD (15–30 SEC)</text>
+  <text x="44" y="138" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="14" font-weight="700">720p @ 2.0 Mbps</text>
+  <text x="44" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Expected size: 4.0–8.5 MB</text>
+  <text x="44" y="182" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11.5">Crisp gameplay &amp; UI text</text>
+  <text x="44" y="210" fill="#818cf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ Fits Discord 10 MB cap</text>
+
+  <!-- Card 2: Long Discord -->
+  <rect x="282" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="298" y="94" width="128" height="22" rx="11" fill="#0c4a6e"/>
+  <text x="362" y="109" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">DISCORD (45–60 SEC)</text>
+  <text x="298" y="138" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="14" font-weight="700">480p @ 1.2 Mbps</text>
+  <text x="298" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Expected size: 7.5–9.5 MB</text>
+  <text x="298" y="182" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11.5">Smooth motion, no blocks</text>
+  <text x="298" y="210" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ No Nitro upgrade needed</text>
+
+  <!-- Card 3: WhatsApp -->
+  <rect x="536" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="552" y="94" width="132" height="22" rx="11" fill="#064e3b"/>
+  <text x="618" y="109" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">WHATSAPP (60 SEC)</text>
+  <text x="552" y="138" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="14" font-weight="700">720p @ 1.8 Mbps</text>
+  <text x="552" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Expected size: ~14 MB</text>
+  <text x="552" y="182" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11.5">Full-screen phone clarity</text>
+  <text x="552" y="210" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ Plays inline (&lt; 16 MB)</text>
+</svg>

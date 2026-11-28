@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">4 Practical Tips for Higher Urdu AI Transcription Accuracy</title>
+  <desc id="desc">Four-step checklist for clean Urdu speech-to-text results: lock Language to Urdu (ur), extract lightweight MP3 from large videos, keep background noise low, and do a 2-minute proper noun and code-switch proofread.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">4 Practical Habits That Push Urdu Transcripts Past 95% Accuracy</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Tested across Urdu podcasts, classroom lectures, WhatsApp voice notes, and bilingual Urdu-English interviews</text>
+
+  <!-- Tip 1 -->
+  <rect x="28" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.4"/>
+  <text x="44" y="104" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">01. LOCK URDU (ur)</text>
+  <text x="44" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Pick Explicit Lang</text>
+  <text x="44" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Always select Urdu (ur)</text>
+  <text x="44" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">so Whisper loads Small</text>
+  <text x="44" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">and avoids Devanagari.</text>
+  <text x="44" y="212" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Clean RTL script</text>
+
+  <!-- Tip 2 -->
+  <rect x="217" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.4"/>
+  <text x="233" y="104" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="700">02. SHRINK VIDEO</text>
+  <text x="233" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Extract MP3 First</text>
+  <text x="233" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">For 1GB+ videos, pull</text>
+  <text x="233" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">an MP3 track locally</text>
+  <text x="233" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">to save browser RAM.</text>
+  <text x="233" y="212" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Faster on phones</text>
+
+  <!-- Tip 3 -->
+  <rect x="406" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.4"/>
+  <text x="422" y="104" fill="#c084fc" font-family="system-ui, sans-serif" font-size="11" font-weight="700">03. CLEAN AUDIO</text>
+  <text x="422" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Cut Fan &amp; TV Noise</text>
+  <text x="422" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Closer mic placement</text>
+  <text x="422" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">and one speaker at a</text>
+  <text x="422" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">time boost precision.</text>
+  <text x="422" y="212" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Fewer missed words</text>
+
+  <!-- Tip 4 -->
+  <rect x="595" y="78" width="177" height="148" rx="12" fill="#0f172a" stroke="#f59e0b" stroke-width="1.4"/>
+  <text x="611" y="104" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="700">04. 2-MIN POLISH</text>
+  <text x="611" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Check Proper Nouns</text>
+  <text x="611" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Quickly scan names,</text>
+  <text x="611" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">cities, &amp; mixed English</text>
+  <text x="611" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">terms before export.</text>
+  <text x="611" y="212" fill="#fde68a" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">94% → Publish-ready</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">The 4 Official YouTube Thumbnail Sizes Compared Visually</title>
+  <desc id="desc">Visual scale chart comparing YouTube maxresdefault 1280x720 HD, sddefault 640x480, hqdefault 480x360, and mqdefault 320x180 thumbnail formats.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="hdGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0c4a6e"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">The 4 Official YouTube Thumbnail Sizes Explained Visually</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">QuickConvert extracts your video's 11-character ID and pulls all four original JPG resolutions in under 2 seconds</text>
+
+  <!-- Nested Proportional Resolution Preview (Left) -->
+  <rect x="32" y="80" width="336" height="190" rx="10" fill="url(#hdGrad)" stroke="#10b981" stroke-width="2"/>
+  <text x="48" y="104" fill="#6ee7b7" font-family="ui-monospace, monospace" font-size="12" font-weight="700">maxresdefault • 1280×720 (16:9 HD)</text>
+
+  <rect x="48" y="118" width="192" height="140" rx="8" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="60" y="138" fill="#7dd3fc" font-family="ui-monospace, monospace" font-size="11" font-weight="700">sddefault • 640×480</text>
+
+  <rect x="60" y="148" width="144" height="100" rx="6" fill="#0f172a" stroke="#a855f7" stroke-width="1.3"/>
+  <text x="70" y="168" fill="#d8b4fe" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700">hqdefault • 480×360</text>
+
+  <rect x="70" y="182" width="110" height="58" rx="5" fill="#1e293b" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="78" y="204" fill="#fde68a" font-family="ui-monospace, monospace" font-size="9.5" font-weight="700">mqdefault</text>
+  <text x="78" y="220" fill="#fbbf24" font-family="ui-monospace, monospace" font-size="9.5">320×180 (16:9)</text>
+
+  <!-- Right Breakdown Legend -->
+  <rect x="394" y="80" width="376" height="42" rx="8" fill="#064e3b" stroke="#10b981" stroke-width="1.2"/>
+  <text x="410" y="99" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="12" font-weight="700">1. Max HD (1280×720) — Best Quality</text>
+  <text x="410" y="114" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="10.5">Crisp 16:9 JPG for channel backups, blog headers &amp; design study.</text>
+
+  <rect x="394" y="130" width="376" height="42" rx="8" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2"/>
+  <text x="410" y="149" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="12" font-weight="700">2. Standard Def (640×480) — Newsletters</text>
+  <text x="410" y="164" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5">Balanced medium resolution that loads fast inside email embeds.</text>
+
+  <rect x="394" y="180" width="376" height="42" rx="8" fill="#0f172a" stroke="#a855f7" stroke-width="1.2"/>
+  <text x="410" y="199" fill="#c084fc" font-family="system-ui, sans-serif" font-size="12" font-weight="700">3. High Quality (480×360) — Always Exists</text>
+  <text x="410" y="214" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5">Guaranteed fallback even on older pre-HD YouTube uploads.</text>
+
+  <rect x="394" y="230" width="376" height="40" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1.2"/>
+  <text x="410" y="248" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="12" font-weight="700">4. Medium Quality (320×180) — Clean 16:9</text>
+  <text x="410" y="263" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5">Zero black letterbox bars; lightweight for sidebar cards.</text>
+</svg>

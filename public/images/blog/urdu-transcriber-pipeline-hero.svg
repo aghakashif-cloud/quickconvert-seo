@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">Private Browser-Based Urdu Audio and Video Transcription Pipeline</title>
+  <desc id="desc">Local Urdu transcription workflow converting MP4, MP3, M4A, or WhatsApp OGG audio via FFmpeg WebAssembly into 16kHz mono PCM, running Whisper Small Multilingual in Urdu mode, and outputting right-to-left Urdu script.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="stepA" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="stepB" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">How Private Urdu Speech-to-Text Works Inside Your Browser</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Zero per-minute fees, native WhatsApp voice note support, and proper right-to-left Urdu script output</text>
+
+  <!-- Box 1: Inputs -->
+  <rect x="28" y="84" width="166" height="180" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="44" y="110" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="0.8">1. ANY URDU MEDIA</text>
+  <rect x="44" y="124" width="134" height="28" rx="6" fill="#1e293b"/>
+  <text x="111" y="142" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600">WhatsApp .OGG</text>
+  <rect x="44" y="160" width="134" height="28" rx="6" fill="#1e293b"/>
+  <text x="111" y="178" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600">iPhone .M4A / .MP3</text>
+  <rect x="44" y="196" width="134" height="28" rx="6" fill="#1e293b"/>
+  <text x="111" y="214" text-anchor="middle" fill="#c4b5fd" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600">MP4 / MOV Video</text>
+  <text x="111" y="248" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">Stays 100% local</text>
+
+  <!-- Arrow 1 -->
+  <path d="M198 174 L220 174" stroke="#38bdf8" stroke-width="2.5"/>
+  <polygon points="220,168 230,174 220,180" fill="#38bdf8"/>
+
+  <!-- Box 2: FFmpeg -->
+  <rect x="234" y="84" width="166" height="180" rx="12" fill="#0f172a" stroke="#0ea5e9" stroke-width="1.5"/>
+  <rect x="234" y="84" width="166" height="5" rx="2.5" fill="url(#stepA)"/>
+  <text x="250" y="110" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="0.8">2. FFMPEG WASM</text>
+  <text x="250" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">16kHz Mono PCM</text>
+  <text x="250" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Extracts crisp audio</text>
+  <text x="250" y="180" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">without resampling</text>
+  <text x="250" y="198" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">glitches or loops.</text>
+  <rect x="250" y="218" width="134" height="30" rx="6" fill="#0c4a6e"/>
+  <text x="317" y="237" text-anchor="middle" fill="#bae6fd" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">No external converter</text>
+
+  <!-- Arrow 2 -->
+  <path d="M404 174 L426 174" stroke="#818cf8" stroke-width="2.5"/>
+  <polygon points="426,168 436,174 426,180" fill="#818cf8"/>
+
+  <!-- Box 3: Whisper Small -->
+  <rect x="440" y="84" width="166" height="180" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <rect x="440" y="84" width="166" height="5" rx="2.5" fill="url(#stepA)"/>
+  <text x="456" y="110" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="0.8">3. WHISPER SMALL</text>
+  <text x="456" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Language: Urdu (ur)</text>
+  <text x="456" y="162" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Auto-upgrades to</text>
+  <text x="456" y="180" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">multilingual model</text>
+  <text x="456" y="198" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">in 30-sec chunks.</text>
+  <rect x="456" y="218" width="134" height="30" rx="6" fill="#1e1b4b"/>
+  <text x="523" y="237" text-anchor="middle" fill="#c7d2fe" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">Cached after 1st run</text>
+
+  <!-- Arrow 3 -->
+  <path d="M610 174 L632 174" stroke="#34d399" stroke-width="2.5"/>
+  <polygon points="632,168 642,174 632,180" fill="#34d399"/>
+
+  <!-- Box 4: RTL Output -->
+  <rect x="646" y="84" width="128" height="180" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.6"/>
+  <rect x="646" y="84" width="128" height="5" rx="2.5" fill="url(#stepB)"/>
+  <text x="660" y="110" fill="#34d399" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700" letter-spacing="0.8">4. RTL OUTPUT</text>
+  <rect x="658" y="126" width="104" height="62" rx="8" fill="#064e3b"/>
+  <text x="710" y="152" text-anchor="middle" fill="#ecfdf5" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Clean Urdu</text>
+  <text x="710" y="172" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5">Right-to-Left</text>
+  <text x="710" y="212" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">• Timestamps</text>
+  <text x="710" y="230" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">• Copy / .TXT</text>
+  <text x="710" y="248" text-anchor="middle" fill="#34d399" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">100% Free</text>
+</svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 260" width="800" height="260" role="img" aria-labelledby="title desc">
+  <title id="title">YouTube Thumbnail Mobile Squint Test: Before vs After CTR Makeover</title>
+  <desc id="desc">Comparison of a cluttered 11-word thumbnail with poor contrast versus an upgraded 3-word shadowed thumbnail with a dark gradient built for 2-inch mobile screens.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="260" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="258" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">The 2-Inch Mobile Squint Test: Low-CTR vs. High-CTR Framing</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Over 70% of YouTube clicks happen on phones — clarity in 0.5 seconds always beats fancy effects</text>
+
+  <!-- Left: Cluttered Before -->
+  <rect x="28" y="76" width="362" height="162" rx="12" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.5"/>
+  <rect x="44" y="92" width="128" height="22" rx="11" fill="#450a0a"/>
+  <text x="108" y="107" text-anchor="middle" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">✕ BEFORE (~1.9% CTR)</text>
+
+  <rect x="44" y="124" width="150" height="84" rx="6" fill="#475569"/>
+  <text x="119" y="144" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="8.5">HOW TO COMPRESS LARGE</text>
+  <text x="119" y="156" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="8.5">VIDEOS FOR EMAIL FREE</text>
+  <text x="119" y="168" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="8.5">WITHOUT LOSING QUALITY</text>
+  <text x="119" y="196" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="8">(Busy desk + no shadow)</text>
+
+  <text x="208" y="140" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600">Why viewers scroll past:</text>
+  <text x="208" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• 11 tiny unreadable words</text>
+  <text x="208" y="179" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Repeats full video title</text>
+  <text x="208" y="198" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Cluttered gray contrast</text>
+
+  <!-- Right: Clean After -->
+  <rect x="410" y="76" width="362" height="162" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="426" y="92" width="136" height="22" rx="11" fill="#064e3b"/>
+  <text x="494" y="107" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">✓ AFTER (HIGH CTR)</text>
+
+  <rect x="426" y="124" width="150" height="84" rx="6" fill="#1e1b4b" stroke="#38bdf8" stroke-width="1"/>
+  <rect x="426" y="162" width="150" height="46" rx="6" fill="#020617" opacity="0.82"/>
+  <text x="438" y="182" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="900">90% SMALLER</text>
+  <text x="438" y="200" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="14" font-weight="900">MP4!</text>
+  <rect x="540" y="188" width="30" height="14" rx="3" fill="#000"/>
+  <text x="555" y="198" text-anchor="middle" fill="#fff" font-family="ui-monospace, monospace" font-size="8">05:12</text>
+
+  <text x="590" y="140" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="11.5" font-weight="600">Why viewers tap:</text>
+  <text x="590" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• 3 bold high-contrast words</text>
+  <text x="590" y="179" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Dark readability gradient</text>
+  <text x="590" y="198" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• Clear timer corner</text>
+</svg>

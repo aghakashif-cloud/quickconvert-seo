@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">4K Video Compression Benchmark: 380MB Raw MOV Shrunk to 34MB Crisp MP4</title>
+  <desc id="desc">Hands-on benchmark showing a 2-minute 380MB 4K screen recording compressed locally via FFmpeg WebAssembly to a 34MB 1080p H.264 MP4, reducing size by 91 percent and cutting upload time from 6 minutes to 4 seconds.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="rawBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="optBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">Hands-On Benchmark: 380 MB 4K Recording → 34 MB Crisp 1080p MP4</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">2-minute desktop screen recording processed 100% locally via FFmpeg WebAssembly — zero cloud uploads, zero watermarks</text>
+
+  <!-- Original -->
+  <rect x="30" y="78" width="740" height="80" rx="12" fill="#0f172a" stroke="#7f1d1d" stroke-width="1.4"/>
+  <text x="48" y="102" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Original Raw 4K Screen Recording (.MOV)</text>
+  <text x="580" y="102" fill="#f87171" font-family="ui-monospace, monospace" font-size="14" font-weight="700">380 MB (~6 min upload)</text>
+  <rect x="48" y="118" width="700" height="24" rx="12" fill="#1e293b"/>
+  <rect x="48" y="118" width="684" height="24" rx="12" fill="url(#rawBar)"/>
+  <text x="66" y="134" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11" font-weight="700">Clogs home Wi-Fi • Fills Google Drive • Rejected by client portals</text>
+
+  <!-- Compressed -->
+  <rect x="30" y="172" width="740" height="100" rx="12" fill="#0f172a" stroke="#065f46" stroke-width="1.6"/>
+  <text x="48" y="196" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">QuickConvert Local Export (1080p Full HD • H.264 MP4 • 2 Mbps)</text>
+  <text x="580" y="196" fill="#34d399" font-family="ui-monospace, monospace" font-size="14" font-weight="700">34 MB (91% Smaller!)</text>
+  <rect x="48" y="212" width="700" height="24" rx="12" fill="#1e293b"/>
+  <rect x="48" y="212" width="64" height="24" rx="12" fill="url(#optBar)"/>
+  <text x="124" y="228" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="11.5" font-weight="700">Uploads in ~4 seconds • Sharp menus &amp; spreadsheet text • Instant playback</text>
+
+  <text x="48" y="258" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">Tip: Batch-queue multiple MP4, MOV, MKV, or WebM clips locally without waiting in cloud server queues.</text>
+</svg>

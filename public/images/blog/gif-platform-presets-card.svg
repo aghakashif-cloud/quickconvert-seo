@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">GIF Resolution, FPS, and Duration Presets by Platform</title>
+  <desc id="desc">Three tested GIF export recipes: Email and Blogs (480px, 10 to 12 FPS, 4 to 6s), Discord and Bug Reports (480 to 640px, 12 FPS, 3 to 5s), and Chat Stickers (320px, 8 to 10 FPS, 2 to 4s).</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Exact Video-to-GIF Presets for Blogs, Discord &amp; Chat Apps</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Rule of thumb: keep GIFs between 3–7 seconds; for 10+ second clips or audio, stick with a compressed H.264 MP4</text>
+
+  <!-- Card 1: Email & Blogs -->
+  <rect x="28" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="44" y="94" width="136" height="22" rx="11" fill="#0c4a6e"/>
+  <text x="112" y="109" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">BLOGS &amp; EMAILS</text>
+  <text x="44" y="138" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="13.5" font-weight="700">480px • 10–12 FPS</text>
+  <text x="44" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Duration: 4 to 6 seconds</text>
+  <text x="44" y="180" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11.5">Typical size: 1.2 – 2.5 MB</text>
+  <text x="44" y="210" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ Fast mobile newsletter load</text>
+
+  <!-- Card 2: Discord & Slack -->
+  <rect x="282" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="298" y="94" width="150" height="22" rx="11" fill="#064e3b"/>
+  <text x="373" y="109" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">DISCORD &amp; BUG DEMOS</text>
+  <text x="298" y="138" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="13.5" font-weight="700">480–640px • 12 FPS</text>
+  <text x="298" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Duration: 3 to 5 seconds</text>
+  <text x="298" y="180" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11.5">Sharp cursor &amp; pop-up text</text>
+  <text x="298" y="210" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ Ideal for Slack &amp; GitHub</text>
+
+  <!-- Card 3: Reactions -->
+  <rect x="536" y="78" width="236" height="148" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+  <rect x="552" y="94" width="142" height="22" rx="11" fill="#3b0764"/>
+  <text x="623" y="109" text-anchor="middle" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">CHAT STICKERS</text>
+  <text x="552" y="138" fill="#f8fafc" font-family="ui-monospace, monospace" font-size="13.5" font-weight="700">320px • 8–10 FPS</text>
+  <text x="552" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="12">Duration: 2 to 4 seconds</text>
+  <text x="552" y="180" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11.5">Often lands under 600 KB</text>
+  <text x="552" y="210" fill="#c084fc" font-family="system-ui, sans-serif" font-size="11" font-weight="600">✓ Instant tap-free reaction</text>
+</svg>

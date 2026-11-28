@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">5-Minute Competitor YouTube Thumbnail Audit Checklist</title>
+  <desc id="desc">Four-point audit framework to study top competitor HD thumbnails before filming: count words (2 to 5 max), contrast against niche colors, check Light and Dark Mode visibility, and protect the bottom-right timer zone.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">The 5-Minute Competitor Thumbnail Audit Before You Film</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Download the top 4 HD thumbnails in your topic, zoom them down to phone size, and check these 4 winning patterns</text>
+
+  <!-- Box 1 -->
+  <rect x="28" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#fbbf24" stroke-width="1.4"/>
+  <text x="44" y="104" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="11" font-weight="700">1. WORD COUNT</text>
+  <text x="44" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">2–5 Bold Words</text>
+  <text x="44" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Top videos spark</text>
+  <text x="44" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">curiosity instead of</text>
+  <text x="44" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">repeating the title.</text>
+  <text x="44" y="212" fill="#fde68a" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Readable at 2 inches</text>
+
+  <!-- Box 2 -->
+  <rect x="217" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.4"/>
+  <text x="233" y="104" fill="#34d399" font-family="system-ui, sans-serif" font-size="11" font-weight="700">2. COLOR CONTRAST</text>
+  <text x="233" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Break Feed Pattern</text>
+  <text x="233" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">If rivals all use dark</text>
+  <text x="233" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">blue, stand out with</text>
+  <text x="233" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">amber, white or green.</text>
+  <text x="233" y="212" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Stops the scroll</text>
+
+  <!-- Box 3 -->
+  <rect x="406" y="78" width="175" height="148" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.4"/>
+  <text x="422" y="104" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="11" font-weight="700">3. DARK / LIGHT UI</text>
+  <text x="422" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Add Rim Separation</text>
+  <text x="422" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Pure black edges sink</text>
+  <text x="422" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">into Dark Mode; use</text>
+  <text x="422" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">subtle glow or rim.</text>
+  <text x="422" y="212" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Pops in both modes</text>
+
+  <!-- Box 4 -->
+  <rect x="595" y="78" width="177" height="148" rx="12" fill="#0f172a" stroke="#ef4444" stroke-width="1.4"/>
+  <text x="611" y="104" fill="#f87171" font-family="system-ui, sans-serif" font-size="11" font-weight="700">4. SAFE CORNERS</text>
+  <text x="611" y="128" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Respect Timer Zone</text>
+  <text x="611" y="152" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Keep faces &amp; letters</text>
+  <text x="611" y="169" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">away from bottom-</text>
+  <text x="611" y="186" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">right duration badge.</text>
+  <text x="611" y="212" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="10.5" font-weight="600">Never steal artwork</text>
+</svg>

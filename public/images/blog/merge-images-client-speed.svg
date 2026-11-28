@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
+  <title id="title">Local Browser Merging vs Cloud Upload Speed and Privacy Benchmark</title>
+  <desc id="desc">Benchmark comparing 5 high-resolution scans totaling 14 MB: cloud server tools take around 40 seconds and upload personal files, while QuickConvert processes locally in under 2 seconds with zero bytes uploaded.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="redBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#f97316"/>
+    </linearGradient>
+    <linearGradient id="greenBar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="250" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Real-World Benchmark: Merging 5 High-Res Scans (14 MB Total)</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Tested on standard home Wi-Fi with 5 smartphone document photos (ID cards, receipts &amp; contracts)</text>
+
+  <!-- Cloud Server Row -->
+  <rect x="32" y="78" width="736" height="68" rx="10" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="102" fill="#fca5a5" font-family="system-ui, -apple-system, sans-serif" font-size="13.5" font-weight="700">Traditional Cloud Merger</text>
+  <text x="540" y="102" fill="#f87171" font-family="ui-monospace, monospace" font-size="13" font-weight="700">~40 sec  |  14 MB Uploaded</text>
+  <rect x="50" y="114" width="698" height="18" rx="9" fill="#1e293b"/>
+  <rect x="50" y="114" width="640" height="18" rx="9" fill="url(#redBar)"/>
+  <text x="64" y="127" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="10.5" font-weight="700">Upload 14 MB → Server Queue → Render → Re-download + Stored on 3rd-Party Disk</text>
+
+  <!-- QuickConvert Local Row -->
+  <rect x="32" y="160" width="736" height="68" rx="10" fill="#0f172a" stroke="#065f46" stroke-width="1.5"/>
+  <text x="50" y="184" fill="#6ee7b7" font-family="system-ui, -apple-system, sans-serif" font-size="13.5" font-weight="700">QuickConvert Local Browser Engine</text>
+  <text x="540" y="184" fill="#34d399" font-family="ui-monospace, monospace" font-size="13" font-weight="700">&lt; 2 sec  |  0 Bytes Uploaded</text>
+  <rect x="50" y="196" width="698" height="18" rx="9" fill="#1e293b"/>
+  <rect x="50" y="196" width="72" height="18" rx="9" fill="url(#greenBar)"/>
+  <text x="134" y="209" fill="#a7f3d0" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600">Instant in-RAM HTML5 Canvas stitch — private scans never leave your device</text>
+</svg>

@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" width="800" height="300" role="img" aria-labelledby="title desc">
+  <title id="title">100% Private In-Browser Whisper AI Audio and Video Transcription Pipeline</title>
+  <desc id="desc">Benchmark workflow showing an 8-minute 90MB MP4 interview extracted locally to 16kHz mono PCM in under 4 seconds via FFmpeg WebAssembly, transcribed in a background Web Worker using Whisper AI at over 96 percent accuracy with zero uploads.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1120"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="300" rx="16" fill="url(#bg)"/>
+  <rect x="1" y="1" width="798" height="298" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
+
+  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="700">100% Private Audio &amp; Video Transcription Inside Your Browser</text>
+  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12.5">Real 8-minute podcast test: FFmpeg WASM + Whisper AI delivered 96%+ accuracy with zero cloud uploads or per-minute fees</text>
+
+  <!-- Step 1 -->
+  <rect x="28" y="84" width="166" height="178" rx="12" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+  <text x="44" y="110" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">1. LOCAL MEDIA</text>
+  <text x="44" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">8-Min Podcast</text>
+  <text x="44" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• 90 MB MP4 video</text>
+  <text x="44" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">• MP3, WAV, M4A,</text>
+  <text x="44" y="196" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">  OGG, MOV, MKV</text>
+  <rect x="44" y="216" width="134" height="28" rx="6" fill="#1e293b"/>
+  <text x="111" y="234" text-anchor="middle" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">Zero Upload Wait</text>
+
+  <path d="M198 173 L220 173" stroke="#38bdf8" stroke-width="2.5"/>
+  <polygon points="220,167 230,173 220,179" fill="#38bdf8"/>
+
+  <!-- Step 2 -->
+  <rect x="234" y="84" width="166" height="178" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="250" y="110" fill="#38bdf8" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">2. FFMPEG WASM</text>
+  <text x="250" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">16kHz Mono PCM</text>
+  <text x="250" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Extracts studio-clean</text>
+  <text x="250" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">speech track locally</text>
+  <text x="250" y="196" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">inside browser RAM.</text>
+  <rect x="250" y="216" width="134" height="28" rx="6" fill="#0c4a6e"/>
+  <text x="317" y="234" text-anchor="middle" fill="#bae6fd" font-family="ui-monospace, monospace" font-size="11" font-weight="700">Done in &lt; 4 sec</text>
+
+  <path d="M404 173 L426 173" stroke="#818cf8" stroke-width="2.5"/>
+  <polygon points="426,167 436,173 426,179" fill="#818cf8"/>
+
+  <!-- Step 3 -->
+  <rect x="440" y="84" width="166" height="178" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="456" y="110" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">3. WHISPER AI</text>
+  <text x="456" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13.5" font-weight="700">Web Worker Engine</text>
+  <text x="456" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Runs in background so</text>
+  <text x="456" y="178" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">UI never freezes; 50+</text>
+  <text x="456" y="196" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">languages supported.</text>
+  <rect x="456" y="216" width="134" height="28" rx="6" fill="#1e1b4b"/>
+  <text x="523" y="234" text-anchor="middle" fill="#c7d2fe" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">Cached Locally</text>
+
+  <path d="M610 173 L632 173" stroke="#34d399" stroke-width="2.5"/>
+  <polygon points="632,167 642,173 632,179" fill="#34d399"/>
+
+  <!-- Step 4 -->
+  <rect x="646" y="84" width="128" height="178" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.6"/>
+  <rect x="646" y="84" width="128" height="5" rx="2.5" fill="url(#bar)"/>
+  <text x="660" y="110" fill="#34d399" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">4. CLEAN TEXT</text>
+  <rect x="658" y="126" width="104" height="56" rx="8" fill="#064e3b"/>
+  <text x="710" y="150" text-anchor="middle" fill="#ecfdf5" font-family="ui-monospace, monospace" font-size="15" font-weight="700">96%+</text>
+  <text x="710" y="168" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10">Word Accuracy</text>
+  <text x="710" y="206" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">• Timestamps</text>
+  <text x="710" y="224" text-anchor="middle" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">• Copy / .TXT</text>
+  <text x="710" y="244" text-anchor="middle" fill="#34d399" font-family="system-ui, sans-serif" font-size="10.5" font-weight="700">🔒 0 Bytes Sent</text>
+</svg>
