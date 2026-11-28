@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 250" width="800" height="250" role="img" aria-labelledby="title desc">
-  <title id="title">3-Stage Client-Side Smart Jump-Cut Editing Pipeline</title>
-  <desc id="desc">Three-step browser editing pipeline: Step 1 Transcribing Audio with FFmpeg WASM and Whisper AI, Step 2 Analyzing for Cuts with Gemini AI plus acoustic silence detection, and Step 3 Rendering Final Smooth Video locally via FFmpeg -ss/-to and concat.</desc>
+  <title id="title">4-Step Client-Side AI Video Editor Pipeline</title>
+  <desc id="desc">Four-step browser video editing pipeline: Step 1 Select Multiple Clips, Step 2 Local FFmpeg Merge &amp; Whisper Transcription, Step 3 AI Silence &amp; Filler Detection, and Step 4 Download Smooth Watermark-Free MP4.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0b1120"/>
@@ -11,39 +11,51 @@
   <rect width="800" height="250" rx="16" fill="url(#bg)"/>
   <rect x="1" y="1" width="798" height="248" rx="15" fill="none" stroke="#1e293b" stroke-width="2"/>
 
-  <text x="32" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Inside the 3-Stage Browser Jump-Cut Engine (100% Free)</text>
-  <text x="32" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">Your raw video stays strictly on your own device — only the lightweight text transcript is analyzed for cuts</text>
+  <text x="30" y="38" fill="#f8fafc" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="700">Inside the 100% Client-Side Multi-Clip AI Video Editor</text>
+  <text x="30" y="58" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="12">All video merging &amp; rendering runs locally via FFmpeg WASM — your footage never leaves your device</text>
 
-  <!-- Stage 1 -->
-  <rect x="28" y="78" width="222" height="146" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
-  <rect x="44" y="94" width="114" height="22" rx="11" fill="#0c4a6e"/>
-  <text x="101" y="109" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="10" font-weight="700">STAGE 1: AUDIO</text>
-  <text x="44" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Transcribing Audio</text>
-  <text x="44" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">FFmpeg extracts 16kHz</text>
-  <text x="44" y="177" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">PCM &amp; Whisper builds</text>
-  <text x="44" y="194" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">timestamped chunks.</text>
+  <!-- Step 1 -->
+  <rect x="24" y="80" width="166" height="144" rx="12" fill="#0f172a" stroke="#6366f1" stroke-width="1.5"/>
+  <rect x="36" y="94" width="86" height="20" rx="10" fill="#1e1b4b"/>
+  <text x="79" y="108" text-anchor="middle" fill="#a5b4fc" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700">STEP 1: QUEUE</text>
+  <text x="36" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Multi-Clip Upload</text>
+  <text x="36" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Drop 15–20+ clips,</text>
+  <text x="36" y="174" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">reorder takes, or</text>
+  <text x="36" y="190" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">remove extras.</text>
 
-  <path d="M256 151 L280 151" stroke="#38bdf8" stroke-width="2.5"/>
-  <polygon points="280,145 290,151 280,157" fill="#38bdf8"/>
+  <path d="M194 152 L210 152" stroke="#6366f1" stroke-width="2.2"/>
+  <polygon points="210,147 218,152 210,157" fill="#6366f1"/>
 
-  <!-- Stage 2 -->
-  <rect x="294" y="78" width="222" height="146" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
-  <rect x="310" y="94" width="118" height="22" rx="11" fill="#3b0764"/>
-  <text x="369" y="109" text-anchor="middle" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="10" font-weight="700">STAGE 2: AI CUTS</text>
-  <text x="310" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Analyzing for Cuts</text>
-  <text x="310" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">Gemini flags silences,</text>
-  <text x="310" y="177" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">long pauses &amp; fillers</text>
-  <text x="310" y="194" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="11.5">highlighted in red.</text>
+  <!-- Step 2 -->
+  <rect x="220" y="80" width="166" height="144" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+  <rect x="232" y="94" width="96" height="20" rx="10" fill="#0c4a6e"/>
+  <text x="280" y="108" text-anchor="middle" fill="#7dd3fc" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700">STEP 2: MERGE</text>
+  <text x="232" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Merge &amp; Transcribe</text>
+  <text x="232" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">FFmpeg normalizes</text>
+  <text x="232" y="174" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">&amp; merges clips; local</text>
+  <text x="232" y="190" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Whisper transcribes.</text>
 
-  <path d="M522 151 L546 151" stroke="#34d399" stroke-width="2.5"/>
-  <polygon points="546,145 556,151 546,157" fill="#34d399"/>
+  <path d="M390 152 L406 152" stroke="#38bdf8" stroke-width="2.2"/>
+  <polygon points="406,147 414,152 406,157" fill="#38bdf8"/>
 
-  <!-- Stage 3 -->
-  <rect x="560" y="78" width="212" height="146" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.6"/>
-  <rect x="576" y="94" width="122" height="22" rx="11" fill="#064e3b"/>
-  <text x="637" y="109" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="10" font-weight="700">STAGE 3: EXPORT</text>
-  <text x="576" y="138" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="14" font-weight="700">Rendering Final Video</text>
-  <text x="576" y="160" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">FFmpeg -ss/-to slices</text>
-  <text x="576" y="177" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11.5">good segments &amp; merges</text>
-  <text x="576" y="194" fill="#34d399" font-family="system-ui, sans-serif" font-size="11.5">1 smooth MP4 locally.</text>
+  <!-- Step 3 -->
+  <rect x="416" y="80" width="166" height="144" rx="12" fill="#0f172a" stroke="#a855f7" stroke-width="1.5"/>
+  <rect x="428" y="94" width="92" height="20" rx="10" fill="#3b0764"/>
+  <text x="474" y="108" text-anchor="middle" fill="#d8b4fe" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700">STEP 3: AI CUT</text>
+  <text x="428" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Cut Silences/Fillers</text>
+  <text x="428" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Flags dead air &amp;</text>
+  <text x="428" y="174" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">fillers ("um", "uh")</text>
+  <text x="428" y="190" fill="#fca5a5" font-family="system-ui, sans-serif" font-size="11">highlighted in red.</text>
+
+  <path d="M586 152 L602 152" stroke="#10b981" stroke-width="2.2"/>
+  <polygon points="602,147 610,152 602,157" fill="#10b981"/>
+
+  <!-- Step 4 -->
+  <rect x="612" y="80" width="164" height="144" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="1.6"/>
+  <rect x="624" y="94" width="96" height="20" rx="10" fill="#064e3b"/>
+  <text x="672" y="108" text-anchor="middle" fill="#6ee7b7" font-family="system-ui, sans-serif" font-size="9.5" font-weight="700">STEP 4: EXPORT</text>
+  <text x="624" y="136" fill="#f8fafc" font-family="system-ui, sans-serif" font-size="13" font-weight="700">Download MP4</text>
+  <text x="624" y="158" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">Smooth 30ms fades,</text>
+  <text x="624" y="174" fill="#cbd5e1" font-family="system-ui, sans-serif" font-size="11">no watermarks, and</text>
+  <text x="624" y="190" fill="#34d399" font-family="system-ui, sans-serif" font-size="11">100% free locally.</text>
 </svg>
