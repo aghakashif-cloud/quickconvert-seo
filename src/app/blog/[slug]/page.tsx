@@ -232,6 +232,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </ul>
               )}
 
+              {section.numberedList && section.numberedList.length > 0 && (
+                <ol className="space-y-2.5 pt-2">
+                  {section.numberedList.map((item, nIdx) => (
+                    <li
+                      key={nIdx}
+                      className="flex items-start gap-3 text-sm md:text-base text-slate-300 bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5"
+                    >
+                      <span className="w-6 h-6 rounded-full bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                        {nIdx + 1}
+                      </span>
+                      <span>{renderRichText(item)}</span>
+                    </li>
+                  ))}
+                </ol>
+              )}
+
               {/* H3 Subsections */}
               {section.subSections && section.subSections.length > 0 && (
                 <div className="space-y-6 pt-3 pl-0 sm:pl-4 border-l-0 sm:border-l-2 border-indigo-500/30">
@@ -260,6 +276,21 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                             </li>
                           ))}
                         </ul>
+                      )}
+                      {sub.numberedList && sub.numberedList.length > 0 && (
+                        <ol className="space-y-2 pt-1">
+                          {sub.numberedList.map((sn, snIdx) => (
+                            <li
+                              key={snIdx}
+                              className="flex items-start gap-2.5 text-sm text-slate-300 bg-slate-950/60 border border-slate-800/70 rounded-xl p-3"
+                            >
+                              <span className="w-5 h-5 rounded-full bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-[11px] font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                {snIdx + 1}
+                              </span>
+                              <span>{renderRichText(sn)}</span>
+                            </li>
+                          ))}
+                        </ol>
                       )}
                     </div>
                   ))}
