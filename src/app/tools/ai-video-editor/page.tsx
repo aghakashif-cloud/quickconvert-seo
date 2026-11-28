@@ -29,11 +29,30 @@ import {
   PlusCircle,
   ArrowUp,
   ArrowDown,
+  Flame,
+  Film,
 } from "lucide-react";
 
 type WhisperModelId = "Xenova/whisper-base" | "Xenova/whisper-small";
+type EditorMode = "remove-silences" | "viral-clip";
 type StageId = "transcribing" | "analyzing" | "rendering";
+type ViralStageId = "transcribing" | "finding-hook" | "cutting";
 type SensitivityMode = "gentle" | "balanced" | "aggressive";
+
+const MAX_VIRAL_UPLOAD_SECONDS = 15 * 60; // 15 minutes max upload to prevent browser crashes
+const MAX_VIRAL_TRANSCRIBE_SECONDS = 5 * 60; // 5 minutes Whisper transcription cap for performance
+
+interface ViralClipSuggestion {
+  startTime: number;
+  endTime: number;
+  reason: string;
+}
+
+const VIRAL_PIPELINE_STAGES: { id: ViralStageId; label: string }[] = [
+  { id: "transcribing", label: "Transcribing" },
+  { id: "finding-hook", label: "Finding Best Hook" },
+  { id: "cutting", label: "Cutting Video" },
+];
 
 interface TranscriptChunk {
   timestamp: [number, number | null];
@@ -391,7 +410,27 @@ function countFillerWords(text: string): number {
   return matches ? matches.length : 0;
 }
 
+function readVideoDuration(file: File): Promise<number> {
+  return new Promise((resolve) => {
+    const tempUrl = URL.createObjectURL(file);
+    const videoEl = document.createElement("video");
+    videoEl.preload = "metadata";
+    videoEl.onloadedmetadata = () => {
+      const dur = Number.isFinite(videoEl.duration) ? videoEl.duration : 0;
+      URL.revokeObjectURL(tempUrl);
+      resolve(dur);
+    };
+    videoEl.onerror = () => {
+      URL.revokeObjectURL(tempUrl);
+      resolve(0);
+    };
+    videoEl.src = tempUrl;
+  });
+}
+
 export default function SmartJumpCutEditorPage() {
+  const [activeMode, setActiveMode] = useState<EditorMode>("remove-silences");
+
   const [files, setFiles] = useState<File[]>([]);
   const [isDragActive, setIsDragActive] = useState<boolean>(false);
   const [mergedSourceFile, setMergedSourceFile] = useState<File | null>(null);
@@ -400,7 +439,7 @@ export default function SmartJumpCutEditorPage() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const [sensitivity, setSensitivity] = useState<SensitivityMode>("balanced");
 
-  // Pipeline progress state
+  // Pipeline progress state (Remove Silences mode)
   const [pipelineStatus, setPipelineStatus] = useState<
     "idle" | "running" | "done" | "error"
   >("idle");
@@ -412,7 +451,7 @@ export default function SmartJumpCutEditorPage() {
   );
   const [error, setError] = useState<string | null>(null);
 
-  // Results state
+  // Results state (Remove Silences mode)
   const [transcriptChunks, setTranscriptChunks] = useState<TranscriptChunk[]>(
     []
   );
@@ -423,7 +462,31 @@ export default function SmartJumpCutEditorPage() {
   const [smoothDuration, setSmoothDuration] = useState<number>(0);
   const [reRendering, setReRendering] = useState<boolean>(false);
 
+  // Auto Viral Clip Generator state (Generate Viral Clip mode)
+  const [viralFile, setViralFile] = useState<File | null>(null);
+  const [viralFileDuration, setViralFileDuration] = useState<number>(0);
+  const [isViralDragActive, setIsViralDragActive] = useState<boolean>(false);
+  const [viralStatus, setViralStatus] = useState<
+    "idle" | "running" | "done" | "error"
+  >("idle");
+  const [viralStage, setViralStage] = useState<ViralStageId | null>(null);
+  const [viralCompletedStages, setViralCompletedStages] = useState<
+    ViralStageId[]
+  >([]);
+  const [viralProgress, setViralProgress] = useState<number>(0);
+  const [viralStatusMessage, setViralStatusMessage] = useState<string>(
+    "Upload a long video (up to 15 minutes) to automatically extract the most engaging 30–60 second viral clip."
+  );
+  const [viralError, setViralError] = useState<string | null>(null);
+  const [viralClipResult, setViralClipResult] =
+    useState<ViralClipSuggestion | null>(null);
+  const [viralClipUrl, setViralClipUrl] = useState<string | null>(null);
+  const [viralClipSize, setViralClipSize] = useState<number>(0);
+  const [viralCappedAtFiveMin, setViralCappedAtFiveMin] =
+    useState<boolean>(false);
+
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const viralFileInputRef = useRef<HTMLInputElement | null>(null);
   const ffmpegRef = useRef<FFmpeg | null>(null);
   const workerRef = useRef<Worker | null>(null);
 
@@ -453,6 +516,12 @@ export default function SmartJumpCutEditorPage() {
       if (smoothVideoUrl) URL.revokeObjectURL(smoothVideoUrl);
     };
   }, [smoothVideoUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (viralClipUrl) URL.revokeObjectURL(viralClipUrl);
+    };
+  }, [viralClipUrl]);
 
   const handleFiles = useCallback(
     (newFiles: File[]) => {
@@ -569,10 +638,21 @@ export default function SmartJumpCutEditorPage() {
 
   /**
    * Step 1A: Extract 16kHz mono PCM WAV audio locally via FFmpeg.wasm.
+   * Optional maxSeconds caps extraction duration (e.g., 5 minutes for Whisper performance in Viral Clip mode).
    */
-  const extract16kWav = async (file: File): Promise<ArrayBuffer> => {
-    setStatusMessage("Loading FFmpeg WebAssembly engine to extract audio...");
-    setOverallProgress(5);
+  const extract16kWav = async (
+    file: File,
+    options?: {
+      maxSeconds?: number;
+      onStatus?: (msg: string) => void;
+      onProgress?: (pct: number) => void;
+    }
+  ): Promise<ArrayBuffer> => {
+    const updateStatus = options?.onStatus ?? setStatusMessage;
+    const updateProgress = options?.onProgress ?? setOverallProgress;
+
+    updateStatus("Loading FFmpeg WebAssembly engine to extract audio...");
+    updateProgress(5);
 
     const ffmpeg = await loadFreshFFmpeg();
     const mountDir = "/input_mount";
@@ -592,12 +672,20 @@ export default function SmartJumpCutEditorPage() {
         await ffmpeg.writeFile(inputPath, await fetchFile(file));
       }
 
-      setStatusMessage("Extracting 16kHz mono audio track via FFmpeg WASM...");
-      setOverallProgress(12);
+      updateStatus(
+        options?.maxSeconds
+          ? `Extracting up to ${Math.round(
+              options.maxSeconds / 60
+            )} minutes of 16kHz mono audio locally via FFmpeg WASM...`
+          : "Extracting 16kHz mono audio track via FFmpeg WASM..."
+      );
+      updateProgress(12);
 
-      const exitCode = await ffmpeg.exec([
-        "-i",
-        inputPath,
+      const execArgs = ["-i", inputPath];
+      if (options?.maxSeconds && options.maxSeconds > 0) {
+        execArgs.push("-t", String(options.maxSeconds));
+      }
+      execArgs.push(
         "-vn",
         "-acodec",
         "pcm_s16le",
@@ -605,8 +693,10 @@ export default function SmartJumpCutEditorPage() {
         "16000",
         "-ac",
         "1",
-        outputWav,
-      ]);
+        outputWav
+      );
+
+      const exitCode = await ffmpeg.exec(execArgs);
 
       if (exitCode !== 0) {
         throw new Error(
@@ -642,8 +732,15 @@ export default function SmartJumpCutEditorPage() {
   const transcribeAudioWithWhisper = (
     pcm: Float32Array,
     durationSec: number,
-    language: string
+    language: string,
+    options?: {
+      onStatus?: (msg: string) => void;
+      onProgress?: (pct: number) => void;
+    }
   ): Promise<{ text: string; chunks: TranscriptChunk[] }> => {
+    const updateStatus = options?.onStatus ?? setStatusMessage;
+    const updateProgress = options?.onProgress ?? setOverallProgress;
+
     return new Promise((resolve, reject) => {
       if (!workerRef.current) {
         workerRef.current = new Worker(
@@ -661,19 +758,19 @@ export default function SmartJumpCutEditorPage() {
 
         if (msg.type === "model-progress") {
           const pct = Math.min(99, Math.round(msg.progress ?? 0));
-          setOverallProgress(Math.round(16 + pct * 0.1));
-          setStatusMessage(
+          updateProgress(Math.round(16 + pct * 0.1));
+          updateStatus(
             `Loading Whisper AI model (${pct}%) — cached in browser after first run...`
           );
         } else if (msg.type === "model-ready") {
-          setOverallProgress(28);
-          setStatusMessage(
+          updateProgress(28);
+          updateStatus(
             "Whisper AI loaded. Transcribing speech with timestamps locally..."
           );
         } else if (msg.type === "transcribe-progress") {
           const subPct = msg.progress ?? 0;
-          setOverallProgress(Math.min(46, Math.round(28 + subPct * 0.18)));
-          setStatusMessage(
+          updateProgress(Math.min(46, Math.round(28 + subPct * 0.18)));
+          updateStatus(
             `Transcribing audio locally (chunk ${msg.chunksProcessed ?? 0}/${
               msg.estimatedChunks ?? 1
             })...`
@@ -1202,6 +1299,354 @@ export default function SmartJumpCutEditorPage() {
     );
   };
 
+  // --- Auto Viral Clip Generator Handlers ---
+
+  const handleViralFile = useCallback(
+    async (file: File | undefined) => {
+      if (!file) return;
+      const isVideo =
+        (file.type && file.type.startsWith("video/")) ||
+        /\.(mp4|mov|webm|mkv|avi|m4v|3gp)$/i.test(file.name);
+
+      if (!isVideo) {
+        setViralError(
+          "Please select a valid video file (MP4, MOV, WebM, MKV, AVI, or M4V)."
+        );
+        return;
+      }
+
+      if (viralClipUrl) URL.revokeObjectURL(viralClipUrl);
+
+      const detectedDuration = await readVideoDuration(file);
+      if (detectedDuration > MAX_VIRAL_UPLOAD_SECONDS) {
+        setViralFile(null);
+        setViralFileDuration(0);
+        setViralClipUrl(null);
+        setViralClipResult(null);
+        setViralStatus("error");
+        setViralError(
+          `This video is ${formatSeconds(
+            detectedDuration
+          )} long. Currently we support videos up to 15 minutes for viral clipping to prevent browser crashes.`
+        );
+        return;
+      }
+
+      setViralFile(file);
+      setViralFileDuration(detectedDuration);
+      setViralCappedAtFiveMin(detectedDuration > MAX_VIRAL_TRANSCRIBE_SECONDS);
+      setViralClipUrl(null);
+      setViralClipSize(0);
+      setViralClipResult(null);
+      setViralStatus("idle");
+      setViralStage(null);
+      setViralCompletedStages([]);
+      setViralProgress(0);
+      setViralError(null);
+      setViralStatusMessage(
+        detectedDuration > MAX_VIRAL_TRANSCRIBE_SECONDS
+          ? "Video ready! To keep browser AI fast, Whisper will scan the first 5 minutes to find the strongest 30–60s viral hook."
+          : "Video ready! Click Generate Clip to find and cut the most engaging 30–60s segment."
+      );
+    },
+    [viralClipUrl]
+  );
+
+  const handleViralFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (selected) {
+      void handleViralFile(selected);
+    }
+    e.target.value = "";
+  };
+
+  const handleViralDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (viralStatus !== "running") {
+      setIsViralDragActive(true);
+    }
+  };
+
+  const handleViralDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsViralDragActive(false);
+  };
+
+  const handleViralDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsViralDragActive(false);
+    if (viralStatus === "running") return;
+    const dropped = e.dataTransfer.files?.[0];
+    if (dropped) {
+      void handleViralFile(dropped);
+    }
+  };
+
+  const resetViralMode = () => {
+    if (viralClipUrl) URL.revokeObjectURL(viralClipUrl);
+    setViralFile(null);
+    setViralFileDuration(0);
+    setViralCappedAtFiveMin(false);
+    setViralClipUrl(null);
+    setViralClipSize(0);
+    setViralClipResult(null);
+    setViralStatus("idle");
+    setViralStage(null);
+    setViralCompletedStages([]);
+    setViralProgress(0);
+    setViralError(null);
+    setViralStatusMessage(
+      "Upload a long video (up to 15 minutes) to automatically extract the most engaging 30–60 second viral clip."
+    );
+  };
+
+  /**
+   * Cuts the exact [startTime, endTime] viral highlight from the original video via FFmpeg WASM (-ss and -to).
+   */
+  const cutViralVideoClip = async (
+    file: File,
+    startTime: number,
+    endTime: number
+  ) => {
+    setViralStatusMessage(
+      `Loading FFmpeg WASM to cut viral clip (${formatSeconds(
+        startTime
+      )} – ${formatSeconds(endTime)})...`
+    );
+    setViralProgress(74);
+
+    const ffmpeg = await loadFreshFFmpeg();
+    const mountDir = "/viral_mount";
+    let inputPath = "";
+    let usedWorkerFS = false;
+    const outputFile = "viral_short_clip.mp4";
+
+    try {
+      try {
+        await ffmpeg.createDir(mountDir);
+        await ffmpeg.mount("WORKERFS" as FFFSType, { files: [file] }, mountDir);
+        inputPath = `${mountDir}/${file.name}`;
+        usedWorkerFS = true;
+      } catch {
+        const ext = file.name.split(".").pop()?.toLowerCase() || "mp4";
+        inputPath = `viral_src.${ext}`;
+        await ffmpeg.writeFile(inputPath, await fetchFile(file));
+      }
+
+      setViralStatusMessage(
+        `Cutting engaging ${(endTime - startTime).toFixed(
+          1
+        )}s viral highlight locally...`
+      );
+      setViralProgress(84);
+
+      const exitCode = await ffmpeg.exec([
+        "-ss",
+        startTime.toFixed(3),
+        "-to",
+        endTime.toFixed(3),
+        "-i",
+        inputPath,
+        "-c:v",
+        "libx264",
+        "-preset",
+        "ultrafast",
+        "-crf",
+        "23",
+        "-pix_fmt",
+        "yuv420p",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "128k",
+        "-ar",
+        "44100",
+        "-ac",
+        "2",
+        "-avoid_negative_ts",
+        "make_zero",
+        "-movflags",
+        "+faststart",
+        outputFile,
+      ]);
+
+      if (exitCode !== 0) {
+        throw new Error(
+          `FFmpeg failed to cut the viral clip (exit code ${exitCode}).`
+        );
+      }
+
+      setViralProgress(95);
+      const data = await ffmpeg.readFile(outputFile);
+      const finalBytes =
+        data instanceof Uint8Array
+          ? data
+          : new TextEncoder().encode(String(data));
+
+      const blob = new Blob([finalBytes.buffer as ArrayBuffer], {
+        type: "video/mp4",
+      });
+      const outUrl = URL.createObjectURL(blob);
+
+      if (viralClipUrl) URL.revokeObjectURL(viralClipUrl);
+      setViralClipUrl(outUrl);
+      setViralClipSize(blob.size);
+      setViralProgress(100);
+      setViralStatusMessage(
+        `Viral clip ready! Cut ${(endTime - startTime).toFixed(
+          1
+        )}s highlight (${formatSeconds(startTime)} – ${formatSeconds(
+          endTime
+        )}) locally.`
+      );
+    } finally {
+      try {
+        if (usedWorkerFS) {
+          await ffmpeg.unmount(mountDir);
+          await ffmpeg.deleteDir(mountDir);
+        } else if (inputPath) {
+          await ffmpeg.deleteFile(inputPath);
+        }
+        await ffmpeg.deleteFile(outputFile).catch(() => {});
+      } catch {
+        // ignore cleanup errors
+      }
+      releaseFFmpeg();
+    }
+  };
+
+  /**
+   * 3-Stage Auto Viral Clip Pipeline:
+   * 1. Transcribing (Whisper local, capped at 5 min for performance) -> 2. Finding Best Hook (Gemini API) -> 3. Cutting Video (FFmpeg -ss/-to)
+   */
+  const handleGenerateViralClip = async () => {
+    if (!viralFile || viralStatus === "running") return;
+
+    setViralStatus("running");
+    setViralError(null);
+    setViralCompletedStages([]);
+    setViralStage("transcribing");
+    setViralProgress(3);
+    setViralClipResult(null);
+    if (viralClipUrl) {
+      URL.revokeObjectURL(viralClipUrl);
+      setViralClipUrl(null);
+    }
+
+    try {
+      // Stage 1: Transcribing (extract up to 5 minutes of 16kHz audio for fast browser performance)
+      const wavBuffer = await extract16kWav(viralFile, {
+        maxSeconds: MAX_VIRAL_TRANSCRIBE_SECONDS,
+        onStatus: setViralStatusMessage,
+        onProgress: setViralProgress,
+      });
+
+      const parsed =
+        parsePcm16MonoWav(wavBuffer) ||
+        (await decodeAudioTo16kHzMono(wavBuffer));
+      const analyzedDuration = Math.min(
+        parsed.duration,
+        MAX_VIRAL_TRANSCRIBE_SECONDS
+      );
+
+      if (analyzedDuration < 3) {
+        throw new Error(
+          "Could not extract enough spoken audio from this video to detect a viral clip."
+        );
+      }
+
+      const whisperResult = await transcribeAudioWithWhisper(
+        parsed.pcm,
+        analyzedDuration,
+        selectedLanguage,
+        {
+          onStatus: setViralStatusMessage,
+          onProgress: setViralProgress,
+        }
+      );
+
+      const formattedTimestampedTranscript =
+        whisperResult.chunks.length > 0
+          ? whisperResult.chunks
+              .map((chunk) => {
+                const s =
+                  typeof chunk.timestamp?.[0] === "number"
+                    ? chunk.timestamp[0].toFixed(2)
+                    : "0.00";
+                const e =
+                  typeof chunk.timestamp?.[1] === "number"
+                    ? chunk.timestamp[1].toFixed(2)
+                    : analyzedDuration.toFixed(2);
+                return `[${s}s - ${e}s] ${chunk.text}`;
+              })
+              .join("\n")
+          : whisperResult.text;
+
+      if (!formattedTimestampedTranscript.trim()) {
+        throw new Error(
+          "No speech was detected in the video audio. Viral clipping works best on spoken videos, podcasts, or tutorials."
+        );
+      }
+
+      setViralCompletedStages(["transcribing"]);
+
+      // Stage 2: Finding Best Hook via /api/generate-viral-clip
+      setViralStage("finding-hook");
+      setViralProgress(56);
+      setViralStatusMessage(
+        "Analyzing timestamped transcript with Gemini AI to find the most engaging 30–60s viral hook..."
+      );
+
+      const res = await fetch("/api/generate-viral-clip", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          timestampedTranscript: formattedTimestampedTranscript,
+          videoDurationSeconds: analyzedDuration,
+        }),
+      });
+
+      const data = (await res.json()) as Partial<ViralClipSuggestion> & {
+        error?: string;
+      };
+      if (!res.ok) {
+        throw new Error(
+          data.error || "Gemini AI failed to locate a viral clip segment."
+        );
+      }
+
+      const startTime = Number(data.startTime ?? 0);
+      const endTime = Number(
+        data.endTime ?? Math.min(analyzedDuration, startTime + 45)
+      );
+      const reason =
+        data.reason ||
+        "Most engaging spoken hook with strong viewer retention potential.";
+
+      setViralClipResult({ startTime, endTime, reason });
+      setViralCompletedStages(["transcribing", "finding-hook"]);
+
+      // Stage 3: Cutting Video via FFmpeg WASM (-ss and -to)
+      setViralStage("cutting");
+      await cutViralVideoClip(viralFile, startTime, endTime);
+
+      setViralCompletedStages(["transcribing", "finding-hook", "cutting"]);
+      setViralStage(null);
+      setViralStatus("done");
+    } catch (err: unknown) {
+      setViralError(
+        err instanceof Error
+          ? err.message
+          : "An unexpected error occurred while generating your viral clip."
+      );
+      setViralStatus("error");
+      setViralStage(null);
+    }
+  };
+
   const enabledCuts = cuts.filter((c) => c.enabled);
   const totalRemovedSec = enabledCuts.reduce(
     (sum, c) => sum + (c.end - c.start),
@@ -1219,7 +1664,7 @@ export default function SmartJumpCutEditorPage() {
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-bold">
               <Scissors className="w-3.5 h-3.5" />
-              AI Video Editor • Smart Jump-Cut
+              AI Video Editor • Smart Jump-Cut &amp; Viral Clipper
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">
               <ShieldCheck className="w-3.5 h-3.5" />
@@ -1231,14 +1676,69 @@ export default function SmartJumpCutEditorPage() {
             AI Video Editor
           </h1>
           <p className="text-slate-300 text-sm md:text-base max-w-3xl leading-relaxed">
-            Upload your raw talking-head video, vlog, or podcast clip. Whisper
-            AI transcribes your speech locally, Gemini flags awkward pauses,
-            dead silences, and filler words (&ldquo;um&rdquo;, &ldquo;uh&rdquo;,
-            &ldquo;ah&rdquo;), and FFmpeg WebAssembly merges the clean segments
-            into a smooth, professionally edited MP4 right inside your browser.
+            Merge multiple clips and auto-remove dead silences &amp; filler
+            words, or switch to{" "}
+            <strong className="text-white">Generate Viral Clip</strong> to let
+            AI automatically find and cut the most engaging 30–60 second Short
+            from a long video — 100% in your browser.
           </p>
         </div>
 
+        {/* Mode Selector Tabs: Remove Silences vs Generate Viral Clip */}
+        <div
+          role="tablist"
+          aria-label="AI Video Editor Modes"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-2 rounded-2xl bg-slate-900/90 border border-slate-800"
+        >
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeMode === "remove-silences"}
+            disabled={
+              pipelineStatus === "running" ||
+              reRendering ||
+              viralStatus === "running"
+            }
+            onClick={() => setActiveMode("remove-silences")}
+            className={`flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl font-bold text-sm transition disabled:opacity-50 ${
+              activeMode === "remove-silences"
+                ? "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/25"
+                : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+            }`}
+          >
+            <Scissors className="w-4 h-4" />
+            <span>Remove Silences</span>
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-black/25">
+              Multi-Clip Merge
+            </span>
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeMode === "viral-clip"}
+            disabled={
+              pipelineStatus === "running" ||
+              reRendering ||
+              viralStatus === "running"
+            }
+            onClick={() => setActiveMode("viral-clip")}
+            className={`flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl font-bold text-sm transition disabled:opacity-50 ${
+              activeMode === "viral-clip"
+                ? "bg-gradient-to-r from-rose-600 via-orange-600 to-amber-500 text-white shadow-lg shadow-rose-600/25"
+                : "text-slate-300 hover:bg-slate-800/80 hover:text-white"
+            }`}
+          >
+            <Flame className="w-4 h-4" />
+            <span>Generate Viral Clip</span>
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-black/25">
+              Auto 30–60s Short
+            </span>
+          </button>
+        </div>
+
+        {activeMode === "remove-silences" ? (
+          <>
         {/* Required Talking-Head & Browser Processing Warning Note */}
         <div className="flex items-start gap-3.5 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs md:text-sm leading-relaxed">
           <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
@@ -1759,6 +2259,293 @@ export default function SmartJumpCutEditorPage() {
               )}
             </div>
           </div>
+        )}
+          </>
+        ) : (
+          <>
+            {/* Auto Viral Clip Generator Warning Note */}
+            <div className="flex items-start gap-3.5 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs md:text-sm leading-relaxed">
+              <AlertTriangle className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <p>
+                <strong className="text-amber-100">Note: </strong>
+                Currently supports videos up to 15 minutes for viral clipping to
+                prevent browser crashes.{" "}
+                <span className="text-amber-300/90">
+                  For optimal browser speed, local Whisper AI scans up to the
+                  first 5 minutes of speech to extract the strongest 30–60
+                  second viral hook. Keep this tab open while cutting.
+                </span>
+              </p>
+            </div>
+
+            {/* Single-File Long Video Uploader & Generate Clip Card */}
+            <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-6 space-y-6 shadow-xl shadow-black/25">
+              <input
+                id="viral-video-upload"
+                ref={viralFileInputRef}
+                type="file"
+                accept="video/*"
+                onChange={handleViralFileChange}
+                disabled={viralStatus === "running"}
+                className="sr-only"
+              />
+
+              <label
+                htmlFor="viral-video-upload"
+                onDragOver={handleViralDragOver}
+                onDragLeave={handleViralDragLeave}
+                onDrop={handleViralDrop}
+                className={`block border-2 border-dashed rounded-2xl ${
+                  viralFile ? "p-6" : "p-10"
+                } text-center cursor-pointer transition ${
+                  isViralDragActive
+                    ? "border-rose-400 bg-rose-500/10"
+                    : "border-slate-700 hover:border-rose-500/60 bg-slate-950/60"
+                }`}
+              >
+                <div className="w-12 h-12 mx-auto mb-3 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center">
+                  <Film className="w-6 h-6 text-rose-400" />
+                </div>
+                <h2 className="text-base md:text-lg font-bold text-white mb-1">
+                  {isViralDragActive
+                    ? "Drop your long video here"
+                    : viralFile
+                    ? "Drop or Click to Replace Long Video"
+                    : "Upload a Long Video to Auto-Generate a 30–60s Viral Clip"}
+                </h2>
+                <p className="text-xs md:text-sm text-slate-400 mb-4">
+                  Podcasts, YouTube tutorials, interviews, or vlogs (MP4, MOV,
+                  WebM, MKV — up to 15 min). 100% private client-side cutting.
+                </p>
+                <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-orange-600 hover:from-rose-500 hover:to-orange-500 text-white text-xs font-bold transition shadow-lg shadow-rose-600/25">
+                  <Upload className="w-4 h-4" />
+                  {viralFile ? "Choose Different Video" : "Select Long Video"}
+                </span>
+              </label>
+
+              {viralFile && (
+                <div className="space-y-5">
+                  {/* Selected Long Video Summary */}
+                  <div className="flex flex-wrap items-center justify-between gap-3 p-4 rounded-xl bg-slate-950/85 border border-slate-800">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="w-10 h-10 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-300 flex items-center justify-center shrink-0">
+                        <Video className="w-5 h-5" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-bold text-white truncate">
+                          {viralFile.name}
+                        </p>
+                        <p className="text-xs text-slate-400">
+                          {formatBytes(viralFile.size)}
+                          {viralFileDuration > 0
+                            ? ` • Length: ${formatSeconds(viralFileDuration)}`
+                            : ""}
+                          {viralCappedAtFiveMin
+                            ? " • AI scans first 5:00 for speed"
+                            : ""}
+                        </p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={resetViralMode}
+                      disabled={viralStatus === "running"}
+                      className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-300 border border-slate-700 text-xs font-semibold text-slate-300 transition flex items-center gap-1.5 disabled:opacity-40"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Remove
+                    </button>
+                  </div>
+
+                  {/* Spoken Language Selector */}
+                  <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
+                    <label className="flex items-center gap-1.5 text-xs font-bold text-slate-300">
+                      <Globe className="w-3.5 h-3.5 text-rose-400" />
+                      Spoken Language (for Whisper AI Transcription)
+                    </label>
+                    <select
+                      value={selectedLanguage}
+                      onChange={(e) => setSelectedLanguage(e.target.value)}
+                      disabled={viralStatus === "running"}
+                      className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-rose-500 disabled:opacity-50"
+                    >
+                      {LANGUAGE_OPTIONS.map((opt) => (
+                        <option key={opt.code} value={opt.code}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Generate Clip Button */}
+                  <button
+                    type="button"
+                    onClick={handleGenerateViralClip}
+                    disabled={viralStatus === "running"}
+                    className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-600 via-orange-600 to-amber-500 hover:from-rose-500 hover:via-orange-500 hover:to-amber-400 disabled:opacity-50 text-white font-bold text-sm md:text-base transition flex items-center justify-center gap-2.5 shadow-lg shadow-rose-600/25"
+                  >
+                    {viralStatus === "running" ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Generating Viral Clip ({viralProgress}%)...
+                      </>
+                    ) : (
+                      <>
+                        <Flame className="w-5 h-5" />
+                        Generate Clip
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+
+              {/* 3-Stage Live Progress Bar: Transcribing -> Finding Best Hook -> Cutting Video */}
+              {(viralStatus === "running" || viralStatus === "done") && (
+                <div className="p-5 rounded-xl bg-slate-950/90 border border-slate-800 space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {VIRAL_PIPELINE_STAGES.map((stage, idx) => {
+                      const isDone = viralCompletedStages.includes(stage.id);
+                      const isActive = viralStage === stage.id;
+                      return (
+                        <div
+                          key={stage.id}
+                          className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl border text-xs font-bold transition ${
+                            isDone
+                              ? "bg-emerald-500/10 border-emerald-500/35 text-emerald-300"
+                              : isActive
+                              ? "bg-rose-500/15 border-rose-500/50 text-rose-200"
+                              : "bg-slate-900/70 border-slate-800 text-slate-500"
+                          }`}
+                        >
+                          {isDone ? (
+                            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                          ) : isActive ? (
+                            <Loader2 className="w-4 h-4 text-rose-400 animate-spin shrink-0" />
+                          ) : (
+                            <span className="w-4 h-4 rounded-full border border-slate-700 flex items-center justify-center text-[10px] shrink-0">
+                              {idx + 1}
+                            </span>
+                          )}
+                          <span>{stage.label}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-rose-500 via-orange-500 to-emerald-400 transition-all duration-300"
+                        style={{
+                          width: `${Math.min(100, Math.max(4, viralProgress))}%`,
+                        }}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-slate-400">
+                      <span>{viralStatusMessage}</span>
+                      <span className="font-mono font-bold text-rose-300">
+                        {viralProgress}%
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Viral Clip Error Alert */}
+              {viralError && (
+                <div className="flex items-start gap-3 p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-200 text-xs md:text-sm">
+                  <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <p className="font-bold text-rose-300">
+                      Viral Clipping Issue
+                    </p>
+                    <p>{viralError}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Viral Short Preview Player & Download Short Section */}
+            {viralClipUrl && viralClipResult && (
+              <div className="bg-slate-900/80 border border-emerald-500/30 rounded-2xl p-6 space-y-6 shadow-xl shadow-emerald-950/20">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-xs font-bold">
+                      <Flame className="w-3.5 h-3.5" />
+                      Viral Highlight Cut Ready
+                    </span>
+                    <h2 className="text-xl font-extrabold text-white">
+                      Your Auto-Generated Viral Clip
+                    </h2>
+                  </div>
+
+                  <a
+                    href={viralClipUrl}
+                    download={`viral-short-${(
+                      viralFile?.name || "video"
+                    ).replace(/\.[^.]+$/, "")}.mp4`}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition shadow-lg shadow-emerald-600/25"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download Short
+                  </a>
+                </div>
+
+                {/* Clip Metadata Stats */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                    <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+                      Selected Segment
+                    </p>
+                    <p className="text-lg font-extrabold text-white font-mono mt-0.5">
+                      {formatSeconds(viralClipResult.startTime)} →{" "}
+                      {formatSeconds(viralClipResult.endTime)}
+                    </p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-emerald-500/30">
+                    <p className="text-[11px] uppercase tracking-wider text-emerald-400 font-semibold">
+                      Clip Duration
+                    </p>
+                    <p className="text-lg font-extrabold text-emerald-300 font-mono mt-0.5">
+                      {(
+                        viralClipResult.endTime - viralClipResult.startTime
+                      ).toFixed(1)}
+                      s
+                    </p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800">
+                    <p className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
+                      MP4 File Size
+                    </p>
+                    <p className="text-lg font-extrabold text-indigo-300 font-mono mt-0.5">
+                      {formatBytes(viralClipSize)}
+                    </p>
+                  </div>
+                </div>
+
+                {/* AI Viral Hook Reason */}
+                <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/30 space-y-1.5">
+                  <p className="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Why AI Selected This Segment
+                  </p>
+                  <p className="text-sm text-slate-200 leading-relaxed">
+                    {viralClipResult.reason}
+                  </p>
+                </div>
+
+                {/* Final 30-60s Video Preview Player */}
+                <div className="rounded-xl overflow-hidden bg-black border border-slate-800">
+                  <video
+                    src={viralClipUrl}
+                    controls
+                    className="w-full max-h-[440px] mx-auto"
+                  />
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Helpful Guide Banner */}
