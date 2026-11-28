@@ -1,23 +1,78 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, MessageSquare, Send, CheckCircle2, MapPin, Clock } from "lucide-react";
+import {
+  Mail,
+  MessageSquare,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  MapPin,
+  Clock,
+} from "lucide-react";
+
+const WEB3FORMS_ACCESS_KEY = "35b7f2ce-025c-4af2-968d-632e16697751";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) return;
-    setSubmitted(true);
-    setName("");
-    setEmail("");
-    setSubject("");
-    setMessage("");
+    if (!name.trim() || !email.trim() || !message.trim() || isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitted(false);
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          from_name: "QuickConvert & SEO Tools Contact Form",
+          name: name.trim(),
+          email: email.trim(),
+          subject:
+            subject.trim() || "New Contact Form Message — QuickConvert & SEO Tools",
+          message: message.trim(),
+          botcheck: "",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data?.success) {
+        setSubmitted(true);
+        setName("");
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      } else {
+        setErrorMessage(
+          data?.message ||
+            "Failed to send your message. Please try again or email us directly."
+        );
+      }
+    } catch {
+      setErrorMessage(
+        "Network error while sending your message. Please check your connection and try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -92,10 +147,23 @@ export default function ContactPage() {
               <div className="mb-6 bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 flex items-start gap-3 text-emerald-300 text-xs md:text-sm">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold">Thank you for contacting QuickConvert &amp; SEO Tools!</p>
-                  <p className="text-emerald-300/80 mt-0.5">
-                    Your message has been received. We will reply to your email address shortly.
+                  <p className="font-semibold">
+                    Message sent successfully! We will reply soon.
                   </p>
+                  <p className="text-emerald-300/80 mt-0.5">
+                    Thank you for contacting QuickConvert &amp; SEO Tools. We have
+                    received your message in our inbox.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {errorMessage && (
+              <div className="mb-6 bg-rose-500/10 border border-rose-500/30 rounded-xl p-4 flex items-start gap-3 text-rose-300 text-xs md:text-sm">
+                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-semibold">Could not send message</p>
+                  <p className="text-rose-300/85 mt-0.5">{errorMessage}</p>
                 </div>
               </div>
             )}
@@ -176,10 +244,20 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/25 transition inline-flex items-center gap-2"
+                disabled={isSubmitting}
+                className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold shadow-lg shadow-indigo-600/25 transition inline-flex items-center gap-2"
               >
-                <Send className="w-4 h-4" />
-                Send Message
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    Send Message
+                  </>
+                )}
               </button>
             </form>
           </div>
